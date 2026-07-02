@@ -119,3 +119,64 @@ a{color:inherit;text-decoration:none}
 .actions-inline{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .ai-mini{background:var(--paper-2);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--ink-soft);margin-top:6px;max-width:340px}
 .ai-mini b{color:var(--ink)}
+
+/* ---- reveal on load/scroll ---- */
+@media(prefers-reduced-motion:no-preference){
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+}
+
+/* ---- stat cards: accent + hover ---- */
+.stat-c{position:relative;overflow:hidden}
+.stat-c::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--copper);opacity:.9}
+.stat-c:nth-child(2)::before{background:#3a7bd5}
+.stat-c:nth-child(3)::before{background:var(--patina)}
+.stat-c:nth-child(4)::before{background:var(--gold)}
+.stat-c{transition:transform .2s,box-shadow .2s}
+.stat-c:hover{transform:translateY(-3px)}
+
+/* ---- admin header band ---- */
+.admin-hero{position:relative;overflow:hidden;border-radius:20px;padding:26px 28px;margin-bottom:26px;background:linear-gradient(135deg,#2a2018,#181009);color:var(--paper)}
+.admin-hero::after{content:"";position:absolute;top:-50%;left:-30%;width:70%;height:200%;background:linear-gradient(90deg,transparent,rgba(181,103,58,.16),transparent);transform:rotate(18deg);animation:aSheen 7s ease-in-out infinite}
+@keyframes aSheen{0%,100%{left:-40%}50%{left:120%}}
+.admin-hero .eyebrow{color:var(--gold)}
+.admin-hero h1{color:var(--paper);font-size:clamp(26px,4vw,40px);margin-top:6px;position:relative}
+.admin-hero .live-dot{display:inline-flex;align-items:center;gap:7px;font-family:"Space Mono";font-size:12px;color:#8fe3cd;margin-top:8px;position:relative}
+.admin-hero .live-dot i{width:8px;height:8px;border-radius:50%;background:#3fe0b6;box-shadow:0 0 0 0 rgba(63,224,182,.6);animation:blip 1.8s infinite}
+@keyframes blip{0%{box-shadow:0 0 0 0 rgba(63,224,182,.6)}70%{box-shadow:0 0 0 10px rgba(63,224,182,0)}100%{box-shadow:0 0 0 0 rgba(63,224,182,0)}}
+
+/* ---- pitem enter + status flash ---- */
+.pitem{transition:transform .2s,box-shadow .2s,outline-color .4s;outline:2px solid transparent}
+.pitem:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.pitem.flash{outline-color:var(--patina);animation:flash .7s ease}
+@keyframes flash{0%{background:rgba(31,110,92,.14)}100%{background:var(--card)}}
+
+/* ---- pipeline stepper ---- */
+.pipe{display:flex;align-items:center;margin-top:10px}
+.pipe-step{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pipe-step .pd{width:13px;height:13px;border-radius:50%;border:2px solid var(--line);background:var(--card);transition:.3s;position:relative}
+.pipe-step small{font-size:9.5px;font-family:"Space Mono";color:var(--ink-soft);letter-spacing:.02em;transition:.3s}
+.pipe-line{flex:1;height:2px;background:var(--line);margin:0 4px;margin-bottom:15px;transition:.3s}
+.pipe-step.done .pd{background:var(--patina);border-color:var(--patina)}
+.pipe-step.done small{color:var(--patina)}
+.pipe-step.now .pd{background:var(--copper);border-color:var(--copper);box-shadow:0 0 0 4px rgba(181,103,58,.18);animation:nowPulse 1.8s infinite}
+.pipe-step.now small{color:var(--copper);font-weight:700}
+@keyframes nowPulse{0%,100%{box-shadow:0 0 0 3px rgba(181,103,58,.18)}50%{box-shadow:0 0 0 6px rgba(181,103,58,.08)}}
+
+/* ---- buttons ripple-ish press ---- */
+.btn{position:relative;overflow:hidden}
+.btn:active{transform:translateY(0) scale(.97)}
+
+/* ---- toasts ---- */
+#ee-toasts{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:10px;z-index:200}
+.ee-toast{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--patina);box-shadow:var(--shadow);padding:12px 16px;border-radius:12px;font-size:14px;font-weight:500;transform:translateX(120%);opacity:0;transition:transform .35s cubic-bezier(.2,.9,.3,1),opacity .35s;max-width:320px}
+.ee-toast.show{transform:none;opacity:1}
+.ee-toast .tk{width:20px;height:20px;border-radius:50%;background:var(--patina);flex:none;position:relative}
+.ee-toast .tk::after{content:"";position:absolute;left:6px;top:4px;width:5px;height:9px;border:2px solid #fff;border-top:0;border-left:0;transform:rotate(45deg)}
+.ee-toast.pay{border-left-color:var(--gold)}.ee-toast.pay .tk{background:var(--gold)}
+.ee-toast.info{border-left-color:var(--copper)}.ee-toast.info .tk{background:var(--copper)}
+
+/* ---- confetti on payout ---- */
+.confetti{position:fixed;width:9px;height:14px;top:-20px;z-index:250;pointer-events:none;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.9}}
+@media(prefers-reduced-motion:reduce){.confetti,.admin-hero::after,.pipe-step.now .pd{animation:none}}

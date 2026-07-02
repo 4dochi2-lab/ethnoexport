@@ -83,14 +83,57 @@ const EE = (() => {
   // seed one demo product for admin view (only once)
   function seed(){
     if(read(P,null)===null){
-      const c=calc(50), ai=aiCopy('Mis');
-      write(P,[{id:'pdemo',owner:'resim@lahij.az',ownerName:'Rəsim Quliyev',material:'Mis',manat:50,
-        photo:null,status:'qc',landed:c.landed,title:ai.title,tags:ai.tags,created:Date.now()-86400000}]);
+      const mk=(owner,name,mat,manat,status,ago)=>{const c=calc(manat),ai=aiCopy(mat);
+        return {id:'p'+ago,owner,ownerName:name,material:mat,manat,photo:null,status,
+          landed:c.landed,title:ai.title,tags:ai.tags,created:Date.now()-ago};};
+      write(P,[
+        mk('resim@lahij.az','Rəsim Quliyev','Mis',50,'wait',1200),
+        mk('sekine@quba.az','Səkinə Məmmədova','Xalça',180,'qc',86400000),
+        mk('elshen@sheki.az','Elşən Bağırov','Gümüş',90,'live',172800000),
+        mk('gulnar@lahij.az','Gülnar Əliyeva','Keramika',40,'sold',259200000),
+        mk('resim@lahij.az','Rəsim Quliyev','Mis',65,'paid',432000000)
+      ]);
     }
   }
 
+  function resetDemo(){localStorage.removeItem(P);seed();}
+
   return {initTheme,register,login,logout,session,currentUser,requireRole,calc,
-          addProduct,products,myProducts,setStatus,statusBadge,STATUS,aiCopy,seed,ADMIN};
+          addProduct,products,myProducts,setStatus,statusBadge,STATUS,aiCopy,seed,resetDemo,ADMIN};
 })();
 EE.initTheme();
 EE.seed();
+
+/* ---- shared UI helpers (animations) ---- */
+EE.STAGES=['wait','qc','live','sold','paid'];
+EE.STAGE_LABEL={wait:'Gözləyir',qc:'QC',live:'Canlı',sold:'Satıldı',paid:'Ödənildi'};
+EE.pipeline=function(status){
+  const i=EE.STAGES.indexOf(status);
+  return `<div class="pipe">`+EE.STAGES.map((s,k)=>{
+    const st=k<i?'done':k===i?'now':'todo';
+    return `<div class="pipe-step ${st}"><span class="pd"></span><small>${EE.STAGE_LABEL[s]}</small></div>`;
+  }).join('<span class="pipe-line"></span>')+`</div>`;
+};
+EE.countUp=function(el,to,suf){
+  const from=0,d=900;let s=null;
+  function f(t){if(!s)s=t;const p=Math.min((t-s)/d,1);
+    el.textContent=Math.round((0.5-Math.cos(p*Math.PI)/2)*(to-from)+from)+(suf||'');
+    if(p<1)requestAnimationFrame(f);}
+  requestAnimationFrame(f);
+};
+EE.reveal=function(root){
+  const els=(root||document).querySelectorAll('.reveal:not(.in)');
+  if(!('IntersectionObserver'in window)){els.forEach(e=>e.classList.add('in'));return;}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+  els.forEach((e,i)=>{e.style.transitionDelay=(Math.min(i,8)*45)+'ms';io.observe(e);});
+};
+EE.toast=function(msg,type){
+  let box=document.getElementById('ee-toasts');
+  if(!box){box=document.createElement('div');box.id='ee-toasts';document.body.appendChild(box);}
+  const t=document.createElement('div');
+  t.className='ee-toast '+(type||'');
+  t.innerHTML=`<span class="tk"></span><span>${msg}</span>`;
+  box.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},2600);
+};

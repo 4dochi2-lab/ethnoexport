@@ -2,7 +2,7 @@
 <html lang="az" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EthnoExport — Sən düzəlt, qalanını biz edək</title>
 <meta name="description" content="Kənd sənətkarları üçün: şəkil çək, qiymətini yaz. Tərcümə, qablaşdırma, logistika, dünya bazarında satış — qalanını biz edirik. Pul birbaşa kartına.">
 <meta name="theme-color" content="#B5673A">
@@ -69,7 +69,8 @@ header.nav{position:sticky;top:0;z-index:60;background:var(--nav-bg);backdrop-fi
 .sun{display:none}[data-theme="dark"] .sun{display:block}[data-theme="dark"] .moon{display:none}
 .menu-btn{display:none;background:none;border:none;color:var(--ink);cursor:pointer}
 .menu-btn svg{width:26px;height:26px}
-@media(max-width:860px){.nav-links{display:none}.nav-links.open{display:flex;position:absolute;top:66px;left:0;right:0;flex-direction:column;background:var(--paper);border-bottom:1px solid var(--line);padding:20px 26px;gap:18px}.menu-btn{display:flex}.nav-right .btn{display:none}}
+@media(max-width:860px){.nav-links{display:none}.nav-links.open{display:flex;position:absolute;top:66px;left:0;right:0;flex-direction:column;background:var(--paper);border-bottom:1px solid var(--line);padding:20px 26px;gap:18px}.menu-btn{display:flex}}
+@media(max-width:600px){.wrap{padding:0 16px}.nav-in{height:60px}.nav-links.open{top:60px}.logo{font-size:19px}.btn{padding:10px 15px;font-size:14px}.hero{padding:44px 0 30px}.hero p.lead{font-size:18px}.rev{padding:24px 22px}.rev-final .val{font-size:38px}.calc-val{font-size:34px}}
 
 /* ---------- HERO ---------- */
 .hero{position:relative;padding:72px 0 46px;overflow:hidden}
@@ -185,7 +186,7 @@ section{padding:88px 0}
 .demo-steps li b{display:block;font-family:"Fraunces";font-size:17px}
 .demo-steps li span{font-size:14px;color:var(--ink-soft)}
 .device-wrap{display:flex;justify-content:center}
-.device{width:300px;height:620px;background:#0d0906;border-radius:42px;padding:12px;box-shadow:0 40px 80px -30px rgba(0,0,0,.6),inset 0 0 0 2px rgba(245,238,225,.06);position:relative}
+.device{width:min(300px,82vw);aspect-ratio:300/620;height:auto;background:#0d0906;border-radius:42px;padding:12px;box-shadow:0 40px 80px -30px rgba(0,0,0,.6),inset 0 0 0 2px rgba(245,238,225,.06);position:relative}
 .notch{position:absolute;top:16px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#0d0906;border-radius:0 0 16px 16px;z-index:5}
 .statusbar{position:absolute;top:14px;left:24px;right:24px;display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#F5EEE1;z-index:4}
 .statusbar .sig{width:26px;height:11px;border-radius:2px;border:1.5px solid #F5EEE1;position:relative}

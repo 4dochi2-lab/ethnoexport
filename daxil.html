@@ -44,17 +44,18 @@
     <div class="field"><label>Ad, Soyad</label><input type="text" id="rName" placeholder="Rəsim Quliyev" required></div>
     <div class="field"><label>E-poçt</label><input type="email" id="rEmail" placeholder="ad@example.com" required></div>
     <div class="field"><label>Kart nömrəsi (ödəniş üçün)</label><input type="text" id="rCard" placeholder="M10 / Birbank / Leobank — **** 1234" required><div class="hint">Pulun bu karta köçürüləcək. İstənilən vaxt dəyişə bilərsən.</div></div>
-    <div class="field"><label>Şifrə</label><input type="password" id="rPass" placeholder="Ən azı 4 simvol" minlength="4" required></div>
+    <div class="field"><label>Şifrə</label><input type="password" id="rPass" placeholder="Ən azı 6 simvol" minlength="6" required></div>
     <button class="btn wide" type="submit">Hesab yarat</button>
   </form>
 
-  <div class="admin-link">Komanda üzvüsən? <a href="admin.html">Admin girişi →</a></div>
+  <div class="admin-link">Komanda üzvüsən? Eyni formadan öz hesabınla daxil ol — panelə avtomatik yönləndiriləcəksən.</div>
 </div></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/app.js"></script>
 <script>
-// if already logged in, go to panel
-const s=EE.session(); if(s) location.href = s.role==='admin'?'admin.html':'panel.html';
+// if already logged in, redirect by role
+(async()=>{const s=await EE.getSession();if(s){const p=await EE.getProfile();location.href=(p&&p.role==='admin')?'admin.html':'panel.html';}})();
 
 function mode(m){
   const login=m==='login';
@@ -67,18 +68,19 @@ function mode(m){
   document.getElementById('msg').innerHTML='';
 }
 function err(t){document.getElementById('msg').innerHTML='<div class="err">'+t+'</div>'}
+function busy(btn,on,txt){btn.disabled=on;btn.textContent=on?'Gözləyin…':txt;}
 
-document.getElementById('loginForm').onsubmit=e=>{
-  e.preventDefault();
-  try{const role=EE.login({email:lEmail.value,pass:lPass.value});
+document.getElementById('loginForm').onsubmit=async e=>{
+  e.preventDefault();const b=e.submitter;busy(b,true);
+  try{const role=await EE.signIn({email:lEmail.value,pass:lPass.value});
     location.href=role==='admin'?'admin.html':'panel.html';
-  }catch(x){err(x.message)}
+  }catch(x){err(x.message);busy(b,false,'Daxil ol');}
 };
-document.getElementById('regForm').onsubmit=e=>{
-  e.preventDefault();
-  try{EE.register({name:rName.value.trim(),email:rEmail.value,pass:rPass.value,card:rCard.value.trim()});
+document.getElementById('regForm').onsubmit=async e=>{
+  e.preventDefault();const b=e.submitter;busy(b,true);
+  try{await EE.signUp({name:rName.value.trim(),email:rEmail.value,pass:rPass.value,card:rCard.value.trim()});
     location.href='panel.html';
-  }catch(x){err(x.message)}
+  }catch(x){err(x.message);busy(b,false,'Hesab yarat');}
 };
 </script>
 </body>

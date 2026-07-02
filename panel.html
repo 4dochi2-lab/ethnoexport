@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panelim — EthnoExport</title>
+<meta name="theme-color" content="#B5673A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/app.css">
 </head>
 <body>
@@ -20,15 +22,17 @@
 </div></header>
 
 <div class="page"><div class="wrap">
-  <div class="page-head">
-    <div><div class="eyebrow">Sənətkar paneli</div><h1>Məhsullarım</h1></div>
+  <div class="admin-hero reveal">
+    <div class="eyebrow">Sənətkar paneli</div>
+    <h1>Xoş gəldin, <span id="heroName">Sənətkar</span></h1>
+    <div class="live-dot"><i></i> Məhsullarını izlə · pul birbaşa kartına</div>
   </div>
 
   <div class="stat-row">
-    <div class="stat-c card"><div class="n" id="stTotal">0</div><div class="l">Ümumi məhsul</div></div>
-    <div class="stat-c card"><div class="n" id="stLive">0</div><div class="l">Satışdadır</div></div>
-    <div class="stat-c card"><div class="n" id="stSold">0</div><div class="l">Satıldı</div></div>
-    <div class="stat-c card"><div class="n" id="stPaid">0 ₼</div><div class="l">Kartıma köçürüldü</div></div>
+    <div class="stat-c card reveal"><div class="n" id="stTotal">0</div><div class="l">Ümumi məhsul</div></div>
+    <div class="stat-c card reveal"><div class="n" id="stLive">0</div><div class="l">Satışdadır</div></div>
+    <div class="stat-c card reveal"><div class="n" id="stSold">0</div><div class="l">Satıldı</div></div>
+    <div class="stat-c card reveal"><div class="n" id="stPaid">0</div><div class="l">Kartıma köçürüldü (₼)</div></div>
   </div>
 
   <div class="grid2">
@@ -74,7 +78,7 @@
 <script>
 const s=EE.requireRole('artisan');
 const user=EE.currentUser();
-if(user) uName.textContent=user.name.split(' ')[0];
+if(user){const fn=user.name.split(' ')[0];uName.textContent=fn;heroName.textContent=fn;}
 
 // photo preview (as dataURL, downscaled)
 let photoData=null;
@@ -107,31 +111,36 @@ pForm.onsubmit=e=>{
   e.preventDefault();
   if(+manat.value<10){pmsg.innerHTML='<div class="err">Məbləğ ən azı 10 ₼ olmalıdır.</div>';return;}
   EE.addProduct({owner:s.email,ownerName:user.name,material:mat.value,manat:manat.value,photo:photoData});
-  pmsg.innerHTML='<div class="ok">Göndərildi! Komandamız yoxlayıb Etsy-də dərc edəcək.</div>';
+  EE.toast('Göndərildi! Komandamız yoxlayıb Etsy-də dərc edəcək.');
   photoData=null;prev.style.display='none';upEmpty.style.display='block';fileInp.value='';manat.value=50;renderCalc();
   render();
-  setTimeout(()=>pmsg.innerHTML='',4000);
 };
 
+let firstRender=true;
 function render(){
   const ps=EE.myProducts(s.email);
   listCount.textContent=ps.length;
-  stTotal.textContent=ps.length;
-  stLive.textContent=ps.filter(p=>p.status==='live').length;
-  stSold.textContent=ps.filter(p=>p.status==='sold'||p.status==='paid').length;
-  stPaid.textContent=ps.filter(p=>p.status==='paid').reduce((a,p)=>a+p.manat,0)+' ₼';
+  const total=ps.length,
+    live=ps.filter(p=>p.status==='live').length,
+    sold=ps.filter(p=>p.status==='sold'||p.status==='paid').length,
+    paid=ps.filter(p=>p.status==='paid').reduce((a,p)=>a+p.manat,0);
+  if(firstRender){EE.countUp(stTotal,total);EE.countUp(stLive,live);EE.countUp(stSold,sold);EE.countUp(stPaid,paid);firstRender=false;}
+  else{stTotal.textContent=total;stLive.textContent=live;stSold.textContent=sold;stPaid.textContent=paid;}
   if(!ps.length){list.innerHTML=`<div class="card empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg><div>Hələ məhsul göndərməmisən.<br>Soldan ilk məhsulunu göndər.</div></div>`;return;}
   list.innerHTML=ps.map(p=>`
-    <div class="card pitem">
+    <div class="card pitem reveal">
       <div class="pthumb">${p.photo?`<img src="${p.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>`}</div>
       <div class="pmeta">
         <b>${p.material} əşyası</b>
         <div class="row"><span>İstədiyin: <b>${p.manat} ₼</b></span><span>Etsy: <b>$${p.landed}</b></span></div>
+        ${EE.pipeline(p.status)}
       </div>
       <div class="pright">${EE.statusBadge(p.status)}${p.status==='paid'?'<span class="hint">kartına köçürüldü</span>':''}</div>
     </div>`).join('');
+  EE.reveal(list);
 }
 render();
+EE.reveal();
 </script>
 </body>
 </html>

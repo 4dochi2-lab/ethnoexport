@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="az" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — EthnoExport</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+  <a href="index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4Z"/><path d="M12 8v8M8 12h8"/></svg>Ethno<b>Export</b> · Admin</a>
+  <div class="nav-actions">
+    <button class="theme-btn" data-theme-btn aria-label="Rejim">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+    <button class="btn ghost sm" onclick="EE.logout()">Çıxış</button>
+  </div>
+</div></header>
+
+<div class="page"><div class="wrap">
+  <div class="page-head">
+    <div><div class="eyebrow">Komanda paneli</div><h1>Bütün göndərişlər</h1></div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-c card"><div class="n" id="aWait">0</div><div class="l">Yeni · QC gözləyir</div></div>
+    <div class="stat-c card"><div class="n" id="aLive">0</div><div class="l">Etsy-də canlı</div></div>
+    <div class="stat-c card"><div class="n" id="aSold">0</div><div class="l">Satıldı</div></div>
+    <div class="stat-c card"><div class="n" id="aPay">0 ₼</div><div class="l">Ödəniş gözləyir</div></div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="on" data-f="all">Hamısı</button>
+    <button data-f="wait">Gözləyir</button>
+    <button data-f="qc">QC</button>
+    <button data-f="live">Canlı</button>
+    <button data-f="sold">Satıldı</button>
+    <button data-f="paid">Ödənildi</button>
+  </div>
+
+  <div class="plist" id="list"></div>
+</div></div>
+
+<script src="assets/app.js"></script>
+<script>
+EE.requireRole('admin');
+let filter='all';
+document.querySelectorAll('#filters button').forEach(b=>b.onclick=()=>{
+  filter=b.dataset.f;
+  document.querySelectorAll('#filters button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');render();
+});
+
+// action per status
+function actions(p){
+  const A=[];
+  if(p.status==='wait')A.push(`<button class="btn sm pat" onclick="act('${p.id}','qc')">QC-yə götür</button>`);
+  if(p.status==='qc')A.push(`<button class="btn sm" onclick="act('${p.id}','live')">Etsy-də dərc et</button>`);
+  if(p.status==='live')A.push(`<button class="btn sm pat" onclick="act('${p.id}','sold')">Satıldı işarələ</button>`);
+  if(p.status==='sold')A.push(`<button class="btn sm" onclick="act('${p.id}','paid')">Kartına ödə (${p.manat} ₼)</button>`);
+  return A.join('');
+}
+window.act=(id,st)=>{EE.setStatus(id,st);render();};
+
+function render(){
+  let ps=EE.products();
+  aWait.textContent=ps.filter(p=>p.status==='wait'||p.status==='qc').length;
+  aLive.textContent=ps.filter(p=>p.status==='live').length;
+  aSold.textContent=ps.filter(p=>p.status==='sold').length;
+  aPay.textContent=ps.filter(p=>p.status==='sold').reduce((a,p)=>a+p.manat,0)+' ₼';
+  if(filter!=='all')ps=ps.filter(p=>p.status===filter);
+  if(!ps.length){list.innerHTML='<div class="card empty"><div>Bu bölmədə göndəriş yoxdur.</div></div>';return;}
+  list.innerHTML=ps.map(p=>`
+    <div class="card pitem" style="grid-template-columns:78px 1fr auto">
+      <div class="pthumb">${p.photo?`<img src="${p.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>`}</div>
+      <div class="pmeta">
+        <b>${p.material} · ${p.ownerName}</b>
+        <div class="row"><span>İstək: <b>${p.manat} ₼</b></span><span>Landed: <b>$${p.landed}</b></span><span>Etsy: <b>$${Math.round(p.landed*1.08)}</b></span></div>
+        <div class="ai-mini"><b>AI başlıq:</b> ${p.title}<br><b>${p.tags.length} tag:</b> ${p.tags.slice(0,8).join(', ')}…</div>
+      </div>
+      <div class="pright">
+        ${EE.statusBadge(p.status)}
+        <div class="actions-inline">${actions(p)}</div>
+      </div>
+    </div>`).join('');
+}
+render();
+</script>
+</body>
+</html>

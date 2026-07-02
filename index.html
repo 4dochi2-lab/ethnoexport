@@ -313,6 +313,52 @@ section{padding:88px 0}
 footer{border-top:1px solid var(--line);padding:44px 0;color:var(--ink-soft);font-size:14px}
 .foot-in{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
 
+/* ---- buta (paisley) divider ---- */
+.buta-divider{display:flex;align-items:center;justify-content:center;gap:22px;padding:14px 0;opacity:.9}
+.buta-divider .line{height:1px;width:80px;background:linear-gradient(90deg,transparent,var(--copper))}
+.buta-divider .line.r{background:linear-gradient(90deg,var(--copper),transparent)}
+.buta-divider svg{width:30px;color:var(--copper)}
+.buta-divider svg:nth-child(3){width:42px;color:var(--patina)}
+@media(prefers-reduced-motion:no-preference){
+  .buta-divider svg{animation:sway 5s ease-in-out infinite}
+  .buta-divider svg:nth-child(3){animation-delay:.4s}
+  .buta-divider svg:nth-child(4){animation-delay:.8s}
+  @keyframes sway{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+}
+
+/* ---- kilim (carpet) band ---- */
+.kilim-band{height:26px;
+  background:
+    linear-gradient(135deg,var(--copper) 25%,transparent 25%) -13px 0/26px 26px,
+    linear-gradient(225deg,var(--copper) 25%,transparent 25%) -13px 0/26px 26px,
+    linear-gradient(315deg,var(--patina) 25%,transparent 25%) 0 0/26px 26px,
+    linear-gradient(45deg,var(--patina) 25%,transparent 25%) 0 0/26px 26px;
+  opacity:.22}
+
+/* ---- materials showcase ---- */
+.materials{position:relative;overflow:hidden}
+.materials .weave{position:absolute;inset:0;pointer-events:none;opacity:.05;
+  background:
+    repeating-linear-gradient(90deg,var(--ink) 0 1px,transparent 1px 14px),
+    repeating-linear-gradient(0deg,var(--ink) 0 1px,transparent 1px 14px)}
+.mat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:46px;position:relative}
+.mat-card{border:1px solid var(--line);border-radius:16px;padding:24px 18px;text-align:center;background:var(--card);transition:transform .3s,box-shadow .3s,border-color .3s;position:relative;overflow:hidden}
+.mat-card::before{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--copper),var(--patina));transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.mat-card:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:var(--copper)}
+.mat-card:hover::before{transform:scaleX(1)}
+.mat-ic{width:56px;height:56px;margin:0 auto 14px;color:var(--copper);transition:transform .4s}
+.mat-card:hover .mat-ic{transform:rotate(-6deg) scale(1.08)}
+.mat-card b{font-family:"Fraunces";font-size:19px;display:block}
+.mat-card small{font-size:12.5px;color:var(--ink-soft);display:block;margin-top:4px}
+@media(max-width:900px){.mat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.mat-grid{grid-template-columns:1fr}}
+
+/* ---- hero floating motif ---- */
+.hero-motif{position:absolute;right:6%;top:16%;width:120px;color:var(--copper);opacity:.16;z-index:0;pointer-events:none}
+@media(prefers-reduced-motion:no-preference){.hero-motif{animation:floaty 8s ease-in-out infinite}}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(6deg)}}
+@media(max-width:860px){.hero-motif{display:none}}
+
 /* scroll reveal */
 @media(prefers-reduced-motion:no-preference){
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
@@ -352,6 +398,10 @@ footer{border-top:1px solid var(--line);padding:44px 0;color:var(--ink-soft);fon
 <!-- HERO -->
 <section class="hero">
   <div class="hero-glow"></div>
+  <svg class="hero-motif" viewBox="0 0 64 80" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+    <path d="M40 6C56 12 58 40 38 56C24 67 6 55 8 37C9 27 20 21 28 27C34 31 33 42 26 43"/>
+    <path d="M34 20C40 24 40 34 33 40" stroke-width="1.6"/>
+  </svg>
   <div class="wrap hero-grid">
     <div class="stagger">
       <div class="eyebrow">Kənd sənətkarları üçün</div>
@@ -422,6 +472,49 @@ footer{border-top:1px solid var(--line);padding:44px 0;color:var(--ink-soft);fon
     </div>
   </div>
 </section>
+
+<div class="buta-divider" aria-hidden="true">
+  <span class="line"></span>
+  <svg viewBox="0 0 40 52" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M25 4C35 8 36 26 24 35C15 42 4 34 5 23C6 17 13 13 18 17C22 20 21 26 17 27"/></svg>
+  <svg viewBox="0 0 40 52" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M25 4C35 8 36 26 24 35C15 42 4 34 5 23C6 17 13 13 18 17C22 20 21 26 17 27"/></svg>
+  <svg viewBox="0 0 40 52" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M25 4C35 8 36 26 24 35C15 42 4 34 5 23C6 17 13 13 18 17C22 20 21 26 17 27"/></svg>
+  <span class="line r"></span>
+</div>
+
+<!-- MATERIALS -->
+<section class="materials" style="padding:72px 0">
+  <div class="weave"></div>
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin:0 auto;text-align:center">
+      <div class="eyebrow">Kəndin əl işləri</div>
+      <h2>Nəsillərin sənəti — dünya bazarına</h2>
+      <p style="margin:0 auto">Lahıc misi, Quba xalçası, Şəki zərgərliyi… hansı sənətin varsa, biz onu satırıq.</p>
+    </div>
+    <div class="mat-grid">
+      <div class="mat-card reveal">
+        <svg class="mat-ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 20h32c0 10-7 18-16 18S8 30 8 20Z"/><path d="M14 20c0-4 4-6 10-6s10 2 10 6"/><path d="M24 8v4"/></svg>
+        <b>Mis</b><small>Döymə qablar, sinilər</small>
+      </div>
+      <div class="mat-card reveal">
+        <svg class="mat-ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="32" height="32" rx="2"/><path d="M24 12l6 12-6 12-6-12z"/><path d="M12 24h24M14 16l4 8-4 8M34 16l-4 8 4 8"/></svg>
+        <b>Xalça</b><small>Əl toxuması, kilim</small>
+      </div>
+      <div class="mat-card reveal">
+        <svg class="mat-ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="30" r="9"/><path d="M24 21v-9M18 12h12M24 30l3-4M24 30l-3-4"/></svg>
+        <b>Gümüş</b><small>Zərgərlik, bəzək</small>
+      </div>
+      <div class="mat-card reveal">
+        <svg class="mat-ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 40c0-14 6-24 12-32 6 8 12 18 12 32"/><path d="M24 8v32M18 22c4 2 8 2 12 0M17 32c5 3 9 3 14 0"/></svg>
+        <b>Ağac</b><small>Oyma, xatəmkarlıq</small>
+      </div>
+      <div class="mat-card reveal">
+        <svg class="mat-ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 18c0-4 4-8 10-8s10 4 10 8c0 6-4 8-4 14 0 4-2 6-6 6s-6-2-6-6c0-6-4-8-4-14Z"/><path d="M18 18h12"/></svg>
+        <b>Keramika</b><small>Şirli saxsı, boşqab</small>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="kilim-band" aria-hidden="true"></div>
 
 <!-- HOW -->
 <section id="nasil" style="padding-top:24px">

@@ -26,6 +26,9 @@ const EE = (() => {
     if(m.includes('invalid totp')||m.includes('invalid code')||m.includes('code is invalid')) return 'Kod yanlışdır. Yenidən yoxlayın.';
     if(m.includes('mfa')&&m.includes('already')) return '2FA artıq aktivdir.';
     if(m.includes('user not found')) return 'Bu e-poçt tapılmadı.';
+    if(m.includes('signups not allowed')||m.includes('otp_disabled')) return 'Bu e-poçt tapılmadı. Əvvəlcə qeydiyyatdan keçin.';
+    if(m.includes('token has expired')||m.includes('expired')) return 'Kodun vaxtı keçib. Yeni kod istəyin.';
+    if(m.includes('rate limit')||m.includes('too many')) return 'Çox sayda cəhd. Bir az gözləyin.';
     return m;
   }
 
@@ -55,6 +58,17 @@ const EE = (() => {
     return {role:(p&&p.role)||'artisan'};
   }
   async function roleAfterMfa(){const p=await getProfile();return (p&&p.role)||'artisan';}
+  async function sendEmailOtp(email){
+    const {error}=await SB.auth.signInWithOtp({email:email.trim().toLowerCase(),
+      options:{shouldCreateUser:false}});
+    if(error) throw new Error(mapErr(error.message));
+  }
+  async function verifyEmailOtp(email,token){
+    const {error}=await SB.auth.verifyOtp({email:email.trim().toLowerCase(),token:token.trim(),type:'email'});
+    if(error) throw new Error(mapErr(error.message));
+    const p=await getProfile();
+    return (p&&p.role)||'artisan';
+  }
   async function signInWithGoogle(){
     const {error}=await SB.auth.signInWithOAuth({provider:'google',
       options:{redirectTo:location.origin+'/panel.html'}});
@@ -206,7 +220,7 @@ const EE = (() => {
     setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},2800);
   }
 
-  return {initTheme,signUp,signIn,roleAfterMfa,signInWithGoogle,saveProfile,signOut,getSession,getProfile,requireRole,
+  return {initTheme,signUp,signIn,roleAfterMfa,signInWithGoogle,sendEmailOtp,verifyEmailOtp,saveProfile,signOut,getSession,getProfile,requireRole,
           resetPassword,updatePassword,
           mfaFactors,mfaActive,mfaNeeded,mfaEnroll,mfaActivate,mfaVerifyLogin,mfaDisable,
           calc,aiCopy,addProduct,getProducts,setStatus,subscribe,

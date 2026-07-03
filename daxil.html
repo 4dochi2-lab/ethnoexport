@@ -45,7 +45,22 @@
     <div class="field"><label>E-poçt</label><input type="email" id="lEmail" placeholder="ad@example.com" required></div>
     <div class="field"><label>Şifrə</label><input type="password" id="lPass" placeholder="••••••••" required></div>
     <button class="btn wide" type="submit">Daxil ol</button>
-    <div style="text-align:center;margin-top:12px"><a href="#" id="forgotLink" style="font-size:13.5px;color:var(--copper);font-weight:600">Şifrəni unutmusunuz?</a></div>
+    <div style="text-align:center;margin-top:12px;display:flex;flex-direction:column;gap:8px">
+      <a href="#" id="otpLink" style="font-size:13.5px;color:var(--copper);font-weight:600">E-poçt kodu ilə gir (şifrəsiz)</a>
+      <a href="#" id="forgotLink" style="font-size:13px;color:var(--ink-soft)">Şifrəni unutmusunuz?</a>
+    </div>
+  </form>
+
+  <!-- EMAIL OTP LOGIN -->
+  <form id="otpForm" style="display:none">
+    <div class="sub" style="margin-bottom:16px">E-poçtunuzu yazın — 6 rəqəmli giriş kodu göndərəcəyik.</div>
+    <div class="field"><label>E-poçt</label><input type="email" id="otpEmail" placeholder="ad@example.com" required></div>
+    <div id="otpStep2" style="display:none">
+      <div class="ok">Kod e-poçtunuza göndərildi. Yoxlayın (spam qovluğuna da baxın).</div>
+      <div class="field"><label>6 rəqəmli kod</label><input type="text" id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456"></div>
+    </div>
+    <button class="btn wide" type="submit" id="otpBtn">Kod göndər</button>
+    <div style="text-align:center;margin-top:12px"><a href="#" id="otpBack" style="font-size:13.5px;color:var(--ink-soft)">← Girişə qayıt</a></div>
   </form>
 
   <!-- 2FA CODE (login step 2) -->
@@ -99,7 +114,7 @@
 
 const $=id=>document.getElementById(id);
 function showForm(which){
-  ['loginForm','regForm','mfaForm','resetForm'].forEach(f=>$(f).style.display='none');
+  ['loginForm','regForm','mfaForm','resetForm','otpForm'].forEach(f=>$(f).style.display='none');
   $(which).style.display='block';
   const base=(which==='loginForm'||which==='regForm');
   document.querySelector('.tabs').style.display=base?'flex':'none';
@@ -134,6 +149,23 @@ $('mfaForm').onsubmit=async e=>{
 };
 
 $('forgotLink').onclick=e=>{e.preventDefault();showForm('resetForm');$('title').textContent='Şifrəni yenilə';$('sub').textContent='';$('msg').innerHTML='';};
+
+// email OTP login
+let otpSent=false;
+$('otpLink').onclick=e=>{e.preventDefault();otpSent=false;$('otpStep2').style.display='none';$('otpBtn').textContent='Kod göndər';showForm('otpForm');$('title').textContent='E-poçt kodu ilə giriş';$('sub').textContent='';$('msg').innerHTML='';};
+$('otpBack').onclick=e=>{e.preventDefault();mode('login');};
+$('otpForm').onsubmit=async e=>{
+  e.preventDefault();const b=$('otpBtn');busy(b,true);$('msg').innerHTML='';
+  try{
+    if(!otpSent){
+      await EE.sendEmailOtp($('otpEmail').value);
+      otpSent=true;$('otpStep2').style.display='block';busy(b,false,'Təsdiqlə və gir');$('otpCode').focus();
+    }else{
+      const role=await EE.verifyEmailOtp($('otpEmail').value,$('otpCode').value);
+      location.href=role==='admin'?'admin.html':'panel.html';
+    }
+  }catch(x){err(x.message);busy(b,false,otpSent?'Təsdiqlə və gir':'Kod göndər');}
+};
 $('backToLogin').onclick=e=>{e.preventDefault();mode('login');};
 $('resetForm').onsubmit=async e=>{
   e.preventDefault();const b=e.submitter;busy(b,true);$('msg').innerHTML='';

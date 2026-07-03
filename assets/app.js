@@ -105,6 +105,7 @@ const EE = (() => {
   async function requireRole(role){
     const s=await getSession();
     if(!s){location.href='daxil.html';return null;}
+    if(await mfaNeeded()){location.href='daxil.html';return null;} // 2FA tamamlanmayıb — panelə buraxma
     const p=await getProfile();
     const r=(p&&p.role)||'artisan';
     if(r!==role){location.href=r==='admin'?'admin.html':'panel.html';return null;}

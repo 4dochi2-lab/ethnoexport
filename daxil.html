@@ -61,11 +61,12 @@
     <div class="field"><label>Əlaqə nömrəsi</label><input type="tel" id="rPhone" placeholder="+994 __ ___ __ __" required></div>
     <div class="field"><label>Yaşadığınız yer (şəhər / kənd)</label><input type="text" id="rLoc" placeholder="məs. Lahıc, İsmayıllı" required></div>
     <div class="field"><label>Sənətkarlıq növü</label>
-      <select id="rCraft" required>
+      <select id="rCraft" required onchange="document.getElementById('craftOtherWrap').style.display=(this.value==='Digər')?'block':'none'">
         <option value="">Seçin…</option>
         <option>Mis</option><option>Xalça</option><option>Gümüş</option><option>Ağac</option><option>Keramika</option><option>Digər</option>
       </select>
     </div>
+    <div class="field" id="craftOtherWrap" style="display:none"><label>Sənətkarlıq növünü yazın</label><input type="text" id="rCraftOther" placeholder="məs. Şüşə üfürmə, basmanaxış, keçə…"></div>
     <div class="field"><label>E-poçt (giriş üçün)</label><input type="email" id="rEmail" placeholder="ad@example.com" required></div>
     <div class="field"><label>Şifrə</label><input type="password" id="rPass" placeholder="Ən azı 6 simvol" minlength="6" required></div>
     <div class="field"><label>Şifrəni təkrar yazın</label><input type="password" id="rPass2" placeholder="Eyni şifrəni bir də yazın" minlength="6" required></div>
@@ -80,8 +81,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/app.js"></script>
 <script>
-// if already logged in, redirect by role
-(async()=>{const s=await EE.getSession();if(s){const p=await EE.getProfile();location.href=(p&&p.role==='admin')?'admin.html':'panel.html';}})();
+// if already logged in: complete 2FA if pending, else redirect by role
+(async()=>{
+  const s=await EE.getSession(); if(!s)return;
+  if(await EE.mfaNeeded()){ showForm('mfaForm'); document.getElementById('title').textContent='İki mərhələli təsdiq'; return; }
+  const p=await EE.getProfile();
+  location.href=(p&&p.role==='admin')?'admin.html':'panel.html';
+})();
 
 const $=id=>document.getElementById(id);
 function showForm(which){
@@ -131,8 +137,9 @@ $('regForm').onsubmit=async e=>{
   e.preventDefault();$('msg').innerHTML='';
   if(rPass.value!==rPass2.value){err('Şifrələr eyni deyil. Yenidən yoxlayın.');return;}
   const b=e.submitter;busy(b,true);
+  const craftVal=rCraft.value==='Digər'?(rCraftOther.value.trim()||'Digər'):rCraft.value;
   try{await EE.signUp({name:rName.value.trim(),email:rEmail.value,pass:rPass.value,
-      phone:rPhone.value.trim(),location:rLoc.value.trim(),craft:rCraft.value,
+      phone:rPhone.value.trim(),location:rLoc.value.trim(),craft:craftVal,
       website:rWeb.value.trim(),social:rSocial.value.trim()});
     location.href='panel.html';
   }catch(x){err(x.message);busy(b,false,'Hesab yarat');}

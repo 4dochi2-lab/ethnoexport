@@ -23,6 +23,9 @@ const EE = (() => {
     if(m.includes('password should be at least')) return 'Şifrə ən azı 6 simvol olmalıdır.';
     if(m.includes('unable to validate email')||m.includes('invalid email')) return 'E-poçt düzgün deyil.';
     if(m.includes('email not confirmed')) return 'E-poçt təsdiqlənməyib.';
+    if(m.includes('invalid totp')||m.includes('invalid code')||m.includes('code is invalid')) return 'Kod yanlışdır. Yenidən yoxlayın.';
+    if(m.includes('mfa')&&m.includes('already')) return '2FA artıq aktivdir.';
+    if(m.includes('user not found')) return 'Bu e-poçt tapılmadı.';
     return m;
   }
 
@@ -47,10 +50,51 @@ const EE = (() => {
     email=email.trim().toLowerCase();
     const {error}=await SB.auth.signInWithPassword({email,password:pass});
     if(error) throw new Error(mapErr(error.message));
+    if(await mfaNeeded()) return {mfa:true};
     const p=await getProfile();
-    return (p&&p.role)||'artisan';
+    return {role:(p&&p.role)||'artisan'};
   }
+  async function roleAfterMfa(){const p=await getProfile();return (p&&p.role)||'artisan';}
   async function signOut(){await SB.auth.signOut();location.href='daxil.html';}
+
+  // ---- password reset ----
+  async function resetPassword(email){
+    const {error}=await SB.auth.resetPasswordForEmail(email.trim().toLowerCase(),
+      {redirectTo:location.origin+'/yenile-sifre.html'});
+    if(error) throw new Error(mapErr(error.message));
+  }
+  async function updatePassword(pass){
+    const {error}=await SB.auth.updateUser({password:pass});
+    if(error) throw new Error(mapErr(error.message));
+  }
+
+  // ---- 2FA (TOTP / authenticator app) ----
+  async function mfaFactors(){const {data}=await SB.auth.mfa.listFactors();return data||{totp:[]};}
+  async function mfaActive(){const f=await mfaFactors();return (f.totp||[]).some(x=>x.status==='verified');}
+  async function mfaNeeded(){
+    const {data}=await SB.auth.mfa.getAuthenticatorAssuranceLevel();
+    return !!data && data.nextLevel==='aal2' && data.currentLevel==='aal1';
+  }
+  async function mfaEnroll(){
+    const {data,error}=await SB.auth.mfa.enroll({factorType:'totp'});
+    if(error) throw new Error(mapErr(error.message));
+    return data; // {id, totp:{qr_code, secret, uri}}
+  }
+  async function mfaActivate(factorId,code){
+    const {error}=await SB.auth.mfa.challengeAndVerify({factorId,code:code.trim()});
+    if(error) throw new Error(mapErr(error.message));
+  }
+  async function mfaVerifyLogin(code){
+    const f=await mfaFactors();
+    const t=(f.totp||[]).find(x=>x.status==='verified')||(f.totp||[])[0];
+    if(!t) throw new Error('2FA faktoru tapılmadı.');
+    const {error}=await SB.auth.mfa.challengeAndVerify({factorId:t.id,code:code.trim()});
+    if(error) throw new Error(mapErr(error.message));
+  }
+  async function mfaDisable(){
+    const f=await mfaFactors();
+    for(const t of (f.totp||[])) await SB.auth.mfa.unenroll({factorId:t.id});
+  }
   async function getSession(){const {data}=await SB.auth.getSession();return data.session;}
   async function getProfile(){
     const {data:{user}}=await SB.auth.getUser();
@@ -150,7 +194,9 @@ const EE = (() => {
     setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},2800);
   }
 
-  return {initTheme,signUp,signIn,signOut,getSession,getProfile,requireRole,
+  return {initTheme,signUp,signIn,roleAfterMfa,signOut,getSession,getProfile,requireRole,
+          resetPassword,updatePassword,
+          mfaFactors,mfaActive,mfaNeeded,mfaEnroll,mfaActivate,mfaVerifyLogin,mfaDisable,
           calc,aiCopy,addProduct,getProducts,setStatus,subscribe,
           statusBadge,pipeline,STATUS,STAGES,STAGE_LABEL,countUp,reveal,toast,SB};
 })();

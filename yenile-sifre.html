@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="az" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Şifrəni yenilə — EthnoExport</title>
+<meta name="theme-color" content="#B5673A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+  <a href="index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.2"/><path d="M12 5.4c4.8 1.8 4.8 8.3 0 10.4c-3.6 1.5-5.4-2.4-3.9-5c.8-1.4 3.2-1.9 4.3-.2"/></svg>Ethno<b>Export</b></a>
+</div></header>
+
+<div class="auth-wrap"><div class="auth-card card">
+  <div class="eyebrow">Təhlükəsizlik</div>
+  <h1>Yeni şifrə təyin edin</h1>
+  <p class="sub">İki dəfə eyni şifrəni yazın.</p>
+  <div id="msg"></div>
+  <form id="f">
+    <div class="field"><label>Yeni şifrə</label><input type="password" id="p1" minlength="6" placeholder="Ən azı 6 simvol" required></div>
+    <div class="field"><label>Yeni şifrəni təkrar</label><input type="password" id="p2" minlength="6" placeholder="Eyni şifrəni bir də yazın" required></div>
+    <button class="btn wide" type="submit">Şifrəni yenilə</button>
+  </form>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/app.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+// user arrives here from the email link with a recovery session
+(async()=>{
+  const s=await EE.getSession();
+  if(!s){$('msg').innerHTML='<div class="err">Link etibarsız və ya vaxtı keçib. <a href="daxil.html">Yenidən cəhd edin.</a></div>';$('f').style.display='none';}
+})();
+$('f').onsubmit=async e=>{
+  e.preventDefault();$('msg').innerHTML='';
+  if($('p1').value!==$('p2').value){$('msg').innerHTML='<div class="err">Şifrələr eyni deyil.</div>';return;}
+  const b=e.submitter;b.disabled=true;b.textContent='Gözləyin…';
+  try{await EE.updatePassword($('p1').value);
+    $('msg').innerHTML='<div class="ok">Şifrə yeniləndi! Panelə yönləndirilirsiniz…</div>';
+    setTimeout(()=>location.href='panel.html',1200);
+  }catch(x){$('msg').innerHTML='<div class="err">'+x.message+'</div>';b.disabled=false;b.textContent='Şifrəni yenilə';}
+};
+</script>
+</body>
+</html>

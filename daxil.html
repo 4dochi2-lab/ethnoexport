@@ -37,6 +37,22 @@
     <div class="field"><label>E-poçt</label><input type="email" id="lEmail" placeholder="ad@example.com" required></div>
     <div class="field"><label>Şifrə</label><input type="password" id="lPass" placeholder="••••••••" required></div>
     <button class="btn wide" type="submit">Daxil ol</button>
+    <div style="text-align:center;margin-top:12px"><a href="#" id="forgotLink" style="font-size:13.5px;color:var(--copper);font-weight:600">Şifrəni unutmusunuz?</a></div>
+  </form>
+
+  <!-- 2FA CODE (login step 2) -->
+  <form id="mfaForm" style="display:none">
+    <div class="ok">Şifrə doğrudur. Authenticator tətbiqinizdəki 6 rəqəmli kodu yazın.</div>
+    <div class="field"><label>Təsdiq kodu</label><input type="text" id="mfaCode" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" maxlength="6" required></div>
+    <button class="btn wide" type="submit">Təsdiqlə və daxil ol</button>
+  </form>
+
+  <!-- FORGOT PASSWORD -->
+  <form id="resetForm" style="display:none">
+    <div class="sub" style="margin-bottom:16px">E-poçtunuzu yazın — şifrəni yeniləmək üçün link göndərəcəyik.</div>
+    <div class="field"><label>E-poçt</label><input type="email" id="resetEmail" placeholder="ad@example.com" required></div>
+    <button class="btn wide" type="submit">Link göndər</button>
+    <div style="text-align:center;margin-top:12px"><a href="#" id="backToLogin" style="font-size:13.5px;color:var(--copper);font-weight:600">← Girişə qayıt</a></div>
   </form>
 
   <!-- REGISTER -->
@@ -52,6 +68,7 @@
     </div>
     <div class="field"><label>E-poçt (giriş üçün)</label><input type="email" id="rEmail" placeholder="ad@example.com" required></div>
     <div class="field"><label>Şifrə</label><input type="password" id="rPass" placeholder="Ən azı 6 simvol" minlength="6" required></div>
+    <div class="field"><label>Şifrəni təkrar yazın</label><input type="password" id="rPass2" placeholder="Eyni şifrəni bir də yazın" minlength="6" required></div>
     <div class="field"><label>Əl işlərinizi qoyduğunuz sayt <span class="opt">(varsa)</span></label><input type="text" id="rWeb" placeholder="https://..."></div>
     <div class="field"><label>Sosial media mağazası <span class="opt">(varsa)</span></label><input type="text" id="rSocial" placeholder="Instagram / TikTok / Facebook — link və ya ad"><div class="hint">TikTok, Instagram və ya Facebook-da mağazanız varsa yazın.</div></div>
     <button class="btn wide" type="submit">Hesab yarat</button>
@@ -66,27 +83,54 @@
 // if already logged in, redirect by role
 (async()=>{const s=await EE.getSession();if(s){const p=await EE.getProfile();location.href=(p&&p.role==='admin')?'admin.html':'panel.html';}})();
 
+const $=id=>document.getElementById(id);
+function showForm(which){
+  ['loginForm','regForm','mfaForm','resetForm'].forEach(f=>$(f).style.display='none');
+  $(which).style.display='block';
+  const tabs=document.querySelector('.tabs');
+  tabs.style.display=(which==='loginForm'||which==='regForm')?'flex':'none';
+}
 function mode(m){
   const login=m==='login';
-  document.getElementById('loginForm').style.display=login?'block':'none';
-  document.getElementById('regForm').style.display=login?'none':'block';
-  document.getElementById('tLogin').classList.toggle('on',login);
-  document.getElementById('tReg').classList.toggle('on',!login);
-  document.getElementById('title').textContent=login?'Xoş gəldin':'Hesab yarat';
-  document.getElementById('sub').textContent=login?'Hesabına daxil ol və məhsullarını izlə.':'Bir neçə saniyə — dünyaya çıxmağa hazırsan.';
-  document.getElementById('msg').innerHTML='';
+  showForm(login?'loginForm':'regForm');
+  $('tLogin').classList.toggle('on',login);
+  $('tReg').classList.toggle('on',!login);
+  $('title').textContent=login?'Xoş gəldin':'Hesab yarat';
+  $('sub').textContent=login?'Hesabına daxil ol və məhsullarını izlə.':'Bir neçə saniyə — dünyaya çıxmağa hazırsan.';
+  $('msg').innerHTML='';
 }
-function err(t){document.getElementById('msg').innerHTML='<div class="err">'+t+'</div>'}
+function err(t){$('msg').innerHTML='<div class="err">'+t+'</div>'}
 function busy(btn,on,txt){btn.disabled=on;btn.textContent=on?'Gözləyin…':txt;}
+async function go(){const r=await EE.roleAfterMfa();location.href=r==='admin'?'admin.html':'panel.html';}
 
-document.getElementById('loginForm').onsubmit=async e=>{
-  e.preventDefault();const b=e.submitter;busy(b,true);
-  try{const role=await EE.signIn({email:lEmail.value,pass:lPass.value});
-    location.href=role==='admin'?'admin.html':'panel.html';
+$('loginForm').onsubmit=async e=>{
+  e.preventDefault();const b=e.submitter;busy(b,true);$('msg').innerHTML='';
+  try{const res=await EE.signIn({email:lEmail.value,pass:lPass.value});
+    if(res.mfa){ busy(b,false,'Daxil ol'); showForm('mfaForm'); $('title').textContent='İki mərhələli təsdiq'; $('mfaCode').focus(); return; }
+    location.href=res.role==='admin'?'admin.html':'panel.html';
   }catch(x){err(x.message);busy(b,false,'Daxil ol');}
 };
-document.getElementById('regForm').onsubmit=async e=>{
-  e.preventDefault();const b=e.submitter;busy(b,true);
+
+$('mfaForm').onsubmit=async e=>{
+  e.preventDefault();const b=e.submitter;busy(b,true);$('msg').innerHTML='';
+  try{await EE.mfaVerifyLogin(mfaCode.value); await go(); }
+  catch(x){err(x.message);busy(b,false,'Təsdiqlə və daxil ol');}
+};
+
+$('forgotLink').onclick=e=>{e.preventDefault();showForm('resetForm');$('title').textContent='Şifrəni yenilə';$('sub').textContent='';$('msg').innerHTML='';};
+$('backToLogin').onclick=e=>{e.preventDefault();mode('login');};
+$('resetForm').onsubmit=async e=>{
+  e.preventDefault();const b=e.submitter;busy(b,true);$('msg').innerHTML='';
+  try{await EE.resetPassword(resetEmail.value);
+    $('msg').innerHTML='<div class="ok">Link göndərildi! E-poçtunuzu yoxlayın (spam qovluğuna da baxın).</div>';
+    busy(b,false,'Link göndər');
+  }catch(x){err(x.message);busy(b,false,'Link göndər');}
+};
+
+$('regForm').onsubmit=async e=>{
+  e.preventDefault();$('msg').innerHTML='';
+  if(rPass.value!==rPass2.value){err('Şifrələr eyni deyil. Yenidən yoxlayın.');return;}
+  const b=e.submitter;busy(b,true);
   try{await EE.signUp({name:rName.value.trim(),email:rEmail.value,pass:rPass.value,
       phone:rPhone.value.trim(),location:rLoc.value.trim(),craft:rCraft.value,
       website:rWeb.value.trim(),social:rSocial.value.trim()});

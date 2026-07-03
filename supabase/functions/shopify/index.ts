@@ -45,7 +45,7 @@ function serveHandler() {
   Deno.serve(async (req) => {
     if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
     const url = new URL(req.url);
-    const base = `${url.origin}/functions/v1/shopify`;
+    const base = `https://${url.host}/functions/v1/shopify`; // həmişə HTTPS (Supabase daxildə http görür)
     const route = url.pathname.split("/").pop(); // install | callback | shopify(root)
 
     // 1) START OAUTH — open .../shopify/install once in the browser

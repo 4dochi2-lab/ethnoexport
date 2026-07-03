@@ -178,6 +178,17 @@ const EE = (() => {
       landed:c.landed, title:ai.title, tags:ai.tags, photo_url, status:'wait'});
     if(error) throw new Error(error.message);
   }
+  async function publishToShopify(id){
+    const {data:{session}}=await SB.auth.getSession();
+    const res=await fetch(SUPA_URL+'/functions/v1/shopify',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+session.access_token,'apikey':SUPA_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({id})
+    });
+    const j=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(j.error||('Shopify xətası ('+res.status+')'));
+    return j;
+  }
   async function getProfilesMap(){
     const {data,error}=await SB.from('profiles').select('*');
     if(error) return {};
@@ -228,7 +239,7 @@ const EE = (() => {
   return {initTheme,signUp,signIn,roleAfterMfa,signInWithGoogle,sendEmailOtp,verifyEmailOtp,saveProfile,signOut,getSession,getProfile,requireRole,
           resetPassword,updatePassword,
           mfaFactors,mfaActive,mfaNeeded,mfaEnroll,mfaActivate,mfaVerifyLogin,mfaDisable,
-          calc,aiCopy,addProduct,getProducts,getProfilesMap,setStatus,subscribe,
+          calc,aiCopy,addProduct,getProducts,getProfilesMap,setStatus,publishToShopify,subscribe,
           statusBadge,pipeline,STATUS,STAGES,STAGE_LABEL,countUp,reveal,toast,SB};
 })();
 EE.initTheme();

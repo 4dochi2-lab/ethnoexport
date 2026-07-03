@@ -135,6 +135,11 @@ function actionBtn(p){
 window.act=async(id,st)=>{
   try{await EE.setStatus(id,st);}catch(x){EE.toast(x.message,'info');return;}
   EE.toast(DONE_MSG[st]||'Yeniləndi', st==='paid'?'pay':(st==='live'?'info':''));
+  if(st==='live'){
+    EE.toast('Shopify-a göndərilir…','info');
+    try{ await EE.publishToShopify(id); EE.toast('Shopify-da yaradıldı (draft) ✓','pay'); }
+    catch(e){ EE.toast('Shopify: '+e.message,'info'); }
+  }
   if(st==='paid')confetti();
   await load(true);
   requestAnimationFrame(()=>{const el=document.querySelector(`[data-id="${id}"]`);if(el){el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),700);}});

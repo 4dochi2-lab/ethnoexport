@@ -61,9 +61,9 @@
     "Kartına pul gəlir":"Money hits your card","Məhsul satılanda SMS gəlir, sən Azərpoçta verirsən. Çatanda pul kartına köçürülür.":
       "When it sells you get an SMS, you drop it at Azərpoçt. On delivery, money is sent to your card.",
     // story
-    "Lahıclı misgər Rəsimin hekayəsi":"The story of Rasim, a Lahij coppersmith",
-    "48 yaşlı Rəsim beş gün ərzində gözəl bir mis qab döyür. Bu ay turist azdır, pula ehtiyacı var. Telefonda EthnoExport-u açır: bir böyük düymə. Qabın şəklini çəkir, siyahıdan “Mis” seçir və “50” yazır — cibinə təmiz 50 manat düşsün deyə. “Göndər” deyir və telefonu cibinə qoyur. Onun işi bitdi.":
-      "48-year-old Rasim spends five days hammering a beautiful copper bowl. Tourists are rare this month, he needs money. He opens EthnoExport on his phone: one big button. He photographs the bowl, picks “Copper” from a list and types “50” — to get a clean 50 manat in his pocket. He hits “Send” and puts the phone away. His part is done.",
+    "Bir Lahıc misgərinin hekayəsi":"A Lahij coppersmith's story",
+    "Təsəvvür edin: 48 yaşlı bir misgər beş gün ərzində gözəl bir mis qab döyür. Bu ay turist azdır, pula ehtiyacı var. Telefonda EthnoExport-u açır: bir böyük düymə. Qabın şəklini çəkir, siyahıdan “Mis” seçir və “50” yazır — cibinə təmiz 50 manat düşsün deyə. “Göndər” deyir və telefonu cibinə qoyur. Onun işi bitdi.":
+      "Imagine: a 48-year-old coppersmith spends five days hammering a beautiful copper bowl. Tourists are rare this month, he needs money. He opens EthnoExport on his phone: one big button. He photographs the bowl, picks “Copper” from a list and types “50” — to get a clean 50 manat in his pocket. He hits “Send” and puts the phone away. His part is done.",
     "— Lahıc, Azərbaycan · nəsillərdən gələn ustalıq":"— Lahij, Azerbaijan · craftsmanship passed down generations",
     // pricing / channels
     "Dürüst qiymət":"Honest pricing","Sən nə istəsən, onu alırsan":"You get exactly what you ask for",

@@ -85,7 +85,7 @@ const EE = (() => {
   function aiCopy(mat){return {title:TITLES[mat]||TITLES['Mis'], tags:TAGS[mat]||TAGS['Mis']};}
 
   // ---- products ----
-  const STATUS={wait:'Gözləyir',qc:'QC yoxlanır',live:'Etsy-də canlı',sold:'Satıldı',paid:'Ödənildi'};
+  const STATUS={wait:'Gözləyir',qc:'QC yoxlanır',live:'Kanallarda canlı',sold:'Satıldı',paid:'Ödənildi'};
   const STAGES=['wait','qc','live','sold','paid'];
   const STAGE_LABEL={wait:'Gözləyir',qc:'QC',live:'Canlı',sold:'Satıldı',paid:'Ödənildi'};
   function statusBadge(s){return `<span class="badge ${s}">${STATUS[s]||s}</span>`;}

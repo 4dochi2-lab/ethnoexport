@@ -1,10 +1,10 @@
 /* EthnoExport — shared app styles (auth / artisan panel / admin) */
 :root{
-  --paper:#F5EEE1;--paper-2:#EFE6D3;--card:#FFFFFF;
-  --ink:#241A12;--ink-soft:#5A4B3C;
-  --copper:#B5673A;--copper-dk:#8C4A28;--patina:#1F6E5C;--gold:#C9A24B;
-  --line:rgba(36,26,18,.14);--shadow:0 22px 50px -30px rgba(36,26,18,.55);
-  --nav-bg:rgba(245,238,225,.85);
+  --paper:#F8F4EE;--paper-2:#F1EBE0;--card:#FFFFFF;
+  --ink:#3A3026;--ink-soft:#726251;
+  --copper:#C58A66;--copper-dk:#A96C48;--patina:#4A9583;--gold:#D6B478;
+  --line:rgba(58,48,38,.11);--shadow:0 22px 55px -32px rgba(58,48,38,.4);
+  --nav-bg:rgba(248,244,238,.8);
 }
 [data-theme="dark"]{
   --paper:#141009;--paper-2:#1D160E;--card:#221A11;

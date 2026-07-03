@@ -58,7 +58,7 @@
         </div>
         <div class="field">
           <label>Cibinə düşməsini istədiyin təmiz məbləğ (₼)</label>
-          <input type="number" id="manat" min="10" step="5" value="50" required>
+          <input type="number" id="manat" min="5" step="1" value="120" required>
         </div>
         <div class="calcbox" id="calcBox"></div>
         <button class="btn wide" type="submit">Göndər</button>
@@ -116,12 +116,12 @@ manat.oninput=renderCalc;
 
 pForm.onsubmit=async e=>{
   e.preventDefault();
-  if(+manat.value<10){pmsg.innerHTML='<div class="err">Məbləğ ən azı 10 ₼ olmalıdır.</div>';return;}
+  if(+manat.value<5){pmsg.innerHTML='<div class="err">Məbləğ ən azı 5 ₼ olmalıdır.</div>';return;}
   const btn=e.submitter;btn.disabled=true;btn.textContent='Göndərilir…';
   try{
     await EE.addProduct({material:mat.value,manat:manat.value,blob:photoBlob});
-    EE.toast('Göndərildi! Komandamız yoxlayıb Etsy-də dərc edəcək.');
-    photoBlob=null;prev.style.display='none';upEmpty.style.display='block';fileInp.value='';manat.value=50;renderCalc();
+    EE.toast('Göndərildi! Komandamız yoxlayıb kanallarda dərc edəcək.');
+    photoBlob=null;prev.style.display='none';upEmpty.style.display='block';fileInp.value='';manat.value=120;renderCalc();
     await render();
   }catch(x){pmsg.innerHTML='<div class="err">'+x.message+'</div>';}
   btn.disabled=false;btn.textContent='Göndər';
@@ -144,7 +144,7 @@ async function render(){
       <div class="pthumb">${p.photo_url?`<img src="${p.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>`}</div>
       <div class="pmeta">
         <b>${p.material} əşyası</b>
-        <div class="row"><span>İstədiyin: <b>${p.manat} ₼</b></span><span>Etsy: <b>$${p.landed}</b></span></div>
+        <div class="row"><span>İstədiyin: <b>${p.manat} ₼</b></span><span>Satış: <b>$${p.landed}</b></span></div>
         ${EE.pipeline(p.status)}
       </div>
       <div class="pright">${EE.statusBadge(p.status)}${p.status==='paid'?'<span class="hint">kartına köçürüldü</span>':''}</div>

@@ -27,7 +27,7 @@ const EE = (() => {
   }
 
   // ---- auth ----
-  async function signUp({name,email,pass,card}){
+  async function signUp({name,email,pass,phone,location,craft,website,social}){
     email=email.trim().toLowerCase();
     const {data,error}=await SB.auth.signUp({email,password:pass});
     if(error) throw new Error(mapErr(error.message));
@@ -36,7 +36,10 @@ const EE = (() => {
       if(se) throw new Error(mapErr(se.message));
     }
     const {data:{user}}=await SB.auth.getUser();
-    const {error:pe}=await SB.from('profiles').insert({id:user.id,name,card,role:'artisan'});
+    const {error:pe}=await SB.from('profiles').insert({
+      id:user.id,name,role:'artisan',
+      phone:phone||null,location:location||null,craft:craft||null,
+      website:website||null,social:social||null});
     if(pe) throw new Error(pe.message);
     return 'artisan';
   }

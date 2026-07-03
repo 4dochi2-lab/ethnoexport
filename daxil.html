@@ -42,9 +42,18 @@
   <!-- REGISTER -->
   <form id="regForm" style="display:none">
     <div class="field"><label>Ad, Soyad</label><input type="text" id="rName" placeholder="Rəsim Quliyev" required></div>
-    <div class="field"><label>E-poçt</label><input type="email" id="rEmail" placeholder="ad@example.com" required></div>
-    <div class="field"><label>Kart nömrəsi (ödəniş üçün)</label><input type="text" id="rCard" placeholder="M10 / Birbank / Leobank — **** 1234" required><div class="hint">Pulun bu karta köçürüləcək. İstənilən vaxt dəyişə bilərsən.</div></div>
+    <div class="field"><label>Əlaqə nömrəsi</label><input type="tel" id="rPhone" placeholder="+994 __ ___ __ __" required></div>
+    <div class="field"><label>Yaşadığınız yer (şəhər / kənd)</label><input type="text" id="rLoc" placeholder="məs. Lahıc, İsmayıllı" required></div>
+    <div class="field"><label>Sənətkarlıq növü</label>
+      <select id="rCraft" required>
+        <option value="">Seçin…</option>
+        <option>Mis</option><option>Xalça</option><option>Gümüş</option><option>Ağac</option><option>Keramika</option><option>Digər</option>
+      </select>
+    </div>
+    <div class="field"><label>E-poçt (giriş üçün)</label><input type="email" id="rEmail" placeholder="ad@example.com" required></div>
     <div class="field"><label>Şifrə</label><input type="password" id="rPass" placeholder="Ən azı 6 simvol" minlength="6" required></div>
+    <div class="field"><label>Əl işlərinizi qoyduğunuz sayt <span class="opt">(varsa)</span></label><input type="text" id="rWeb" placeholder="https://..."></div>
+    <div class="field"><label>Sosial media mağazası <span class="opt">(varsa)</span></label><input type="text" id="rSocial" placeholder="Instagram / TikTok / Facebook — link və ya ad"><div class="hint">TikTok, Instagram və ya Facebook-da mağazanız varsa yazın.</div></div>
     <button class="btn wide" type="submit">Hesab yarat</button>
   </form>
 
@@ -78,7 +87,9 @@ document.getElementById('loginForm').onsubmit=async e=>{
 };
 document.getElementById('regForm').onsubmit=async e=>{
   e.preventDefault();const b=e.submitter;busy(b,true);
-  try{await EE.signUp({name:rName.value.trim(),email:rEmail.value,pass:rPass.value,card:rCard.value.trim()});
+  try{await EE.signUp({name:rName.value.trim(),email:rEmail.value,pass:rPass.value,
+      phone:rPhone.value.trim(),location:rLoc.value.trim(),craft:rCraft.value,
+      website:rWeb.value.trim(),social:rSocial.value.trim()});
     location.href='panel.html';
   }catch(x){err(x.message);busy(b,false,'Hesab yarat');}
 };

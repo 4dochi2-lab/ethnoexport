@@ -123,8 +123,13 @@ header.nav{position:sticky;top:0;z-index:60;background:var(--nav-bg);backdrop-fi
 .pill{display:inline-flex;align-items:center;gap:7px;background:rgba(31,110,92,.28);color:#8fe3cd;border:1px solid rgba(143,227,205,.3);font-family:"Space Mono";font-size:11px;padding:5px 11px;border-radius:999px;position:relative}
 .calc-input{position:relative;margin:2px 0 18px}
 .calc-input label{font-size:12.5px;color:rgba(245,238,225,.7)}
-.calc-val{font-family:"Fraunces";font-weight:900;font-size:40px;color:#F5EEE1;line-height:1;margin:6px 0 12px}
+.calc-val{font-family:"Fraunces";font-weight:900;font-size:40px;color:#F5EEE1;line-height:1;margin:6px 0 12px;display:flex;align-items:baseline;gap:6px}
+.calc-val input{font-family:"Fraunces";font-weight:900;font-size:40px;color:#F5EEE1;background:transparent;border:none;border-bottom:2px dashed rgba(214,180,120,.5);width:auto;max-width:180px;padding:0 4px 2px;-moz-appearance:textfield;transition:border-color .2s}
+.calc-val input::-webkit-outer-spin-button,.calc-val input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.calc-val input:focus{outline:none;border-bottom-color:var(--gold)}
 .calc-val b{color:var(--gold);font-size:26px}
+.net-note{display:inline-block;font-size:12.5px;color:var(--gold);margin-top:6px;font-family:"Space Mono",monospace}
+.net-note span{font-weight:700}
 #manatRange{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;background:rgba(245,238,225,.18);outline:none}
 #manatRange::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--copper);border:3px solid #F5EEE1;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.4);transition:transform .1s}
 #manatRange::-webkit-slider-thumb:active{transform:scale(1.15)}
@@ -452,9 +457,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
   </svg>
   <div class="wrap hero-grid">
     <div class="stagger">
-      <div class="hero-eyebrow"><span class="eyebrow">Kənd sənətkarları üçün</span><span class="trust-pill">ABAD × Azərxalça əməkdaşlığı</span></div>
-      <h1>Kənddən dünyaya,<br><em>bir toxunuşla.</em></h1>
-      <p class="lead">Şəkil çək, nə qədər pul istədiyini yaz — vəssalam. Tərcümə, qablaşdırma, gömrük, dünya bazarında satış: hamısı bizim işimizdir.</p>
+      <div class="hero-eyebrow"><span class="eyebrow">Yerli sənətkarlar üçün</span><span class="trust-pill">ABAD × Azərxalça əməkdaşlığı</span></div>
+      <h1>Siz düzəldin,<br><em>qalanını biz edək.</em></h1>
+      <p class="lead">Şəklini çəkin, qiymətini yazın — qalanını biz edirik. Tərcümə, qablaşdırma, gömrük, dünya bazarında satış: hamısı bizim işimizdir.</p>
       <div class="hero-cta">
         <a href="daxil.html" class="btn">Hesab yarat, məhsul göndər
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -473,10 +478,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
       <div class="tag">Tərs qiymət mühərriki · canlı</div>
       <h3>Sən məbləği yaz — qalanını biz hesablayaq</h3>
       <div class="calc-input">
-        <label>Cibinə düşməsini istədiyin təmiz məbləğ</label>
-        <div class="calc-val"><span id="manatOut">50</span> <b>₼</b></div>
-        <input type="range" id="manatRange" min="5" max="500" step="1" value="120" aria-label="Manat məbləği">
-        <div class="calc-scale"><span>5 ₼</span><span>500 ₼</span></div>
+        <label>Cibinə düşməsini istədiyiniz təmiz məbləği yazın</label>
+        <div class="calc-val"><input type="number" id="manatInput" min="1" max="9999" value="120" aria-label="Manat məbləği"> <b>₼</b></div>
+        <input type="range" id="manatRange" min="5" max="500" step="1" value="120" aria-label="Sürgü">
       </div>
       <div class="rev-row"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Sənin təmiz məbləğin</span><span class="money" id="artOut">$30</span></div>
       <div class="rev-row add"><span>Beynəlxalq çatdırılma (orta çəki)</span><span class="money" id="shipOut">$18</span></div>
@@ -485,7 +489,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
       <div class="rev-final">
         <div>
           <div class="lbl">Xarici alıcının gördüyü qiymət</div>
-          <span class="pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Sənə yenə də təmiz <span id="pillManat">50</span> ₼ çatır</span>
+          <div class="net-note">Siz təmiz <span id="pillManat">120</span> ₼ alırsınız</div>
         </div>
         <div class="val" id="landed">$60</div>
       </div>
@@ -617,7 +621,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
       <div>
         <h3>Lahıclı misgər Rəsimin hekayəsi</h3>
         <p>48 yaşlı Rəsim beş gün ərzində gözəl bir mis qab döyür. Bu ay turist azdır, pula ehtiyacı var. Telefonda EthnoExport-u açır: bir böyük düymə. Qabın şəklini çəkir, siyahıdan “Mis” seçir və “50” yazır — cibinə təmiz 50 manat düşsün deyə. “Göndər” deyir və telefonu cibinə qoyur. Onun işi bitdi.</p>
-        <div class="who">— İngilis dili yox · onlayn satış nədir bilmir · PayPal yox</div>
+        <div class="who">— Lahıc, Azərbaycan · nəsillərdən gələn ustalıq</div>
       </div>
     </div>
   </div>
@@ -930,9 +934,9 @@ function calc(m){
   return {art:Math.round(art),svc:Math.round(svc),mkt:Math.round(mkt),landed:Math.round(landed)};
 }
 const rng=document.getElementById('manatRange');
+const inp=document.getElementById('manatInput');
 function renderCalc(){
-  const m=+rng.value,c=calc(m);
-  document.getElementById('manatOut').textContent=m;
+  const m=Math.max(0,+inp.value||0),c=calc(m);
   document.getElementById('pillManat').textContent=m;
   document.getElementById('artOut').textContent='$'+c.art;
   document.getElementById('shipOut').textContent='$'+SHIP;
@@ -940,7 +944,11 @@ function renderCalc(){
   document.getElementById('mktOut').textContent='$'+c.mkt;
   document.getElementById('landed').textContent='$'+c.landed;
 }
-if(rng){rng.addEventListener('input',renderCalc);renderCalc();}
+if(inp){
+  inp.addEventListener('input',()=>{ if(rng && +inp.value>=+rng.min && +inp.value<=+rng.max) rng.value=inp.value; renderCalc(); });
+  if(rng) rng.addEventListener('input',()=>{ inp.value=rng.value; renderCalc(); });
+  renderCalc();
+}
 
 // ---- INTERACTIVE APP DEMO ----
 (function(){

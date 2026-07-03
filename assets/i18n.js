@@ -6,19 +6,20 @@
     "Necə işləyir":"How it works","Qiymət":"Pricing","Ekranlar":"Screens","Rəylər":"Reviews",
     "Etibar":"Trust","Suallar":"FAQ","Daxil ol":"Log in",
     // hero
-    "Kənd sənətkarları üçün":"For rural artisans",
+    "Yerli sənətkarlar üçün":"For local artisans",
     "ABAD × Azərxalça əməkdaşlığı":"In partnership with ABAD × Azərxalça",
-    "Kənddən dünyaya,":"From the village to the world,",
-    "bir toxunuşla.":"in one tap.",
-    "Şəkil çək, nə qədər pul istədiyini yaz — vəssalam. Tərcümə, qablaşdırma, gömrük, dünya bazarında satış: hamısı bizim işimizdir.":
-      "Snap a photo, type the amount you want — that's it. Translation, packaging, customs, selling on global marketplaces: all of it is our job.",
+    "Siz düzəldin,":"You make it,",
+    "qalanını biz edək.":"we do the rest.",
+    "Şəklini çəkin, qiymətini yazın — qalanını biz edirik. Tərcümə, qablaşdırma, gömrük, dünya bazarında satış: hamısı bizim işimizdir.":
+      "Take a photo, set the price — we do the rest. Translation, packaging, customs, selling on global marketplaces: all of it is our job.",
     "Hesab yarat, məhsul göndər":"Create an account, send a product",
     "Necə işləyir?":"How it works?",
     "Pulsuz hesab":"Free account","PayPal lazım deyil":"No PayPal needed","Pul birbaşa kartına":"Money straight to your card",
     // reverse pricing card
     "Tərs qiymət mühərriki · canlı":"Reverse pricing engine · live",
     "Sən məbləği yaz — qalanını biz hesablayaq":"You name the amount — we calculate the rest",
-    "Cibinə düşməsini istədiyin təmiz məbləğ":"The clean amount you want in your pocket",
+    "Cibinə düşməsini istədiyiniz təmiz məbləği yazın":"Enter the clean amount you want in your pocket",
+    "Siz təmiz":"You net a clean","₼ alırsınız":"₼",
     "Sənin təmiz məbləğin":"Your clean amount",
     "Beynəlxalq çatdırılma (orta çəki)":"International shipping (avg. weight)",
     "EthnoExport xidmət haqqı · 15%":"EthnoExport service fee · 15%",
@@ -63,7 +64,7 @@
     "Lahıclı misgər Rəsimin hekayəsi":"The story of Rasim, a Lahij coppersmith",
     "48 yaşlı Rəsim beş gün ərzində gözəl bir mis qab döyür. Bu ay turist azdır, pula ehtiyacı var. Telefonda EthnoExport-u açır: bir böyük düymə. Qabın şəklini çəkir, siyahıdan “Mis” seçir və “50” yazır — cibinə təmiz 50 manat düşsün deyə. “Göndər” deyir və telefonu cibinə qoyur. Onun işi bitdi.":
       "48-year-old Rasim spends five days hammering a beautiful copper bowl. Tourists are rare this month, he needs money. He opens EthnoExport on his phone: one big button. He photographs the bowl, picks “Copper” from a list and types “50” — to get a clean 50 manat in his pocket. He hits “Send” and puts the phone away. His part is done.",
-    "— İngilis dili yox · onlayn satış nədir bilmir · PayPal yox":"— No English · doesn't know what online selling is · no PayPal",
+    "— Lahıc, Azərbaycan · nəsillərdən gələn ustalıq":"— Lahij, Azerbaijan · craftsmanship passed down generations",
     // pricing / channels
     "Dürüst qiymət":"Honest pricing","Sən nə istəsən, onu alırsan":"You get exactly what you ask for",
     "Logistika, bazar haqqı və 15% xidmət haqqı alıcının qiymətinin üstünə gəlir — sənin manatına toxunmur. Komandamız məhsulu eyni anda üç böyük platformada — EthnoExport mağazamız altında — yerləşdirir.":

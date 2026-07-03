@@ -1,19 +1,19 @@
 /* EthnoExport — shared app styles (auth / artisan panel / admin) */
-:root{
-  /* Firuzə & Qızıl — təmiz, elit */
-  --paper:#F7F4ED;--paper-2:#ECE8DD;--card:#FFFFFF;
-  --ink:#1E2A27;--ink-soft:#5D6B66;
-  --copper:#0E7C6B;--copper-dk:#0A5A4E;--patina:#2E9E7E;--gold:#C39433;
-  --line:rgba(30,42,39,.11);--shadow:0 22px 55px -32px rgba(20,40,36,.35);
-  --nav-bg:rgba(247,244,237,.82);
-}
 [data-theme="dark"]{
-  /* dərin firuzə gecə */
-  --paper:#132320;--paper-2:#1A2E29;--card:#1D322C;
-  --ink:#EAF1ED;--ink-soft:#9EB2AB;
-  --copper:#2FB39A;--copper-dk:#48C7AE;--patina:#33BE99;--gold:#DBB258;
-  --line:rgba(234,241,237,.12);--shadow:0 26px 60px -34px rgba(0,0,0,.8);
-  --nav-bg:rgba(19,35,32,.82);
+  /* Kömür & Kəhrəba — minimal, redaksiya */
+  --paper:#17181C;--paper-2:#1F2024;--card:#212227;
+  --ink:#ECEBE6;--ink-soft:#98978F;
+  --copper:#E8A13A;--copper-dk:#F2B24E;--patina:#46A96E;--gold:#E8A13A;
+  --line:rgba(236,235,230,.10);--shadow:0 26px 60px -34px rgba(0,0,0,.85);
+  --nav-bg:rgba(23,24,28,.82);
+}
+:root{
+  /* light companion */
+  --paper:#FAF9F5;--paper-2:#F0EEE7;--card:#FFFFFF;
+  --ink:#1C1D21;--ink-soft:#6A6A64;
+  --copper:#C0821E;--copper-dk:#9A6813;--patina:#2E9E6E;--gold:#B8841F;
+  --line:rgba(28,29,33,.10);--shadow:0 22px 55px -32px rgba(20,20,24,.3);
+  --nav-bg:rgba(250,249,245,.82);
 }
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -209,7 +209,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 .stat-c:hover{transform:translateY(-3px)}
 
 /* ---- admin header band ---- */
-.admin-hero{position:relative;overflow:hidden;border-radius:20px;padding:26px 28px;margin-bottom:26px;background:linear-gradient(135deg,#16302B,#0C1F1B);color:#EAF1ED}
+.admin-hero{position:relative;overflow:hidden;border-radius:20px;padding:26px 28px;margin-bottom:26px;background:linear-gradient(135deg,#212227,#131318);color:#ECEBE6}
 .admin-hero::after{content:"";position:absolute;top:-50%;left:-30%;width:70%;height:200%;background:linear-gradient(90deg,transparent,rgba(181,103,58,.16),transparent);transform:rotate(18deg);animation:aSheen 7s ease-in-out infinite}
 @keyframes aSheen{0%,100%{left:-40%}50%{left:120%}}
 .admin-hero .eyebrow{color:var(--gold)}

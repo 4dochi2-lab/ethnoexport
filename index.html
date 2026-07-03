@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EthnoExport — Sən düzəlt, qalanını biz edək</title>
 <meta name="description" content="Kənd sənətkarları üçün: şəkil çək, qiymətini yaz. Tərcümə, qablaşdırma, logistika, dünya bazarında satış — qalanını biz edirik. Pul birbaşa kartına.">
-<meta name="theme-color" content="#0E7C6B">
+<meta name="theme-color" content="#17181C">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:title" content="EthnoExport — Sən düzəlt, qalanını biz edək">
@@ -16,25 +16,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  /* Firuzə & Qızıl — təmiz, elit */
-  --paper:#F7F4ED; --paper-2:#ECE8DD; --card:#FFFFFF;
-  --ink:#1E2A27; --ink-soft:#5D6B66;
-  --copper:#0E7C6B; --copper-dk:#0A5A4E;
-  --patina:#2E9E7E; --gold:#C39433;
-  --line:rgba(30,42,39,.11);
-  --shadow:0 22px 55px -32px rgba(20,40,36,.35);
-  --nav-bg:rgba(247,244,237,.82);
-}
 [data-theme="dark"]{
-  /* dərin firuzə gecə */
-  --paper:#132320; --paper-2:#1A2E29; --card:#1D322C;
-  --ink:#EAF1ED; --ink-soft:#9EB2AB;
-  --copper:#2FB39A; --copper-dk:#48C7AE;
-  --patina:#33BE99; --gold:#DBB258;
-  --line:rgba(234,241,237,.12);
-  --shadow:0 26px 60px -34px rgba(0,0,0,.8);
-  --nav-bg:rgba(19,35,32,.82);
+  /* Kömür & Kəhrəba — minimal, redaksiya */
+  --paper:#17181C; --paper-2:#1F2024; --card:#212227;
+  --ink:#ECEBE6; --ink-soft:#98978F;
+  --copper:#E8A13A; --copper-dk:#F2B24E;
+  --patina:#46A96E; --gold:#E8A13A;
+  --line:rgba(236,235,230,.10);
+  --shadow:0 26px 60px -34px rgba(0,0,0,.85);
+  --nav-bg:rgba(23,24,28,.82);
+}
+:root{
+  /* light companion */
+  --paper:#FAF9F5; --paper-2:#F0EEE7; --card:#FFFFFF;
+  --ink:#1C1D21; --ink-soft:#6A6A64;
+  --copper:#C0821E; --copper-dk:#9A6813;
+  --patina:#2E9E6E; --gold:#B8841F;
+  --line:rgba(28,29,33,.10);
+  --shadow:0 22px 55px -32px rgba(20,20,24,.3);
+  --nav-bg:rgba(250,249,245,.82);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -77,7 +77,7 @@ header.nav{position:sticky;top:0;z-index:60;background:var(--nav-bg);backdrop-fi
 
 /* ---------- HERO ---------- */
 .hero{position:relative;padding:72px 0 46px;overflow:hidden;--px:0;--py:0}
-.hero-glow{position:absolute;width:640px;height:640px;border-radius:50%;top:-260px;right:-160px;background:radial-gradient(circle,rgba(14,124,107,.22),transparent 65%);pointer-events:none;z-index:0;transition:transform .6s ease}
+.hero-glow{position:absolute;width:640px;height:640px;border-radius:50%;top:-260px;right:-160px;background:radial-gradient(circle,rgba(232,161,58,.18),transparent 65%);pointer-events:none;z-index:0;transition:transform .6s ease}
 @media(prefers-reduced-motion:no-preference){.hero-glow{animation:glowPulse 8s ease-in-out infinite}}
 @keyframes glowPulse{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
 /* cursor parallax (pointer:fine only) */
@@ -108,8 +108,8 @@ header.nav{position:sticky;top:0;z-index:60;background:var(--nav-bg);backdrop-fi
 }
 
 /* SIGNATURE reverse pricing */
-.rev{background:linear-gradient(160deg,#16302B,#0C1F1B);color:#EAF1ED;border-radius:22px;padding:30px 30px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.rev::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 90% 0,rgba(47,179,154,.35),transparent 55%);pointer-events:none}
+.rev{background:linear-gradient(160deg,#212227,#131318);color:#ECEBE6;border-radius:22px;padding:30px 30px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.rev::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 90% 0,rgba(232,161,58,.3),transparent 55%);pointer-events:none}
 .rev::after{content:"";position:absolute;top:-40%;left:-30%;width:80%;height:180%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);transform:rotate(18deg);animation:sheen 6s ease-in-out infinite}
 @keyframes sheen{0%,100%{left:-40%}50%{left:120%}}
 .rev .tag{font-family:"Space Mono";font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);position:relative}
@@ -893,7 +893,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
 <script>
 // theme
 const root=document.documentElement, tbtn=document.getElementById('theme');
-const saved=localStorage.getItem('theme')||'light';
+const saved=localStorage.getItem('theme')||'dark';
 root.setAttribute('data-theme',saved);
 tbtn.onclick=()=>{const n=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',n);localStorage.setItem('theme',n)};
 

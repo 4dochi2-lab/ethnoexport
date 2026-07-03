@@ -7,7 +7,7 @@ const EE = (() => {
   // ---- theme ----
   function initTheme(){
     const r=document.documentElement;
-    const s=localStorage.getItem('theme')||'light';
+    const s=localStorage.getItem('theme')||'dark';
     r.setAttribute('data-theme',s);
     document.querySelectorAll('[data-theme-btn]').forEach(b=>b.onclick=()=>{
       const n=r.getAttribute('data-theme')==='dark'?'light':'dark';

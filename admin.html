@@ -73,7 +73,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/app.js"></script>
 <script>
-let filter='all', query='', ALL=[];
+let filter='all', query='', ALL=[], PROFILES={};
+function contactHtml(p){
+  const pr=PROFILES[p.owner]||{};
+  const bits=[];
+  if(pr.location) bits.push('Yer: '+pr.location);
+  if(pr.phone) bits.push('Tel: '+pr.phone);
+  if(pr.social) bits.push(pr.social);
+  if(pr.website) bits.push('<a href="'+pr.website+'" target="_blank" rel="noopener">sayt</a>');
+  const wa = pr.phone ? ('<a class="wa-mini" target="_blank" rel="noopener" href="https://wa.me/'+pr.phone.replace(/\D/g,'')+'?text='+encodeURIComponent('Salam '+(p.owner_name||'')+'! EthnoExport — \"'+p.material+' əşyanız\" ilə bağlı yazırıq.')+'">WhatsApp</a>') : '';
+  const payout = (p.status==='sold'||p.status==='paid') && pr.payout
+    ? '<div class="pay-line">Ödəniş rekviziti: <b>'+pr.payout+'</b></div>' : '';
+  return '<div class="contact-line">'+(bits.join(' · ')||'əlaqə məlumatı yoxdur')+' '+wa+'</div>'+payout;
+}
 document.querySelectorAll('#filters button').forEach(b=>b.onclick=()=>{
   filter=b.dataset.f;
   document.querySelectorAll('#filters button').forEach(x=>x.classList.remove('on'));
@@ -164,6 +176,7 @@ function render(skipStats){
         <b>${p.material} · ${p.owner_name}</b>
         <div class="row"><span>İstək: <b>${p.manat} ₼</b></span><span>Landed: <b>$${p.landed}</b></span><span>Satış: <b>$${Math.round(p.landed*1.08)}</b></span></div>
         <div class="ai-mini"><b>AI başlıq:</b> ${p.title}<br><b>${p.tags.length} tag:</b> ${p.tags.slice(0,8).join(', ')}…</div>
+        ${contactHtml(p)}
         ${EE.pipeline(p.status)}
       </div>
       <div class="pright">
@@ -175,7 +188,7 @@ function render(skipStats){
 }
 
 async function load(skipStats){
-  try{ALL=await EE.getProducts();}catch(x){list.innerHTML='<div class="card empty"><div>'+x.message+'</div></div>';return;}
+  try{ALL=await EE.getProducts();PROFILES=await EE.getProfilesMap();}catch(x){list.innerHTML='<div class="card empty"><div>'+x.message+'</div></div>';return;}
   render(skipStats);
 }
 

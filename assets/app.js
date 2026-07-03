@@ -178,6 +178,11 @@ const EE = (() => {
       landed:c.landed, title:ai.title, tags:ai.tags, photo_url, status:'wait'});
     if(error) throw new Error(error.message);
   }
+  async function getProfilesMap(){
+    const {data,error}=await SB.from('profiles').select('*');
+    if(error) return {};
+    const m={}; (data||[]).forEach(p=>m[p.id]=p); return m;
+  }
   async function getProducts(){
     const {data,error}=await SB.from('products').select('*').order('created_at',{ascending:false});
     if(error) throw new Error(error.message);
@@ -223,7 +228,7 @@ const EE = (() => {
   return {initTheme,signUp,signIn,roleAfterMfa,signInWithGoogle,sendEmailOtp,verifyEmailOtp,saveProfile,signOut,getSession,getProfile,requireRole,
           resetPassword,updatePassword,
           mfaFactors,mfaActive,mfaNeeded,mfaEnroll,mfaActivate,mfaVerifyLogin,mfaDisable,
-          calc,aiCopy,addProduct,getProducts,setStatus,subscribe,
+          calc,aiCopy,addProduct,getProducts,getProfilesMap,setStatus,subscribe,
           statusBadge,pipeline,STATUS,STAGES,STAGE_LABEL,countUp,reveal,toast,SB};
 })();
 EE.initTheme();

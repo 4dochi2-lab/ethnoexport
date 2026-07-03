@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="az" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Profilim — EthnoExport</title>
+<meta name="theme-color" content="#B5673A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+  <a href="panel.html" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.2"/><path d="M12 5.4c4.8 1.8 4.8 8.3 0 10.4c-3.6 1.5-5.4-2.4-3.9-5c.8-1.4 3.2-1.9 4.3-.2"/></svg>Ethno<b>Export</b></a>
+  <div class="nav-actions">
+    <a href="panel.html" class="btn ghost sm">← Panel</a>
+    <button class="btn ghost sm" onclick="EE.signOut()">Çıxış</button>
+  </div>
+</div></header>
+
+<div class="page"><div class="wrap" style="max-width:640px">
+  <div class="admin-hero reveal"><div class="eyebrow">Hesab</div><h1>Profilim</h1>
+    <div class="live-dot"><i></i> Məlumatlarınızı yeniləyin</div></div>
+
+  <div class="card" style="padding:26px">
+    <div id="msg"></div>
+    <form id="f">
+      <div class="field"><label>Ad, Soyad</label><input type="text" id="name" required></div>
+      <div class="field"><label>Əlaqə nömrəsi</label><input type="tel" id="phone" placeholder="+994 __ ___ __ __" required></div>
+      <div class="field"><label>Yaşadığınız yer (şəhər / kənd)</label><input type="text" id="loc" required></div>
+      <div class="field"><label>Sənətkarlıq növü</label>
+        <select id="craft" required onchange="document.getElementById('otherWrap').style.display=(this.value==='Digər')?'block':'none'">
+          <option value="">Seçin…</option>
+          <option>Mis</option><option>Xalça</option><option>Gümüş</option><option>Ağac</option><option>Keramika</option><option>Digər</option>
+        </select>
+      </div>
+      <div class="field" id="otherWrap" style="display:none"><label>Sənətkarlıq növünü yazın</label><input type="text" id="craftOther"></div>
+
+      <div style="border-top:1px solid var(--line);margin:22px 0 18px;padding-top:18px">
+        <div class="sec-title" style="font-size:17px">Ödəniş rekviziti</div>
+        <p class="hint" style="margin-bottom:12px">Satışdan sonra pul bu karta/hesaba köçürüləcək. Yalnız komanda görür.</p>
+        <div class="field"><label>Kart / IBAN (M10, Birbank, Leobank…)</label><input type="text" id="payout" placeholder="**** **** **** 1234 və ya AZ.."></div>
+      </div>
+
+      <div class="field"><label>Əl işləri saytı <span class="opt">(varsa)</span></label><input type="text" id="web" placeholder="https://..."></div>
+      <div class="field"><label>Sosial media mağazası <span class="opt">(varsa)</span></label><input type="text" id="social" placeholder="Instagram / TikTok / Facebook"></div>
+      <button class="btn wide" type="submit">Yadda saxla</button>
+    </form>
+  </div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/app.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const CRAFTS=['Mis','Xalça','Gümüş','Ağac','Keramika'];
+let g;
+(async()=>{
+  g=await EE.requireRole('artisan'); if(!g)return;
+  const p=g.profile||{};
+  $('name').value=p.name||'';$('phone').value=p.phone||'';$('loc').value=p.location||'';
+  $('web').value=p.website||'';$('social').value=p.social||'';$('payout').value=p.payout||'';
+  if(p.craft){ if(CRAFTS.includes(p.craft)){$('craft').value=p.craft;} else {$('craft').value='Digər';$('otherWrap').style.display='block';$('craftOther').value=p.craft;} }
+  EE.reveal();
+})();
+$('f').onsubmit=async e=>{
+  e.preventDefault();$('msg').innerHTML='';
+  const b=e.submitter;b.disabled=true;b.textContent='Yadda saxlanılır…';
+  const craft=$('craft').value==='Digər'?($('craftOther').value.trim()||'Digər'):$('craft').value;
+  try{
+    await EE.saveProfile({name:$('name').value.trim(),phone:$('phone').value.trim(),
+      location:$('loc').value.trim(),craft:craft,payout:$('payout').value.trim()||null,
+      website:$('web').value.trim()||null,social:$('social').value.trim()||null});
+    $('msg').innerHTML='<div class="ok">Yadda saxlanıldı ✓</div>';
+  }catch(x){$('msg').innerHTML='<div class="err">'+x.message+'</div>';}
+  b.disabled=false;b.textContent='Yadda saxla';
+};
+</script>
+</body>
+</html>

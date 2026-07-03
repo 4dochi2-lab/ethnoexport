@@ -146,6 +146,42 @@ body{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
   .stat-c .n{font-size:24px}
 }
 
+/* ================= interface-design craft pass ================= */
+/* tabular numbers everywhere a figure can change (no layout shift) */
+.stat-c .n,.rev-big,.rev-split .rv,.bar-fill,.bv,.dash-price b,.count,
+.pmeta .row b,.calcbox b,.badge{font-variant-numeric:tabular-nums}
+
+/* text hierarchy: demote labels (Linear/Stripe move) */
+.stat-c .l{text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;font-weight:600;color:var(--ink-soft);margin-top:6px}
+.stat-c .n{font-weight:800;letter-spacing:-.02em}
+.chart-card h3{letter-spacing:-.01em}
+.sec-title{letter-spacing:-.01em}
+
+/* one accent, quieter structure: soften stat accent bars */
+.stat-c::before{opacity:.85;width:2.5px}
+
+/* depth = subtle layered shadow (committed), inputs sit inset */
+.card{box-shadow:0 0 0 1px rgba(58,48,38,.04),0 1px 2px -1px rgba(58,48,38,.06),0 3px 8px -4px rgba(58,48,38,.05)}
+[data-theme="dark"] .card{box-shadow:0 0 0 1px rgba(242,233,216,.06)}
+.field input,.field select,.search{background:var(--paper-2)}
+[data-theme="dark"] .field input,[data-theme="dark"] .field select,[data-theme="dark"] .search{background:rgba(0,0,0,.18)}
+
+/* motion: custom ease-out + real press feedback */
+.btn{transition:background .16s cubic-bezier(.23,1,.32,1),transform .12s cubic-bezier(.23,1,.32,1),box-shadow .2s}
+.btn:active{transform:scale(.97)}
+.filters button{transition:background .16s cubic-bezier(.23,1,.32,1),color .16s,border-color .16s}
+.filters button:active,.chan:active,.mat-card:active{transform:scale(.98)}
+.stat-c,.pitem,.f,.review,.chan{transition:transform .22s cubic-bezier(.23,1,.32,1),box-shadow .22s cubic-bezier(.23,1,.32,1),border-color .18s}
+
+/* concentric radius + typographic finish */
+h1,h2,h3{text-wrap:balance}
+.sec-head p,.hint,.rev-sub,.ai-mini,.stat-c .l{text-wrap:pretty}
+
+/* focus-visible ring (accessibility state that was implicit) */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
+  outline:2px solid var(--copper);outline-offset:2px;border-radius:8px}
+
+
 /* ---- reveal on load/scroll ---- */
 @media(prefers-reduced-motion:no-preference){
   .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1)}

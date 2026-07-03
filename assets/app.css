@@ -1,17 +1,19 @@
 /* EthnoExport — shared app styles (auth / artisan panel / admin) */
 :root{
-  --paper:#F8F4EE;--paper-2:#F1EBE0;--card:#FFFFFF;
-  --ink:#3A3026;--ink-soft:#726251;
-  --copper:#C58A66;--copper-dk:#A96C48;--patina:#4A9583;--gold:#D6B478;
-  --line:rgba(58,48,38,.11);--shadow:0 22px 55px -32px rgba(58,48,38,.4);
-  --nav-bg:rgba(248,244,238,.8);
+  /* light companion — Nar & İndiqo */
+  --paper:#F2EEE6;--paper-2:#E9E3D7;--card:#FFFFFF;
+  --ink:#241E19;--ink-soft:#6E6255;
+  --copper:#B63A46;--copper-dk:#922E39;--patina:#34507F;--gold:#C79233;
+  --line:rgba(36,30,25,.12);--shadow:0 22px 55px -32px rgba(36,30,25,.4);
+  --nav-bg:rgba(242,238,230,.8);
 }
 [data-theme="dark"]{
-  --paper:#141009;--paper-2:#1D160E;--card:#221A11;
-  --ink:#F2E9D8;--ink-soft:#B7A488;
-  --copper:#D07E4C;--copper-dk:#E0955F;--patina:#3F9E86;--gold:#D8B25C;
-  --line:rgba(242,233,216,.13);--shadow:0 26px 60px -34px rgba(0,0,0,.8);
-  --nav-bg:rgba(20,16,9,.82);
+  /* Gecə Xalçası — tünd cavahir */
+  --paper:#1C1714;--paper-2:#241D19;--card:#26201B;
+  --ink:#ECE3D3;--ink-soft:#A99A86;
+  --copper:#D0574F;--copper-dk:#E07A72;--patina:#6E8FC0;--gold:#E0A93B;
+  --line:rgba(236,227,211,.12);--shadow:0 26px 60px -34px rgba(0,0,0,.8);
+  --nav-bg:rgba(28,23,20,.82);
 }
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}

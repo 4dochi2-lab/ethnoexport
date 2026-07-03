@@ -380,6 +380,31 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:44px 0;color:var
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(6deg)}}
 @media(max-width:860px){.hero-motif{display:none}}
 
+/* hero eyebrow + trust pill */
+.hero-eyebrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.trust-pill{font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--patina);background:rgba(74,149,131,.1);border:1px solid rgba(74,149,131,.28);padding:4px 11px;border-radius:999px}
+
+/* ================= landing craft pass ================= */
+/* tabular numbers — figures never shift */
+.rev-final .val,.rev-row .money,.calc-val,.stat .num,#landed,
+.dash-price b,.rev-note,#manatOut,#pillManat{font-variant-numeric:tabular-nums}
+.rev-final .val{letter-spacing:-.02em}
+/* demote labels, promote figures (Linear/Stripe hierarchy) */
+.stat .lbl{text-transform:uppercase;letter-spacing:.07em;font-size:11px;font-weight:600;color:var(--ink-soft)}
+.stat .num{font-weight:900;letter-spacing:-.02em}
+/* typographic finish */
+h1,h2{text-wrap:balance}
+.hero p.lead,.sec-head p,.step p,.f p,.mat-card small{text-wrap:pretty}
+/* motion: unified ease-out + press feedback */
+.step,.chan,.mat-card,.review,.f,.phone,.rev{transition:transform .25s cubic-bezier(.23,1,.32,1),box-shadow .25s cubic-bezier(.23,1,.32,1),border-color .2s}
+.btn,.app-cta,.mat,.keypad button{transition:background .16s cubic-bezier(.23,1,.32,1),transform .12s cubic-bezier(.23,1,.32,1),box-shadow .2s}
+.btn:active,.app-cta:active,.mat:active{transform:scale(.97)}
+/* softer, layered card depth (committed strategy) */
+.step,.chan,.f,.review,.mat-card{box-shadow:0 0 0 1px rgba(58,48,38,.04),0 1px 2px -1px rgba(58,48,38,.05),0 6px 16px -10px rgba(58,48,38,.08)}
+[data-theme="dark"] .step,[data-theme="dark"] .chan,[data-theme="dark"] .f,[data-theme="dark"] .review,[data-theme="dark"] .mat-card{box-shadow:0 0 0 1px rgba(242,233,216,.06)}
+/* accessibility: visible keyboard focus */
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:10px}
+
 /* scroll reveal */
 @media(prefers-reduced-motion:no-preference){
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
@@ -425,7 +450,7 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:44px 0;color:var
   </svg>
   <div class="wrap hero-grid">
     <div class="stagger">
-      <div class="eyebrow">Kənd sənətkarları üçün</div>
+      <div class="hero-eyebrow"><span class="eyebrow">Kənd sənətkarları üçün</span><span class="trust-pill">ABAD × Azərxalça əməkdaşlığı</span></div>
       <h1>Sən düzəlt.<br><em>Qalanını biz edək.</em></h1>
       <p class="lead">Şəkil çək, nə qədər pul istədiyini yaz — vəssalam. Tərcümə, qablaşdırma, gömrük, dünya bazarında satış: hamısı bizim işimizdir.</p>
       <div class="hero-cta">

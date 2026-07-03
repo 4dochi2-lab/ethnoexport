@@ -45,18 +45,18 @@ function serveHandler() {
   Deno.serve(async (req) => {
     if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
     const url = new URL(req.url);
-    const fnBase = `${url.origin}${url.pathname}`; // .../functions/v1/shopify
-    const action = url.searchParams.get("action");
+    const base = `${url.origin}/functions/v1/shopify`;
+    const route = url.pathname.split("/").pop(); // install | callback | shopify(root)
 
-    // 1) START OAUTH — open this URL once in the browser
-    if (action === "install") {
-      const redirect = encodeURIComponent(`${fnBase}?action=callback`);
+    // 1) START OAUTH — open .../shopify/install once in the browser
+    if (route === "install") {
+      const redirect = encodeURIComponent(`${base}/callback`);
       const authUrl = `https://${STORE}/admin/oauth/authorize?client_id=${CLIENT_ID}&scope=${SCOPES}&redirect_uri=${redirect}&state=ee`;
       return Response.redirect(authUrl, 302);
     }
 
     // 2) OAUTH CALLBACK — exchange code, store token
-    if (action === "callback") {
+    if (route === "callback") {
       const code = url.searchParams.get("code");
       if (!code) return html("<h2>Xəta: kod yoxdur.</h2>", 400);
       const res = await fetch(`https://${STORE}/admin/oauth/access_token`, {

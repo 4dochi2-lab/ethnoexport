@@ -106,6 +106,7 @@ let s,user;
 (async()=>{
   s=await EE.requireRole('artisan'); if(!s)return;
   user=s.profile;
+  if(!user||!user.name){location.href='tamamla-profil.html';return;} // OAuth ilə gələn — profil natamam
   const fn=((user&&user.name)||'Sənətkar').split(' ')[0];
   uName.textContent=fn;heroName.textContent=fn;
   renderCalc();

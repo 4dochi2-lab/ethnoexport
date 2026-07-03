@@ -55,6 +55,17 @@ const EE = (() => {
     return {role:(p&&p.role)||'artisan'};
   }
   async function roleAfterMfa(){const p=await getProfile();return (p&&p.role)||'artisan';}
+  async function signInWithGoogle(){
+    const {error}=await SB.auth.signInWithOAuth({provider:'google',
+      options:{redirectTo:location.origin+'/panel.html'}});
+    if(error) throw new Error(mapErr(error.message));
+  }
+  async function saveProfile(f){
+    const {data:{user}}=await SB.auth.getUser();
+    const row=Object.assign({id:user.id,role:'artisan'},f);
+    const {error}=await SB.from('profiles').upsert(row);
+    if(error) throw new Error(error.message);
+  }
   async function signOut(){await SB.auth.signOut();location.href='daxil.html';}
 
   // ---- password reset ----
@@ -195,7 +206,7 @@ const EE = (() => {
     setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},2800);
   }
 
-  return {initTheme,signUp,signIn,roleAfterMfa,signOut,getSession,getProfile,requireRole,
+  return {initTheme,signUp,signIn,roleAfterMfa,signInWithGoogle,saveProfile,signOut,getSession,getProfile,requireRole,
           resetPassword,updatePassword,
           mfaFactors,mfaActive,mfaNeeded,mfaEnroll,mfaActivate,mfaVerifyLogin,mfaDisable,
           calc,aiCopy,addProduct,getProducts,setStatus,subscribe,

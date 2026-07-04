@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>/* e-poçt təsdiqindən sonra token kök səhifəyə düşərsə, panelə ötür (sessiya orada qurulur) */
+if(location.hash.indexOf('access_token')>-1){location.replace('panel.html'+location.hash);}</script>
 <title>EthnoExport — Sən düzəlt, qalanını biz edək</title>
 <meta name="description" content="Kənd sənətkarları üçün: şəkil çək, qiymətini yaz. Tərcümə, qablaşdırma, logistika, dünya bazarında satış — qalanını biz edirik. Pul birbaşa kartına.">
 <meta name="theme-color" content="#17181C">

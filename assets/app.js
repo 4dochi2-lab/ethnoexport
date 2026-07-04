@@ -33,21 +33,32 @@ const EE = (() => {
   }
 
   // ---- auth ----
-  async function signUp({name,email,pass,phone,location,craft,website,social}){
+  async function signUp({name,email,pass,phone,location:loc,craft,website,social}){
     email=email.trim().toLowerCase();
-    const {data,error}=await SB.auth.signUp({email,password:pass});
+    const meta={name,phone:phone||null,location:loc||null,craft:craft||null,website:website||null,social:social||null};
+    const {data,error}=await SB.auth.signUp({email,password:pass,
+      options:{ data:meta, emailRedirectTo: window.location.origin+'/panel.html' }});
     if(error) throw new Error(mapErr(error.message));
-    if(!data.session){ // ensure session for RLS insert
-      const {error:se}=await SB.auth.signInWithPassword({email,password:pass});
-      if(se) throw new Error(mapErr(se.message));
+    if(data.session){
+      // e-poçt təsdiqi SÖNDÜRÜLÜB — profili dərhal yarat
+      await SB.from('profiles').insert(Object.assign({id:data.user.id,role:'artisan'},meta));
+      return {role:'artisan'};
     }
+    // e-poçt təsdiqi AÇIQ — təsdiq linki göndərildi, profil sonra yaranacaq (metadata-dan)
+    return {confirm:true};
+  }
+  async function ensureProfile(){
     const {data:{user}}=await SB.auth.getUser();
-    const {error:pe}=await SB.from('profiles').insert({
-      id:user.id,name,role:'artisan',
-      phone:phone||null,location:location||null,craft:craft||null,
-      website:website||null,social:social||null});
-    if(pe) throw new Error(pe.message);
-    return 'artisan';
+    if(!user) return null;
+    let {data:p}=await SB.from('profiles').select('*').eq('id',user.id).single();
+    if(!p){
+      const m=user.user_metadata||{};
+      const row={id:user.id,role:'artisan',name:m.name||null,phone:m.phone||null,
+        location:m.location||null,craft:m.craft||null,website:m.website||null,social:m.social||null};
+      const {error}=await SB.from('profiles').upsert(row);
+      if(!error) p=row;
+    }
+    return p;
   }
   async function signIn({email,pass}){
     email=email.trim().toLowerCase();
@@ -131,7 +142,7 @@ const EE = (() => {
     const s=await getSession();
     if(!s){location.href='daxil.html';return null;}
     if(await mfaNeeded()){location.href='daxil.html';return null;} // 2FA tamamlanmayıb — panelə buraxma
-    const p=await getProfile();
+    const p=await ensureProfile();
     const r=(p&&p.role)||'artisan';
     if(r!==role){location.href=r==='admin'?'admin.html':'panel.html';return null;}
     return {user:s.user,profile:p};
@@ -236,7 +247,7 @@ const EE = (() => {
     setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},2800);
   }
 
-  return {initTheme,signUp,signIn,roleAfterMfa,signInWithGoogle,sendEmailOtp,verifyEmailOtp,saveProfile,signOut,getSession,getProfile,requireRole,
+  return {initTheme,signUp,ensureProfile,signIn,roleAfterMfa,signInWithGoogle,sendEmailOtp,verifyEmailOtp,saveProfile,signOut,getSession,getProfile,requireRole,
           resetPassword,updatePassword,
           mfaFactors,mfaActive,mfaNeeded,mfaEnroll,mfaActivate,mfaVerifyLogin,mfaDisable,
           calc,aiCopy,addProduct,getProducts,getProfilesMap,setStatus,publishToShopify,subscribe,

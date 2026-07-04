@@ -180,9 +180,13 @@ $('regForm').onsubmit=async e=>{
   if(rPass.value!==rPass2.value){err('Şifrələr eyni deyil. Yenidən yoxlayın.');return;}
   const b=e.submitter;busy(b,true);
   const craftVal=rCraft.value==='Digər'?(rCraftOther.value.trim()||'Digər'):rCraft.value;
-  try{await EE.signUp({name:rName.value.trim(),email:rEmail.value,pass:rPass.value,
+  try{const res=await EE.signUp({name:rName.value.trim(),email:rEmail.value,pass:rPass.value,
       phone:rPhone.value.trim(),location:rLoc.value.trim(),craft:craftVal,
       website:rWeb.value.trim(),social:rSocial.value.trim()});
+    if(res&&res.confirm){
+      $('msg').innerHTML='<div class="ok">Hesab yaradıldı! E-poçtunuza təsdiq linki göndərdik — linkə basıb təsdiqləyin, sonra daxil olun.</div>';
+      busy(b,false,'Hesab yarat'); return;
+    }
     location.href='panel.html';
   }catch(x){err(x.message);busy(b,false,'Hesab yarat');}
 };

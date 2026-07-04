@@ -200,8 +200,11 @@ async function render(){
     enableBtn.disabled=true;
     try{
       const d=await EE.mfaEnroll(); enrollId=d.id;
-      const qr=d.totp.qr_code;
-      document.getElementById('qrBox').innerHTML = qr.trim().startsWith('<svg')?qr:('<img src="'+qr+'" style="width:100%;display:block">');
+      const qr=(d.totp&&d.totp.qr_code)||'';
+      const box=document.getElementById('qrBox');
+      if(qr.includes('<svg')) box.innerHTML=qr;                 // raw SVG markup
+      else if(qr) box.innerHTML='<img alt="QR kod" src="'+qr+'">';  // data URL
+      else box.innerHTML='<div style="font-size:12px;color:#333;padding:8px">QR yüklənmədi — aşağıdakı açarı əl ilə əlavə edin.</div>';
       document.getElementById('mfaSecret').textContent=d.totp.secret;
       setup.style.display='block';enableBtn.style.display='none';
     }catch(x){EE.toast(x.message,'info');}

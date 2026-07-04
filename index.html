@@ -336,6 +336,18 @@ section{padding:88px 0}
 .partner{display:inline-flex;align-items:center;font-family:"Fraunces";font-weight:900;font-size:24px;letter-spacing:.02em;color:var(--ink);opacity:.9;padding:10px 22px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);transition:.25s}
 .partner svg{color:var(--copper)}
 .logo-axc{font-size:20px;letter-spacing:.06em}
+/* Shopify mini-window */
+.shop-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(10,8,6,.62);backdrop-filter:blur(6px)}
+.shop-modal.on{display:flex}
+.shop-win{width:min(960px,94vw);height:min(660px,88vh);background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 40px 100px -20px rgba(0,0,0,.6);display:flex;flex-direction:column}
+.shop-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f1f0ee;border-bottom:1px solid var(--line)}
+.shop-bar .bd{display:flex;gap:6px}.shop-bar .bd i{width:11px;height:11px;border-radius:50%;background:#d0cdc7}
+.shop-bar .url{flex:1;font-family:"Space Mono",monospace;font-size:12px;color:#5a4b3c;background:#fff;padding:5px 10px;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shop-bar a.ext{color:var(--copper);font-size:16px;text-decoration:none;padding:0 4px}
+.shop-bar button.x{width:26px;height:26px;border-radius:50%;background:#e3e2df;font-size:16px;line-height:1;color:#241a12}
+.shop-win iframe{flex:1;width:100%;border:0;background:#fff}
+.shop-note{padding:8px 14px;font-size:12px;color:var(--ink-soft);background:#f1f0ee;border-top:1px solid var(--line);text-align:center}
+.shop-note a{color:var(--copper);font-weight:600}
 .partner:hover{opacity:1;border-color:var(--copper);transform:translateY(-2px)}
 .partner-x{color:var(--copper);font-size:20px}
 footer{border-top:1px solid var(--line);margin-top:44px;padding:44px 0;color:var(--ink-soft);font-size:14px}
@@ -645,7 +657,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
     <div class="channels">
       <div class="chan primary reveal"><span class="badge">ƏSAS KANAL</span><div class="name ebay"><span>e</span><span>B</span><span>a</span><span>y</span></div><small>ABŞ və Avropa alıcıları · milyonlarla istifadəçi</small></div>
       <div class="chan reveal"><div class="name" style="color:var(--patina)">Bonanza</div><small>Nadir və unikal əl işləri bazarı</small></div>
-      <div class="chan reveal"><div class="name" style="color:var(--copper-dk)">Shopify</div><small>EthnoExport storefront · birbaşa satış</small></div>
+      <div class="chan reveal" onclick="openShop()" style="cursor:pointer"><div class="name" style="color:var(--copper-dk)">Shopify</div><small>EthnoExport storefront · <b style="color:var(--copper)">mağazaya bax →</b></small></div>
     </div>
   </div>
 </section>
@@ -881,6 +893,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
   </div>
 </section>
 
+<!-- SHOPIFY MINI-WINDOW -->
+<div id="shopModal" class="shop-modal" onclick="if(event.target===this)closeShop()">
+  <div class="shop-win">
+    <div class="shop-bar">
+      <span class="bd"><i></i><i></i><i></i></span>
+      <span class="url">b7yu9f-vu.myshopify.com</span>
+      <a class="ext" href="https://b7yu9f-vu.myshopify.com" target="_blank" rel="noopener" title="Yeni tabda aç">↗</a>
+      <button class="x" onclick="closeShop()" aria-label="Bağla">×</button>
+    </div>
+    <iframe id="shopFrame" title="EthnoExport Shopify mağazası" loading="lazy"></iframe>
+    <div class="shop-note">Mağaza açılmırsa <a href="https://b7yu9f-vu.myshopify.com" target="_blank" rel="noopener">yeni tabda açın ↗</a></div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
     <div class="foot-in">
@@ -890,7 +916,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
       </div>
       <div class="foot-contact">
         <div class="fc-title">Əlaqə</div>
-        <a href="mailto:info@ethnoexport.az">info@ethnoexport.az</a>
+        <a href="mailto:ethnoexport26@gmail.com">ethnoexport26@gmail.com</a>
         <a href="https://wa.me/994709116163">WhatsApp: +994 70 911 61 63</a>
       </div>
     </div>
@@ -912,6 +938,11 @@ document.getElementById('menu').onclick=()=>document.getElementById('navlinks').
 document.querySelectorAll('#navlinks a').forEach(a=>a.onclick=()=>document.getElementById('navlinks').classList.remove('open'));
 
 // scroll reveal
+// Shopify mini-window
+function openShop(){const m=document.getElementById('shopModal');m.classList.add('on');const f=document.getElementById('shopFrame');if(!f.src)f.src='https://b7yu9f-vu.myshopify.com';document.body.style.overflow='hidden';}
+function closeShop(){document.getElementById('shopModal').classList.remove('on');document.body.style.overflow='';}
+addEventListener('keydown',e=>{if(e.key==='Escape')closeShop();});
+
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 

@@ -1,52 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
-/* EthnoExport — shared app styles (auth / artisan panel / admin) */
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap');
+/* EthnoExport — shared app styles · liquid-glass, Onest (landing ilə eyni dil) */
 :root{
-  /* light companion */
-  --paper:#FAF9F5;--paper-2:#F0EEE7;--card:#FFFFFF;
-  --ink:#1C1D21;--ink-soft:#6A6A64;
-  --copper:#C0821E;--copper-dk:#9A6813;--patina:#2E9E6E;--gold:#B8841F;
-  --line:rgba(28,29,33,.10);--shadow:0 22px 55px -32px rgba(20,20,24,.3);
-  --nav-bg:rgba(250,249,245,.82);
+  --paper:#f4f2ee;--paper-2:#eceae4;--card:rgba(255,255,255,.72);--card-solid:#ffffff;
+  --ink:#111111;--ink-strong:#0a0a0a;--ink-soft:#6a6a64;
+  --copper:#b15f2c;--copper-dk:#97501f;--patina:#2e9e6e;--gold:#b8841f;
+  --line:rgba(17,17,17,.10);--shadow:0 24px 60px -30px rgba(20,20,24,.28);
+  --nav-bg:rgba(244,242,238,.7);
 }
 [data-theme="dark"]{
-  /* Kömür & Kəhrəba — minimal, redaksiya */
-  --paper:#17181C;--paper-2:#1F2024;--card:#212227;
-  --ink:#ECEBE6;--ink-soft:#98978F;
-  --copper:#E8A13A;--copper-dk:#F2B24E;--patina:#46A96E;--gold:#E8A13A;
-  --line:rgba(236,235,230,.10);--shadow:0 26px 60px -34px rgba(0,0,0,.85);
-  --nav-bg:rgba(23,24,28,.82);
+  --paper:#0d0d0f;--paper-2:#161618;--card:rgba(34,34,39,.6);--card-solid:#1c1c20;
+  --ink:#ececea;--ink-strong:#ffffff;--ink-soft:#9a9a94;
+  --copper:#cf8047;--copper-dk:#e39a63;--patina:#46a96e;--gold:#e8a13a;
+  --line:rgba(236,235,230,.12);--shadow:0 26px 60px -34px rgba(0,0,0,.85);
+  --nav-bg:rgba(13,13,15,.7);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--paper);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}
-h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:900;line-height:1.05;letter-spacing:-.01em}
+body{background:var(--paper);color:var(--ink);font-family:"Onest",system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}
+h1,h2,h3{font-family:"Onest",sans-serif;font-weight:600;line-height:1.05;letter-spacing:-.02em}
 a{color:inherit;text-decoration:none}
-.mono{font-family:"Space Mono",monospace}
+.mono{font-variant-numeric:tabular-nums}
 .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-.eyebrow{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-dk)}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:"Onest",sans-serif;font-size:13px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-soft)}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:9999px;background:var(--copper)}
 
 /* nav */
 .nav{position:sticky;top:0;z-index:50;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:62px}
-.logo{font-family:"Fraunces";font-weight:900;font-size:21px;display:flex;align-items:center;gap:8px}
+.logo{font-family:"Onest";font-weight:600;font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
 .logo b{color:var(--copper)}.logo svg{width:24px;height:24px;color:var(--copper)}
 .nav-actions{display:flex;align-items:center;gap:12px}
 .who{font-size:13px;color:var(--ink-soft)}.who b{color:var(--ink)}
 
-/* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--copper);color:#fff;padding:11px 18px;border-radius:12px;font-weight:600;font-size:15px;border:none;cursor:pointer;transition:.15s;font-family:inherit}
-.btn:hover{background:var(--copper-dk);transform:translateY(-1px)}
-.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-.btn.ghost:hover{background:var(--card);border-color:var(--copper)}
-.btn.sm{padding:8px 12px;font-size:13px;border-radius:9px}
+/* buttons — pill (landing dili) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ink-strong);color:#fff;padding:12px 22px;border-radius:9999px;font-weight:500;font-size:15px;border:none;cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1),background .2s;font-family:inherit}
+.btn:hover{transform:scale(1.03)}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{background:var(--card-solid);border-color:var(--copper)}
+.btn.pat{background:var(--patina)}.btn.pat:hover{background:#1f8a6b}
+.btn.sm{padding:8px 16px;font-size:13px}
 .btn.pat{background:var(--patina)}.btn.pat:hover{background:#155445}
 .btn.wide{width:100%}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* cards / forms */
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);transition:background .4s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:background .4s}
 .field{margin-bottom:16px}
-.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
-.field input,.field select{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink);font-size:16px;font-family:inherit;transition:.15s}
+.field label{display:block;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft);margin-bottom:7px}
+.field input,.field select{width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.5);color:var(--ink);font-size:16px;font-family:inherit;transition:.15s}
+[data-theme="dark"] .field input,[data-theme="dark"] .field select{background:rgba(255,255,255,.05)}
 .field input:focus,.field select:focus{outline:none;border-color:var(--copper);background:var(--card)}
 .hint{font-size:12.5px;color:var(--ink-soft);margin-top:5px}
 .opt{font-weight:400;color:var(--ink-soft);font-size:12px}
@@ -173,11 +175,11 @@ body{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 /* one accent, quieter structure: soften stat accent bars */
 .stat-c::before{opacity:.85;width:2.5px}
 
-/* depth = subtle layered shadow (committed), inputs sit inset */
-.card{box-shadow:0 0 0 1px rgba(58,48,38,.04),0 1px 2px -1px rgba(58,48,38,.06),0 3px 8px -4px rgba(58,48,38,.05)}
+/* glass depth */
+.card{box-shadow:0 1px 2px rgba(20,20,24,.04),0 24px 60px -30px rgba(20,20,24,.25)}
 [data-theme="dark"] .card{box-shadow:0 0 0 1px rgba(242,233,216,.06)}
-.field input,.field select,.search{background:var(--paper-2)}
-[data-theme="dark"] .field input,[data-theme="dark"] .field select,[data-theme="dark"] .search{background:rgba(0,0,0,.18)}
+.search{background:rgba(255,255,255,.5)}
+[data-theme="dark"] .search{background:rgba(255,255,255,.05)}
 
 /* motion: custom ease-out + real press feedback */
 .btn{transition:background .16s cubic-bezier(.23,1,.32,1),transform .12s cubic-bezier(.23,1,.32,1),box-shadow .2s}
@@ -211,7 +213,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 .stat-c:hover{transform:translateY(-3px)}
 
 /* ---- admin header band ---- */
-.admin-hero{position:relative;overflow:hidden;border-radius:20px;padding:26px 28px;margin-bottom:26px;background:linear-gradient(135deg,#212227,#131318);color:#ECEBE6}
+.admin-hero{position:relative;overflow:hidden;border-radius:28px;padding:30px 32px;margin-bottom:26px;background:#0a0a0a;color:#ececea}
+.admin-hero .eyebrow{color:rgba(255,255,255,.7)}
+.admin-hero .eyebrow::before{background:var(--copper)}
 .admin-hero::after{content:"";position:absolute;top:-50%;left:-30%;width:70%;height:200%;background:linear-gradient(90deg,transparent,rgba(181,103,58,.16),transparent);transform:rotate(18deg);animation:aSheen 7s ease-in-out infinite}
 @keyframes aSheen{0%,100%{left:-40%}50%{left:120%}}
 .admin-hero .eyebrow{color:var(--gold)}

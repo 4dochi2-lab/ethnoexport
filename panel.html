@@ -8,7 +8,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/app.css">
 </head>
-<body>
+<body class="has-stars">
+<canvas id="scene"></canvas><div class="starscrim"></div>
 <header class="nav"><div class="wrap nav-in">
   <a href="index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.2"/><path d="M12 5.4c4.8 1.8 4.8 8.3 0 10.4c-3.6 1.5-5.4-2.4-3.9-5c.8-1.4 3.2-1.9 4.3-.2"/></svg>Ethno<b>Export</b></a>
   <div class="nav-actions">
@@ -100,6 +101,8 @@
   </div>
 </div></div>
 
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.143.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.143.0/examples/jsm/"}}</script>
+<script type="module" src="assets/starfield.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/app.js"></script>
 <script>

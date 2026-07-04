@@ -16,6 +16,14 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:"Onest",system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}
+/* starfield background (panel/admin) */
+body.has-stars{background:#0a0a14}
+[data-theme="light"] body.has-stars{background:#101018}
+#scene{position:fixed;inset:0;width:100vw;height:100vh;z-index:-2;display:block;pointer-events:none}
+.starscrim{position:fixed;inset:0;z-index:-1;pointer-events:none;background:rgba(8,8,16,.32)}
+[data-theme="light"] .starscrim{background:rgba(244,242,238,.8)}
+body.has-stars .nav{background:transparent;border-color:rgba(255,255,255,.08)}
+[data-theme="light"] body.has-stars .nav{border-color:var(--line)}
 h1,h2,h3{font-family:"Onest",sans-serif;font-weight:600;line-height:1.05;letter-spacing:-.02em}
 a{color:inherit;text-decoration:none}
 .mono{font-variant-numeric:tabular-nums}

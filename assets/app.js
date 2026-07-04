@@ -174,19 +174,21 @@ const EE = (() => {
   const STAGE_LABEL={wait:'Gözləyir',qc:'QC',live:'Canlı',sold:'Satıldı',paid:'Ödənildi'};
   function statusBadge(s){return `<span class="badge ${s}">${STATUS[s]||s}</span>`;}
 
-  async function addProduct({material,manat,blob}){
+  async function addProduct({material,manat,blobs}){
     const {data:{user}}=await SB.auth.getUser();
     const p=await getProfile();
     const c=calc(manat), ai=aiCopy(material);
-    let photo_url=null;
-    if(blob){
-      const path=user.id+'/'+Date.now()+'.jpg';
+    const urls=[];
+    for(const blob of (blobs||[])){
+      if(!blob) continue;
+      const path=user.id+'/'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.jpg';
       const {error:ue}=await SB.storage.from('photos').upload(path,blob,{contentType:'image/jpeg'});
-      if(!ue) photo_url=SB.storage.from('photos').getPublicUrl(path).data.publicUrl;
+      if(!ue) urls.push(SB.storage.from('photos').getPublicUrl(path).data.publicUrl);
     }
     const {error}=await SB.from('products').insert({
       owner:user.id, owner_name:(p&&p.name)||'Sənətkar', material, manat:+manat,
-      landed:c.landed, title:ai.title, tags:ai.tags, photo_url, status:'wait'});
+      landed:c.landed, title:ai.title, tags:ai.tags,
+      photo_url:urls[0]||null, photos:urls, status:'wait'});
     if(error) throw new Error(error.message);
   }
   async function publishToShopify(id){

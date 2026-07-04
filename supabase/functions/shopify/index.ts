@@ -99,7 +99,8 @@ function serveHandler() {
           status: "draft",
           tags: Array.isArray(p.tags) ? p.tags.join(",") : "",
           variants: [{ price }],
-          images: p.photo_url ? [{ src: p.photo_url }] : [],
+          images: (Array.isArray(p.photos) && p.photos.length
+                    ? p.photos : (p.photo_url ? [p.photo_url] : [])).map((src: string) => ({ src })),
         },
       };
       const shopRes = await fetch(`https://${STORE}/admin/api/${API_VER}/products.json`, {

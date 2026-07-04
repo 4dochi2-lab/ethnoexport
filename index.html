@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>/* e-poçt təsdiqindən sonra token kök səhifəyə düşərsə, panelə ötür (sessiya orada qurulur) */
 if(location.hash.indexOf('access_token')>-1){location.replace('panel.html'+location.hash);}</script>
-<title>EthnoExport — Sən düzəlt, qalanını biz edək</title>
+<title>EthnoExport — Siz sadəcə yaradın, dünyanı biz fəth edək</title>
 <meta name="description" content="Kənd sənətkarları üçün: şəkil çək, qiymətini yaz. Tərcümə, qablaşdırma, logistika, dünya bazarında satış — qalanını biz edirik. Pul birbaşa kartına.">
 <meta name="theme-color" content="#f4f2ee">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
-<meta property="og:title" content="EthnoExport — Sən düzəlt, qalanını biz edək">
+<meta property="og:title" content="EthnoExport — Siz sadəcə yaradın, dünyanı biz fəth edək">
 <meta property="og:description" content="Şəkil çək, qiymətini yaz. Qalanını — tərcümə, qablaşdırma, logistika, satış — biz edirik. Pul birbaşa kartına.">
 <meta property="og:locale" content="az_AZ">
 <meta name="twitter:card" content="summary_large_image">
@@ -333,7 +333,9 @@ section{padding:88px 0}
 .cta .btn{background:#fff;color:var(--copper-dk)}.cta .btn:hover{background:var(--ink);color:#fff}
 
 .partners{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:16px}
-.partner{font-family:"Fraunces";font-weight:900;font-size:26px;letter-spacing:.02em;color:var(--ink);opacity:.85;padding:8px 20px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);transition:.25s}
+.partner{display:inline-flex;align-items:center;font-family:"Fraunces";font-weight:900;font-size:24px;letter-spacing:.02em;color:var(--ink);opacity:.9;padding:10px 22px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);transition:.25s}
+.partner svg{color:var(--copper)}
+.logo-axc{font-size:20px;letter-spacing:.06em}
 .partner:hover{opacity:1;border-color:var(--copper);transform:translateY(-2px)}
 .partner-x{color:var(--copper);font-size:20px}
 footer{border-top:1px solid var(--line);margin-top:44px;padding:44px 0;color:var(--ink-soft);font-size:14px}
@@ -462,8 +464,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
   <div class="wrap hero-grid">
     <div class="stagger">
       <div class="eyebrow">Yerli sənətkarlar üçün</div>
-      <h1>Siz düzəldin,<br><em>qalanını biz edək.</em></h1>
+      <h1>Siz sadəcə yaradın,<br><em>dünyanı biz fəth edək.</em></h1>
       <p class="lead">Şəklini çəkin, qiymətini yazın — qalanını biz edirik. Tərcümə, qablaşdırma, gömrük, dünya bazarında satış: hamısı bizim işimizdir.</p>
+      <p style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.03em;color:var(--ink-soft);max-width:42ch">Connecting 50,000 local artisans to a trillion-dollar global marketplace.</p>
       <div class="hero-cta">
         <a href="daxil.html" class="btn">Hesab yarat, məhsul göndər
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -761,8 +764,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
           </div>
         </div>
         <div class="dash-actions">
-          <button class="btn" style="width:100%">Kanallarda dərc et</button>
-          <button class="btn ghost" style="width:100%">Düzəliş et</button>
+          <a class="btn" style="width:100%;text-align:center;justify-content:center" href="daxil.html">Kanallarda dərc et</a>
+          <a class="btn ghost" style="width:100%;text-align:center;justify-content:center" href="daxil.html">Düzəliş et</a>
           <div class="chan-mini">Kanallar: <b>eBay · Bonanza · Shopify</b></div>
         </div>
       </div>
@@ -861,15 +864,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
 </section>
 
 <!-- PARTNERS -->
-<section style="padding:40px 0 0">
+<section style="padding:56px 0 0">
   <div class="wrap" style="text-align:center">
-    <div class="eyebrow reveal">Etibarlı tərəfdaşlarımız</div>
+    <div class="eyebrow reveal" style="justify-content:center">Rəsmi tərəfdaşlarımız</div>
     <div class="partners reveal">
-      <span class="partner">ABAD</span>
+      <span class="partner logo-abad">ABAD
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" style="margin-left:2px"><path d="M12 3c0 6 3 9 8 10-5 1-8 4-8 9-0-5-3-8-8-9 5-1 8-4 8-10Z"/></svg>
+      </span>
       <span class="partner-x">×</span>
-      <span class="partner">Azərxalça</span>
+      <span class="partner logo-axc">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right:6px"><path d="M12 3l4 4-4 4-4-4zM4 11l4 4-4 4M20 11l-4 4 4 4M12 13l4 4-4 4-4-4z"/></svg>
+        AZƏRXALÇA
+      </span>
     </div>
-    <p class="reveal" style="color:var(--ink-soft);font-size:14px;margin-top:10px">Azərbaycanın aparıcı əl-işi təşkilatları ilə əməkdaşlıqda</p>
+    <p class="reveal" style="color:var(--ink-soft);font-size:14px;margin-top:14px">Azərbaycanın aparıcı əl-işi təşkilatları — <b style="color:var(--ink)">ABAD</b> və <b style="color:var(--ink)">Azərxalça</b> — ilə rəsmi əməkdaşlıqda</p>
   </div>
 </section>
 

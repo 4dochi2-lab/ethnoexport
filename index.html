@@ -938,8 +938,8 @@ document.getElementById('menu').onclick=()=>document.getElementById('navlinks').
 document.querySelectorAll('#navlinks a').forEach(a=>a.onclick=()=>document.getElementById('navlinks').classList.remove('open'));
 
 // scroll reveal
-// Shopify mini-window
-function openShop(){const m=document.getElementById('shopModal');m.classList.add('on');const f=document.getElementById('shopFrame');if(!f.src)f.src='https://b7yu9f-vu.myshopify.com';document.body.style.overflow='hidden';}
+// Shopify — iframe-də açılmır (X-Frame-Options), ona görə yeni tabda aç
+function openShop(){window.open('https://b7yu9f-vu.myshopify.com','_blank','noopener');}
 function closeShop(){document.getElementById('shopModal').classList.remove('on');document.body.style.overflow='';}
 addEventListener('keydown',e=>{if(e.key==='Escape')closeShop();});
 

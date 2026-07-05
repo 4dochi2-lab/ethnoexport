@@ -91,10 +91,35 @@ function serveHandler() {
       if (!p) return json({ error: "Məhsul tapılmadı" }, 404);
 
       const price = String(Math.round((p.landed || 0) * 1.08)); // sale price (USD)
+
+      // material -> Shopify product_type (kateqoriya təklifləri bunun əsasında gəlir)
+      const TYPE_MAP: Record<string, string> = {
+        "Mis": "Copperware", "Xalça": "Rugs & Carpets", "Gümüş": "Jewelry",
+        "Ağac": "Woodcraft", "Keramika": "Ceramics & Pottery", "Dəri": "Leather Goods",
+        "Tekstil / İpək": "Textiles",
+      };
+      const productType = TYPE_MAP[p.material] || "Handmade Crafts";
+      const maker = p.owner_name || "an Azerbaijani artisan";
+
+      // zəngin, uzun elan mətni (SEO üçün)
+      const bodyHtml = `
+        <p><strong>${p.title || `Handmade Azerbaijani ${p.material}`}</strong></p>
+        <p>This piece is entirely handmade by <strong>${maker}</strong>, a traditional craftsperson from rural Azerbaijan, using time-honored <strong>${p.material}</strong> techniques passed down through generations in the Caucasus.</p>
+        <p>Every item is truly one of a kind. Subtle natural variations in color, texture and form are the signature of authentic handcraft — a mark of the human hand, never a flaw. It arrives ready to become a cherished part of your home or a meaningful, collectible gift.</p>
+        <ul>
+          <li>100% handmade in Azerbaijan</li>
+          <li>Material: ${p.material}</li>
+          <li>Authentic heritage craft, sourced ethically and directly from the maker</li>
+          <li>Carefully quality-checked and repacked for safe international shipping</li>
+          <li>Ships worldwide with tracked delivery</li>
+        </ul>
+        <p>By purchasing, you directly support a rural artisan and help preserve endangered Azerbaijani craft traditions.</p>`.trim();
+
       const productBody: Record<string, unknown> = {
         product: {
           title: p.title || `${p.material} — Handmade Azerbaijani craft`,
-          body_html: `<p>Handmade by an Azerbaijani artisan (${p.owner_name || ""}). Material: ${p.material}.</p>`,
+          body_html: bodyHtml,
+          product_type: productType,
           vendor: "EthnoExport",
           status: "draft",
           tags: Array.isArray(p.tags) ? p.tags.join(",") : "",

@@ -37,7 +37,7 @@ const EE = (() => {
     email=email.trim().toLowerCase();
     const meta={name,phone:phone||null,location:loc||null,craft:craft||null,website:website||null,social:social||null};
     const {data,error}=await SB.auth.signUp({email,password:pass,
-      options:{ data:meta, emailRedirectTo: window.location.origin+'/panel.html' }});
+      options:{ data:meta, emailRedirectTo: window.location.origin+'/panel' }});
     if(error) throw new Error(mapErr(error.message));
     if(data.session){
       // e-poçt təsdiqi SÖNDÜRÜLÜB — profili dərhal yarat
@@ -82,7 +82,7 @@ const EE = (() => {
   }
   async function signInWithGoogle(){
     const {error}=await SB.auth.signInWithOAuth({provider:'google',
-      options:{redirectTo:location.origin+'/panel.html'}});
+      options:{redirectTo:location.origin+'/panel'}});
     if(error) throw new Error(mapErr(error.message));
   }
   async function saveProfile(f){
@@ -96,7 +96,7 @@ const EE = (() => {
   // ---- password reset ----
   async function resetPassword(email){
     const {error}=await SB.auth.resetPasswordForEmail(email.trim().toLowerCase(),
-      {redirectTo:location.origin+'/yenile-sifre.html'});
+      {redirectTo:location.origin+'/yenile-sifre'});
     if(error) throw new Error(mapErr(error.message));
   }
   async function updatePassword(pass){

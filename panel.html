@@ -8,8 +8,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/app.css">
 </head>
-<body class="has-stars">
-<canvas id="scene"></canvas><div class="starscrim"></div>
+<body>
 <header class="nav"><div class="wrap nav-in">
   <a href="index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.2"/><path d="M12 5.4c4.8 1.8 4.8 8.3 0 10.4c-3.6 1.5-5.4-2.4-3.9-5c.8-1.4 3.2-1.9 4.3-.2"/></svg>Ethno<b>Export</b></a>
   <div class="nav-actions">
@@ -31,10 +30,10 @@
   </div>
 
   <div class="stat-row">
-    <div class="stat-c card reveal"><div class="n" id="stTotal">0</div><div class="l">Ümumi məhsul</div></div>
-    <div class="stat-c card reveal"><div class="n" id="stLive">0</div><div class="l">Satışdadır</div></div>
-    <div class="stat-c card reveal"><div class="n" id="stSold">0</div><div class="l">Satıldı</div></div>
-    <div class="stat-c card reveal"><div class="n" id="stPaid">0</div><div class="l">Kartıma köçürüldü (₼)</div></div>
+    <div class="stat-c card reveal clickable" onclick="openStat('total')"><div class="n" id="stTotal">0</div><div class="l">Ümumi məhsul <span class="chev">›</span></div></div>
+    <div class="stat-c card reveal clickable" onclick="openStat('live')"><div class="n" id="stLive">0</div><div class="l">Satışdadır <span class="chev">›</span></div></div>
+    <div class="stat-c card reveal clickable" onclick="openStat('sold')"><div class="n" id="stSold">0</div><div class="l">Satıldı <span class="chev">›</span></div></div>
+    <div class="stat-c card reveal clickable" onclick="openStat('paid')"><div class="n" id="stPaid">0</div><div class="l">Kartıma köçürüldü (₼) <span class="chev">›</span></div></div>
   </div>
 
   <div class="grid2">
@@ -104,8 +103,43 @@
   </div>
 </div></div>
 
-<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.143.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.143.0/examples/jsm/"}}</script>
-<script type="module" src="assets/starfield.js"></script>
+<!-- STAT MODAL -->
+<div id="statModal" class="stat-modal" onclick="if(event.target===this)closeStat()">
+  <div class="stat-win">
+    <div class="stat-win-bar">
+      <div class="stat-win-title" id="statTitle">—</div>
+      <button class="stat-x" onclick="closeStat()" aria-label="Bağla">×</button>
+    </div>
+    <div class="stat-win-body" id="statBody"></div>
+  </div>
+</div>
+
+<style>
+.stat-c.clickable{cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+.stat-c.clickable:hover{transform:translateY(-3px);box-shadow:0 18px 40px -22px rgba(0,0,0,.4)}
+.stat-c .chev{opacity:.5;font-weight:700}
+.stat-modal{position:fixed;inset:0;z-index:200;background:rgba(10,10,10,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.stat-modal.on{display:flex}
+.stat-win{width:min(680px,96vw);max-height:86vh;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 40px 90px -30px rgba(0,0,0,.6)}
+.stat-win-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line)}
+.stat-win-title{font-family:'Fraunces',Georgia,serif;font-size:20px;font-weight:600;color:var(--ink)}
+.stat-x{background:none;border:none;font-size:26px;color:var(--ink-soft);cursor:pointer;line-height:1}
+.stat-win-body{padding:18px 22px;overflow-y:auto}
+.srow{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.srow:last-child{border-bottom:none}
+.sthumb{width:52px;height:52px;border-radius:10px;background:var(--paper-2);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.sthumb img{width:100%;height:100%;object-fit:cover}
+.sinfo{flex:1;min-width:0}
+.sinfo b{font-size:15px}
+.sinfo .sdate{font-size:12px;color:var(--ink-soft)}
+.sval{font-weight:700;color:var(--ink);white-space:nowrap}
+.sval.green{color:var(--patina)}
+.stat-empty{text-align:center;color:var(--ink-soft);padding:40px 0}
+.stat-store{display:block;text-align:center;margin-bottom:16px;padding:14px;border-radius:12px;background:var(--paper-2);color:var(--ink);font-weight:600;border:1px solid var(--line)}
+.stat-sum{font-family:'Fraunces',Georgia,serif;font-size:34px;font-weight:600;color:var(--patina);margin-bottom:4px}
+.stat-sum-l{font-size:13px;color:var(--ink-soft);margin-bottom:18px}
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/app.js"></script>
 <script>
@@ -172,9 +206,13 @@ pForm.onsubmit=async e=>{
 };
 
 let firstRender=true;
+let MYPRODUCTS=[];
+const SHOPIFY_URL='https://b7yu9f-vu.myshopify.com';
+const BONANZA_URL='https://www.bonanza.com/booths/EthnoExport'; // TODO: real Bonanza mağaza linki
 async function render(){
   let ps;
   try{ps=await EE.getMyProducts();}catch(x){list.innerHTML='<div class="card empty"><div>'+x.message+'</div></div>';return;}
+  MYPRODUCTS=ps;
   listCount.textContent=ps.length;
   const total=ps.length,
     live=ps.filter(p=>p.status==='live').length,
@@ -195,6 +233,45 @@ async function render(){
     </div>`).join('');
   EE.reveal(list);
 }
+
+// ---- STAT MODAL ----
+function fmtDate(s){ if(!s)return ''; try{return new Date(s).toLocaleDateString('az-AZ',{day:'numeric',month:'short',year:'numeric'});}catch(e){return '';} }
+function srowHtml(p,valHtml){
+  const img=(p.photos&&p.photos[0])||p.photo_url;
+  return `<div class="srow">
+    <div class="sthumb">${img?`<img src="${img}" alt="">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="width:22px;height:22px"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>`}</div>
+    <div class="sinfo"><b>${p.title||(p.material+' əşyası')}</b><div class="sdate">${p.material||''} · ${fmtDate(p.created_at)}</div></div>
+    ${valHtml||''}
+  </div>`;
+}
+function openStat(kind){
+  const modal=document.getElementById('statModal'),title=document.getElementById('statTitle'),body=document.getElementById('statBody');
+  let html='',t='';
+  if(kind==='total'){
+    t='Bütün məhsullarım';
+    const arr=MYPRODUCTS;
+    html = arr.length ? arr.map(p=>srowHtml(p,`<span class="sval">${p.manat} ₼</span>`)).join('') : '<div class="stat-empty">Hələ məhsul yoxdur.</div>';
+  } else if(kind==='live'){
+    t='Satışda olan məhsullarım';
+    const arr=MYPRODUCTS.filter(p=>p.status==='live');
+    html = `<a class="stat-store" href="${SHOPIFY_URL}" target="_blank" rel="noopener">↗ Shopify mağazamızda öz məhsullarına bax</a>
+            <a class="stat-store" href="${BONANZA_URL}" target="_blank" rel="noopener">↗ Bonanza mağazamızda bax</a>`
+          + (arr.length ? arr.map(p=>srowHtml(p,`<span class="sval">$${p.landed}</span>`)).join('') : '<div class="stat-empty">Hazırda satışda məhsulun yoxdur.</div>');
+  } else if(kind==='sold'){
+    t='Satılan məhsullarım';
+    const arr=MYPRODUCTS.filter(p=>p.status==='sold'||p.status==='paid');
+    html = arr.length ? arr.map(p=>srowHtml(p,`<span class="sval green">$${p.landed}</span>`)).join('') : '<div class="stat-empty">Hələ satış yoxdur.</div>';
+  } else if(kind==='paid'){
+    t='Kartıma köçürülənlər';
+    const arr=MYPRODUCTS.filter(p=>p.status==='paid');
+    const sum=arr.reduce((a,p)=>a+(p.manat||0),0);
+    html = `<div class="stat-sum">${sum} ₼</div><div class="stat-sum-l">indiyə kimi kartına köçürülən ümumi məbləğ</div>`
+          + (arr.length ? arr.map(p=>srowHtml(p,`<span class="sval green">+${p.manat} ₼</span>`)).join('') : '<div class="stat-empty">Hələ ödəniş yoxdur.</div>');
+  }
+  title.textContent=t; body.innerHTML=html; modal.classList.add('on'); document.body.style.overflow='hidden';
+}
+function closeStat(){document.getElementById('statModal').classList.remove('on');document.body.style.overflow='';}
+addEventListener('keydown',e=>{if(e.key==='Escape')closeStat();});
 
 // ---- 2FA UI ----
 (async function(){

@@ -169,7 +169,7 @@ pForm.onsubmit=async e=>{
 let firstRender=true;
 async function render(){
   let ps;
-  try{ps=await EE.getProducts();}catch(x){list.innerHTML='<div class="card empty"><div>'+x.message+'</div></div>';return;}
+  try{ps=await EE.getMyProducts();}catch(x){list.innerHTML='<div class="card empty"><div>'+x.message+'</div></div>';return;}
   listCount.textContent=ps.length;
   const total=ps.length,
     live=ps.filter(p=>p.status==='live').length,

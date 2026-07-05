@@ -212,6 +212,13 @@ const EE = (() => {
     if(error) throw new Error(error.message);
     return data||[];
   }
+  async function getMyProducts(){
+    const {data:{user}}=await SB.auth.getUser();
+    if(!user) return [];
+    const {data,error}=await SB.from('products').select('*').eq('owner',user.id).order('created_at',{ascending:false});
+    if(error) throw new Error(error.message);
+    return data||[];
+  }
   async function setStatus(id,st){
     const {error}=await SB.from('products').update({status:st}).eq('id',id);
     if(error) throw new Error(error.message);
@@ -252,7 +259,7 @@ const EE = (() => {
   return {initTheme,signUp,ensureProfile,signIn,roleAfterMfa,signInWithGoogle,sendEmailOtp,verifyEmailOtp,saveProfile,signOut,getSession,getProfile,requireRole,
           resetPassword,updatePassword,
           mfaFactors,mfaActive,mfaNeeded,mfaEnroll,mfaActivate,mfaVerifyLogin,mfaDisable,
-          calc,aiCopy,addProduct,getProducts,getProfilesMap,setStatus,publishToShopify,subscribe,
+          calc,aiCopy,addProduct,getProducts,getMyProducts,getProfilesMap,setStatus,publishToShopify,subscribe,
           statusBadge,pipeline,STATUS,STAGES,STAGE_LABEL,countUp,reveal,toast,SB};
 })();
 EE.initTheme();

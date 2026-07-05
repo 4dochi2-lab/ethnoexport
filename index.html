@@ -148,7 +148,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 /* how steps */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .step{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;transition:transform .3s,box-shadow .3s,border-color .3s}
-.step:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--green)}
+.step:hover{transform:translateY(-6px);border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 18px 40px -20px rgba(18,161,80,.5)}
 .step .n{width:44px;height:44px;border-radius:13px;background:var(--green-soft);color:var(--green-dk);font-family:"Space Grotesk";font-weight:700;font-size:19px;display:flex;align-items:center;justify-content:center}
 .step h3{font-size:19px;margin:18px 0 9px}
 .step p{font-size:14.5px;color:var(--ink-soft)}
@@ -168,20 +168,20 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 /* reviews */
 .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.review{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:30px;transition:transform .3s,box-shadow .3s}
-.review:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.review{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:30px;transition:transform .3s,box-shadow .3s,border-color .3s}
+.review:hover{transform:translateY(-6px);border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 18px 40px -20px rgba(18,161,80,.5)}
 .review .stars{display:flex;gap:2px;color:var(--orange);margin-bottom:16px}
 .review .stars svg{width:17px;height:17px;fill:currentColor}
 .review p{font-size:17px;line-height:1.5;margin-bottom:24px;font-weight:500}
 .review .who{display:flex;align-items:center;gap:13px}
-.review .av{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:"Space Grotesk";font-size:19px;font-weight:700;color:#fff;flex:none}
+.review .av{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:"Space Grotesk";font-size:19px;font-weight:700;color:#fff;flex:none;object-fit:cover}
 .review .who b{display:block;font-family:"Space Grotesk";font-size:15px}
 .review .who small{color:var(--ink-soft);font-size:13px}
 
 /* trust */
 .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.tcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;transition:transform .3s,box-shadow .3s}
-.tcard:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;transition:transform .3s,box-shadow .3s,border-color .3s}
+.tcard:hover{transform:translateY(-5px);border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 18px 40px -20px rgba(18,161,80,.5)}
 .tcard .ic{width:48px;height:48px;border-radius:14px;background:var(--green-soft);color:var(--green-dk);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
 .tcard .ic svg{width:23px;height:23px}
 .tcard h3{font-size:18px;margin-bottom:7px}
@@ -368,8 +368,8 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
 <!-- MARQUEE -->
 <div class="strip">
   <div class="marq">
-    <span>Satış kanalları: eBay <b class="d">◆</b> <a href="https://www.bonanza.com/booths/EthnoExport" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Bonanza</a> <b class="d">◆</b> <a href="https://b7yu9f-vu.myshopify.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Shopify</a> <b class="d">◆</b> Sənə hesab lazım deyil <b class="d">◆</b> Pul birbaşa kartına <b class="d">◆</b></span>
-    <span>Satış kanalları: eBay <b class="d">◆</b> <a href="https://www.bonanza.com/booths/EthnoExport" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Bonanza</a> <b class="d">◆</b> <a href="https://b7yu9f-vu.myshopify.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Shopify</a> <b class="d">◆</b> Sənə hesab lazım deyil <b class="d">◆</b> Pul birbaşa kartına <b class="d">◆</b></span>
+    <span>Satış kanalları: eBay <b class="d">◆</b> Bonanza <b class="d">◆</b> <a href="#" onclick="openShop();return false" style="color:inherit;text-decoration:underline;cursor:pointer">Shopify</a> <b class="d">◆</b> Sənə hesab lazım deyil <b class="d">◆</b> Pul birbaşa kartına <b class="d">◆</b></span>
+    <span>Satış kanalları: eBay <b class="d">◆</b> Bonanza <b class="d">◆</b> <a href="#" onclick="openShop();return false" style="color:inherit;text-decoration:underline;cursor:pointer">Shopify</a> <b class="d">◆</b> Sənə hesab lazım deyil <b class="d">◆</b> Pul birbaşa kartına <b class="d">◆</b></span>
   </div>
 </div>
 
@@ -437,17 +437,17 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
       <div class="review reveal">
         <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg></div>
         <p>Onlayn satış nədir bilmirdim. İndi mis qablarım Amerikaya gedir. Pul birbaşa kartıma gəlir.</p>
-        <div class="who"><div class="av" style="background:#F26B1D">R</div><div><b>Razim Q.</b><small>Misgər · Lahıc</small></div></div>
+        <div class="who"><img class="av" src="assets/img/rasim.jpg" alt="Rasim Q."><div><b>Rasim Q.</b><small>Misgər · Lahıc</small></div></div>
       </div>
       <div class="review reveal">
         <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg></div>
         <p>Xalçalarımı özüm satmağı bacarmırdım. İndi şəkil çəkirəm, qalanını onlar edir.</p>
-        <div class="who"><div class="av" style="background:#C0392B">S</div><div><b>Səkinə M.</b><small>Xalçaçı · Quba</small></div></div>
+        <div class="who"><img class="av" src="assets/img/sekine.jpg" alt="Səkinə M."><div><b>Səkinə M.</b><small>Xalçaçı · Quba</small></div></div>
       </div>
       <div class="review reveal">
         <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.8 5.9 20.8 7 14 2 9.2l6.9-.9L12 2Z"/></svg></div>
         <p>Bir ayda üç gümüş bəzək satıldı. SMS gəlir, Azərpoçta verirəm, pul çatır. Çox rahatdır.</p>
-        <div class="who"><div class="av" style="background:#0E9488">E</div><div><b>Elşən B.</b><small>Zərgər · Şəki</small></div></div>
+        <div class="who"><img class="av" src="assets/img/elsen.jpg" alt="Elşən B."><div><b>Elşən B.</b><small>Zərgər · Şəki</small></div></div>
       </div>
     </div>
   </div>

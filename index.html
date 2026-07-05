@@ -159,10 +159,11 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .stat .lbl{font-size:14px;color:var(--ink-soft);margin-top:10px}
 
 /* story */
-.story{background:linear-gradient(135deg,var(--green),var(--green-dk));color:#fff;border-radius:28px;padding:70px 56px;text-align:center;position:relative;overflow:hidden}
-.story::after{content:"";position:absolute;top:-100px;right:-80px;width:360px;height:360px;background:rgba(255,255,255,.1);border-radius:50%}
+.story{background:var(--surface-2);border:1px solid var(--line);color:var(--ink);border-radius:28px;padding:70px 56px;text-align:center;position:relative;overflow:hidden}
+.story::after{content:"";position:absolute;top:-100px;right:-80px;width:360px;height:360px;background:var(--green-soft);opacity:.6;border-radius:50%}
 .story .quote{font-family:"Space Grotesk";font-size:clamp(24px,3.4vw,40px);font-weight:600;line-height:1.3;max-width:820px;margin:0 auto;position:relative}
-.story .who{margin-top:26px;font-size:14px;letter-spacing:.1em;text-transform:uppercase;opacity:.85;position:relative}
+.story .quote::before{content:"\201C";color:var(--green);font-size:1.2em;font-weight:700}
+.story .who{margin-top:26px;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);position:relative}
 
 /* reviews */
 .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -479,17 +480,52 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
   </div>
 </section>
 
-<!-- STORE BAND -->
-<section class="sec" style="padding-top:0">
-  <div class="wrap"><div class="band reveal">
-    <div>
-      <h2>Mağazamızdakı əl işlərinə bax</h2>
-      <p>Sənətkarlarımızın dünya bazarına çıxan canlı məhsulları — birbaşa burada.</p>
+<!-- JOURNEY INFOGRAPHIC -->
+<section class="sec" id="journey" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <div class="eyebrow"><span class="dot"></span> Yol</div>
+      <h2>Ucqar kənddən dünyaya</h2>
+      <p>Sənin əl işin kənd emalatxanasından qlobal alıcının qapısına — biz aparırıq.</p>
     </div>
-    <button class="btn" onclick="openShop()">Mağazanı aç
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-  </div></div>
+    <div class="journey">
+      <div class="jstep reveal">
+        <div class="jic v"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 26 24 12l18 14"/><path d="M10 24v14h28V24"/><path d="M20 38V28h8v10"/><circle cx="24" cy="8" r="2.5" fill="currentColor" stroke="none"/></svg></div>
+        <h3>Ucqar kənddən istehsal</h3>
+        <p>Sənətkar əl işini yaradır, şəklini çəkib göndərir.</p>
+      </div>
+      <div class="jline reveal"><span class="pkg"></span></div>
+      <div class="jstep reveal">
+        <div class="jic l"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="16" width="24" height="16" rx="2"/><path d="M28 22h8l6 6v4h-14z"/><circle cx="14" cy="34" r="3"/><circle cx="34" cy="34" r="3"/></svg></div>
+        <h3>Sürətli və etibarlı logistika</h3>
+        <p>Azərpoçt ilə Bakı mərkəzimizə, keyfiyyət yoxlaması, sonra dünyaya.</p>
+      </div>
+      <div class="jline reveal"><span class="pkg"></span></div>
+      <div class="jstep reveal">
+        <div class="jic g"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="18"/><path d="M6 24h36M24 6c5 5 5 31 0 36M24 6c-5 5-5 31 0 36"/></svg></div>
+        <h3>Qəbul edəcək qlobal müştərilər</h3>
+        <p>New York, London, Tokyo — dünyanın hər yerinə çatdırılma.</p>
+      </div>
+    </div>
+  </div>
 </section>
+
+<style>
+.journey{display:flex;align-items:stretch;gap:0;flex-wrap:nowrap}
+.jstep{flex:1;text-align:center;padding:8px 14px}
+.jstep .jic{width:88px;height:88px;border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:#fff}
+.jstep .jic svg{width:46px;height:46px}
+.jstep .jic.v{background:linear-gradient(150deg,#12A150,#0C7F3E)}
+.jstep .jic.l{background:linear-gradient(150deg,#F26B1D,#d4560f)}
+.jstep .jic.g{background:linear-gradient(150deg,#0E9488,#0a6b62)}
+.jstep h3{font-size:19px;margin-bottom:8px}
+.jstep p{font-size:14px;color:var(--ink-soft)}
+.jline{flex:0 0 90px;position:relative;align-self:flex-start;margin-top:44px;height:3px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 16px);border-radius:2px}
+.pkg{position:absolute;top:50%;left:0;width:12px;height:12px;border-radius:3px;background:var(--orange);transform:translateY(-50%)}
+@media(prefers-reduced-motion:no-preference){.pkg{animation:pkgMove 2.4s ease-in-out infinite}}
+@keyframes pkgMove{0%{left:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:calc(100% - 12px);opacity:0}}
+@media(max-width:820px){.journey{flex-direction:column;align-items:center}.jline{flex:0 0 40px;width:3px;height:40px;margin:6px 0;background:repeating-linear-gradient(180deg,var(--line) 0 8px,transparent 8px 16px)}.pkg{left:50%;top:0;transform:translateX(-50%)}@keyframes pkgMove{0%{top:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{top:calc(100% - 12px);opacity:0}}}
+</style>
 
 <!-- FAQ -->
 <section class="sec" id="faq" style="padding-top:0">

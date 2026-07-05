@@ -81,6 +81,7 @@ header.nav{position:sticky;top:0;z-index:60;background:var(--nav-bg);backdrop-fi
 /* ---------- HERO ---------- */
 .hero{position:relative;padding:72px 0 46px;overflow:hidden;--px:0;--py:0}
 .hero-glow{position:absolute;width:640px;height:640px;border-radius:50%;top:-260px;right:-160px;background:radial-gradient(circle,rgba(232,161,58,.18),transparent 65%);pointer-events:none;z-index:0;transition:transform .6s ease}
+.hero-embers{position:absolute;inset:0;z-index:0;pointer-events:none}
 @media(prefers-reduced-motion:no-preference){.hero-glow{animation:glowPulse 8s ease-in-out infinite}}
 @keyframes glowPulse{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
 /* cursor parallax (pointer:fine only) */
@@ -520,6 +521,7 @@ html[data-theme="dark"] .wa-float .tip{background:#fff;color:#0a0a0a}
 <!-- HERO -->
 <section class="hero">
   <div class="hero-glow"></div>
+  <canvas class="hero-embers" id="embers" aria-hidden="true"></canvas>
   <svg class="hero-motif" viewBox="0 0 64 80" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
     <path d="M40 6C56 12 58 40 38 56C24 67 6 55 8 37C9 27 20 21 28 27C34 31 33 42 26 43"/>
     <path d="M34 20C40 24 40 34 33 40" stroke-width="1.6"/>
@@ -1083,6 +1085,39 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     raf=requestAnimationFrame(()=>{hero.style.setProperty('--px',x.toFixed(3));hero.style.setProperty('--py',y.toFixed(3));});
   });
   hero.addEventListener('mouseleave',()=>{hero.style.setProperty('--px',0);hero.style.setProperty('--py',0);});
+})();
+
+// hero embers — coppersmith spark motes drifting up (culturally themed, subtle)
+(function(){
+  const cv=document.getElementById('embers'),hero=document.querySelector('.hero');
+  if(!cv||!hero||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const ctx=cv.getContext('2d');
+  let w=0,h=0,dpr=1,parts=[],raf=null,running=false,mx=-9999,my=-9999;
+  function spawn(init){return{x:Math.random()*w,y:init?Math.random()*h:h+10,r:.6+Math.random()*2.2,vy:-(.15+Math.random()*.5),vx:(Math.random()-.5)*.25,a:.15+Math.random()*.5,tw:Math.random()*6.28};}
+  function size(){dpr=Math.min(devicePixelRatio||1,2);w=hero.clientWidth;h=hero.clientHeight;cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);}
+  function make(){parts=Array.from({length:w<640?18:42},()=>spawn(true));}
+  function step(){
+    ctx.clearRect(0,0,w,h);
+    for(const p of parts){
+      p.y+=p.vy;p.x+=p.vx;p.tw+=.03;
+      const dx=p.x-mx,dy=p.y-my,d2=dx*dx+dy*dy;
+      if(d2<9000){const d=Math.sqrt(d2)||1,f=(9000-d2)/9000*1.4;p.x+=dx/d*f;p.y+=dy/d*f;}
+      if(p.y<-12||p.x<-24||p.x>w+24){Object.assign(p,spawn(false));}
+      const fl=p.a*(.6+.4*Math.sin(p.tw)),R=p.r*3;
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,R);
+      g.addColorStop(0,'rgba(214,150,54,'+fl.toFixed(3)+')');
+      g.addColorStop(1,'rgba(214,150,54,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,R,0,6.283);ctx.fill();
+    }
+    raf=requestAnimationFrame(step);
+  }
+  function start(){if(!running){running=true;step();}}
+  function stop(){running=false;if(raf)cancelAnimationFrame(raf);raf=null;}
+  size();make();
+  addEventListener('resize',()=>{size();make();},{passive:true});
+  hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;});
+  hero.addEventListener('mouseleave',()=>{mx=my=-9999;});
+  new IntersectionObserver(es=>{es[0].isIntersecting?start():stop();},{threshold:0}).observe(hero);
 })();
 
 // count-up numbers

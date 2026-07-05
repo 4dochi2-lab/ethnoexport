@@ -481,7 +481,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
 .wa-float:hover{transform:scale(1.1)}
 .wa-float svg{width:30px;height:30px;color:#fff}
 @keyframes waPulse{0%{box-shadow:0 10px 30px -6px rgba(37,211,102,.6),0 0 0 0 rgba(37,211,102,.5)}70%{box-shadow:0 10px 30px -6px rgba(37,211,102,.6),0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 10px 30px -6px rgba(37,211,102,.6),0 0 0 0 rgba(37,211,102,0)}}
-.wa-float .tip{position:absolute;right:68px;white-space:nowrap;background:var(--ink,#0a0a0a);color:#fff;font-size:13px;font-weight:500;padding:8px 14px;border-radius:10px;opacity:0;transform:translateX(8px);transition:.25s;pointer-events:none}
+.wa-float .tip{position:absolute;right:68px;white-space:nowrap;background:#0a0a0a;color:#fff;font-size:13px;font-weight:500;padding:8px 14px;border-radius:10px;opacity:0;transform:translateX(8px);transition:.25s;pointer-events:none;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
+html[data-theme="dark"] .wa-float .tip{background:#fff;color:#0a0a0a}
 .wa-float:hover .tip{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.wa-float{animation:none}}
 </style>

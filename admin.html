@@ -157,7 +157,7 @@ document.querySelectorAll('#filters button').forEach(b=>b.onclick=()=>{
 });
 document.getElementById('q').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();render(true);});
 
-const CHART_COL={wait:'#C9A24B',qc:'#B5673A',live:'#3a7bd5',sold:'#1F6E5C',paid:'#155445'};
+const CHART_COL={wait:'#8F8F71',qc:'#B5673A',live:'#3a7bd5',sold:'#916F54',paid:'#6E5238'};
 function renderChart(all){
   const max=Math.max(1,...EE.STAGES.map(s=>all.filter(p=>p.status===s).length));
   chTotal.textContent=all.length+' məhsul';

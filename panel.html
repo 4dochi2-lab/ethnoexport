@@ -229,7 +229,9 @@ async function render(){
         <div class="row"><span>İstədiyin: <b>${p.manat} ₼</b></span><span>Satış: <b>$${p.landed}</b></span></div>
         ${EE.pipeline(p.status)}
       </div>
-      <div class="pright">${EE.statusBadge(p.status)}${p.status==='paid'?'<span class="hint">kartına köçürüldü</span>':''}</div>
+      <div class="pright">${EE.statusBadge(p.status)}${p.status==='paid'?'<span class="hint">kartına köçürüldü</span>':''}
+        ${(p.status==='wait'||p.status==='qc')?`<button class="btn ghost sm" onclick="cancelProduct('${p.id}')" style="margin-top:8px">Ləğv et</button>`:''}
+      </div>
     </div>`).join('');
   EE.reveal(list);
 }
@@ -271,6 +273,11 @@ function openStat(kind){
   title.textContent=t; body.innerHTML=html; modal.classList.add('on'); document.body.style.overflow='hidden';
 }
 function closeStat(){document.getElementById('statModal').classList.remove('on');document.body.style.overflow='';}
+window.cancelProduct=async(id)=>{
+  if(!confirm('Bu məhsulu ləğv etmək istəyirsən? Geri qaytarmaq olmaz.'))return;
+  try{ await EE.deleteProduct(id); EE.toast('Məhsul ləğv edildi'); await render(); }
+  catch(x){ EE.toast(x.message,'info'); }
+};
 addEventListener('keydown',e=>{if(e.key==='Escape')closeStat();});
 
 // ---- 2FA UI ----

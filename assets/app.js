@@ -228,6 +228,11 @@ const EE = (() => {
     const {error}=await SB.from('products').update({status:st}).eq('id',id);
     if(error) throw new Error(error.message);
   }
+  async function deleteProduct(id){
+    const {data:{user}}=await SB.auth.getUser();
+    const {error}=await SB.from('products').delete().eq('id',id).eq('owner',user.id);
+    if(error) throw new Error(error.message);
+  }
   function subscribe(cb){
     return SB.channel('products-rt')
       .on('postgres_changes',{event:'*',schema:'public',table:'products'},cb)
@@ -264,7 +269,7 @@ const EE = (() => {
   return {initTheme,signUp,ensureProfile,signIn,roleAfterMfa,signInWithGoogle,sendEmailOtp,verifyEmailOtp,saveProfile,signOut,getSession,getProfile,requireRole,
           resetPassword,updatePassword,
           mfaFactors,mfaActive,mfaNeeded,mfaEnroll,mfaActivate,mfaVerifyLogin,mfaDisable,
-          calc,aiCopy,addProduct,getProducts,getMyProducts,getProfilesMap,setStatus,publishToShopify,subscribe,
+          calc,aiCopy,addProduct,getProducts,getMyProducts,getProfilesMap,setStatus,deleteProduct,publishToShopify,subscribe,
           statusBadge,pipeline,STATUS,STAGES,STAGE_LABEL,countUp,reveal,toast,SB};
 })();
 EE.initTheme();

@@ -8,8 +8,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/app.css">
 </head>
-<body class="has-stars">
-<canvas id="scene"></canvas><div class="starscrim"></div>
+<body>
 <header class="nav"><div class="wrap nav-in">
   <a href="index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.2"/><path d="M12 5.4c4.8 1.8 4.8 8.3 0 10.4c-3.6 1.5-5.4-2.4-3.9-5c.8-1.4 3.2-1.9 4.3-.2"/></svg>Ethno<b>Export</b> · Admin</a>
   <div class="nav-actions">
@@ -28,28 +27,58 @@
     <div class="live-dot"><i></i> Canlı axın · sənətkarlardan gələn məhsullar real-time yenilənir</div>
   </div>
 
-  <div class="stat-row">
-    <div class="stat-c card reveal"><div class="n" id="aWait">0</div><div class="l">Yeni · QC gözləyir</div></div>
+  <div class="stat-row compact">
+    <div class="stat-c card reveal"><div class="n" id="aWait">0</div><div class="l">QC gözləyir</div></div>
     <div class="stat-c card reveal"><div class="n" id="aLive">0</div><div class="l">Kanallarda canlı</div></div>
     <div class="stat-c card reveal"><div class="n" id="aSold">0</div><div class="l">Satıldı</div></div>
     <div class="stat-c card reveal"><div class="n" id="aPay">0</div><div class="l">Ödəniş gözləyir (₼)</div></div>
   </div>
 
-  <div class="analytics">
+  <div class="fin-dash">
+    <div class="fin-card card reveal gmv">
+      <div class="fin-l">Ümumi Dövriyyə · GMV</div>
+      <div class="fin-v" id="finGMV">$0</div>
+      <div class="fin-s">Platformadan keçən ümumi satış həcmi</div>
+    </div>
+    <div class="fin-card card reveal rev">
+      <div class="fin-l">Xalis Platforma Gəliri</div>
+      <div class="fin-v" id="finRev">$0</div>
+      <div class="fin-s green">Bizim 15% xidmət haqqımız</div>
+    </div>
+    <div class="fin-card card reveal ship">
+      <div class="fin-l">Logistika · Çatdırılma</div>
+      <div class="fin-v" id="finShip">$0</div>
+      <div class="fin-s">Azərpoçt ilə göndərilən bağlamalar</div>
+    </div>
+  </div>
+
+  <div class="analytics-single">
     <div class="chart-card card reveal">
       <h3>Status üzrə bölgü <span class="sub" id="chTotal">0 məhsul</span></h3>
       <div id="chart"></div>
     </div>
-    <div class="chart-card card reveal">
-      <h3>Gəlir</h3>
-      <div class="rev-big" id="revPaid">0 ₼</div>
-      <div class="rev-sub">sənətkarlara ödənilib</div>
-      <div class="rev-split">
-        <div><div class="rv" id="revPending" style="color:var(--gold)">0 ₼</div><div class="rl">ödəniş gözləyir</div></div>
-        <div><div class="rv" id="revFee" style="color:var(--copper)">$0</div><div class="rl">platforma haqqı (~15%)</div></div>
-      </div>
-    </div>
   </div>
+
+  <style>
+  .stat-row.compact .stat-c{padding:14px 16px}
+  .stat-row.compact .stat-c .n{font-size:28px}
+  .stat-row.compact .stat-c .l{font-size:12px}
+  .fin-dash{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0}
+  .fin-card{padding:26px}
+  .fin-card .fin-l{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+  .fin-card .fin-v{font-family:'Fraunces',Georgia,serif;font-size:40px;font-weight:600;margin:8px 0 4px;color:var(--ink)}
+  .fin-card .fin-s{font-size:13px;color:var(--ink-soft)}
+  .fin-card .fin-s.green{color:var(--patina);font-weight:600}
+  .fin-card.gmv{border-top:3px solid var(--copper)}
+  .fin-card.rev{border-top:3px solid var(--patina)}
+  .fin-card.ship{border-top:3px solid var(--gold)}
+  .analytics-single{margin-bottom:22px}
+  .store-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:100px;border:1px solid var(--line);margin:8px 6px 0 0;color:var(--ink);text-decoration:none;background:var(--paper-2)}
+  .store-chip:hover{border-color:var(--copper)}
+  .store-chip.shopify{color:#5E8E3E}.store-chip.bonanza{color:#00A0B0}
+  .btn.ship-btn{background:#2f6bd5;border-color:#2f6bd5;color:#fff}
+  @media(max-width:820px){.fin-dash{grid-template-columns:1fr}}
+  </style>
 
   <div class="toolbar reveal">
     <div class="search">
@@ -71,12 +100,21 @@
   <div class="plist" id="list"></div>
 </div></div>
 
-<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.143.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.143.0/examples/jsm/"}}</script>
-<script type="module" src="assets/starfield.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/app.js"></script>
 <script>
 let filter='all', query='', ALL=[], PROFILES={};
+const SHOPIFY_URL='https://b7yu9f-vu.myshopify.com';
+const BONANZA_URL='https://www.bonanza.com/booths/EthnoExport'; // TODO: real Bonanza mağaza linki
+function storeChips(p){
+  if(!['live','sold','paid'].includes(p.status))return '';
+  return `<div style="margin-top:6px"><a class="store-chip shopify" href="${SHOPIFY_URL}" target="_blank" rel="noopener">Shopify-da bax ↗</a><a class="store-chip bonanza" href="${BONANZA_URL}" target="_blank" rel="noopener">Bonanza ↗</a></div>`;
+}
+function shipBtn(p){
+  if(!['sold','paid'].includes(p.status))return '';
+  return `<button class="btn sm ship-btn" onclick="azerpost('${p.id}')">Azərpoçta göndər</button>`;
+}
+window.azerpost=(id)=>{EE.toast('Azərpoçt sisteminə bağlama sorğusu göndərildi ✓','pay');};
 function contactHtml(p){
   const pr=PROFILES[p.owner]||{};
   const bits=[];
@@ -108,10 +146,11 @@ function renderChart(all){
   }).join('');
 }
 function renderRevenue(all){
-  const paid=all.filter(p=>p.status==='paid').reduce((a,p)=>a+p.manat,0);
-  const pending=all.filter(p=>p.status==='sold').reduce((a,p)=>a+p.manat,0);
-  const fee=Math.round(all.filter(p=>p.status==='paid'||p.status==='sold').reduce((a,p)=>a+p.landed*0.15,0));
-  revPaid.textContent=paid+' ₼';revPending.textContent=pending+' ₼';revFee.textContent='$'+fee;
+  const done=all.filter(p=>p.status==='sold'||p.status==='paid');
+  const gmv=done.reduce((a,p)=>a+Math.round((p.landed||0)*1.08),0);          // ümumi satış həcmi
+  const rev=Math.round(done.reduce((a,p)=>a+((p.manat||0)/1.66)*0.15,0));    // 15% xidmət haqqı
+  const ship=done.length*18;                                                 // hər bağlama ~$18
+  finGMV.textContent='$'+gmv;finRev.textContent='$'+rev;finShip.textContent='$'+ship;
 }
 function exportCSV(){
   const rows=[['ID','Sənətkar','Material','İstək (AZN)','Landed (USD)','Status','AI başlıq']];
@@ -185,11 +224,12 @@ function render(skipStats){
         <div class="row"><span>İstək: <b>${p.manat} ₼</b></span><span>Landed: <b>$${p.landed}</b></span><span>Satış: <b>$${Math.round(p.landed*1.08)}</b></span></div>
         <div class="ai-mini"><b>AI başlıq:</b> ${p.title}<br><b>${p.tags.length} tag:</b> ${p.tags.slice(0,8).join(', ')}…</div>
         ${contactHtml(p)}
+        ${storeChips(p)}
         ${EE.pipeline(p.status)}
       </div>
       <div class="pright">
         ${EE.statusBadge(p.status)}
-        <div class="actions-inline">${actionBtn(p)}</div>
+        <div class="actions-inline">${actionBtn(p)}${shipBtn(p)}</div>
       </div>
     </div>`).join('');
   EE.reveal(list);

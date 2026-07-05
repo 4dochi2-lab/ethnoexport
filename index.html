@@ -321,6 +321,7 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
       <a href="#faq">Suallar</a>
     </nav>
     <div class="nav-right">
+      <button class="icon-btn" id="langBtn" style="width:auto;padding:0 14px;font-family:'Space Grotesk';font-weight:600;font-size:13px" aria-label="Language / Dil">EN</button>
       <button class="icon-btn" id="theme" aria-label="Rejimi dəyiş">
         <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
         <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -689,6 +690,77 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closeShop();});
 const tt=document.getElementById('toTop');
 addEventListener('scroll',()=>{tt.classList.toggle('show',scrollY>700)},{passive:true});
 tt.onclick=()=>scrollTo({top:0,behavior:'smooth'});
+
+// ---- AZ / EN dil ----
+const DICT={
+"Kolleksiya":"Collection","Necə işləyir":"How it works","Rəylər":"Reviews","Etibar":"Trust","Suallar":"FAQ","Daxil ol":"Sign in",
+"Yerli sənətkarlar üçün":"For local artisans",
+"Siz sadəcə yaradın,":"You just create,","dünyanı biz":"we conquer","fəth edək.":"the world.",
+"Şəklini çək, qiymətini yaz — qalanını biz edirik. Tərcümə, qablaşdırma, gömrük və dünya bazarında satış: hamısı bizim işimizdir.":"Take a photo, name your price — we do the rest. Translation, packaging, customs and selling on the global market: all our job.",
+"Hesab yarat, məhsul göndər":"Create account, send product","Necə işləyir?":"How it works?",
+"Pulsuz hesab":"Free account","PayPal lazım deyil":"No PayPal needed","Pul birbaşa kartına":"Money straight to your card",
+"Tərs qiymət mühərriki · canlı":"Reverse pricing engine · live",
+"Sən məbləği yaz — qalanını biz hesablayaq":"You set the amount — we calculate the rest",
+"Cibinə düşməsini istədiyin təmiz məbləği yaz":"Enter the clean amount you want to receive",
+"Sənin təmiz məbləğin":"Your clean amount","Beynəlxalq çatdırılma (orta çəki)":"International shipping (avg. weight)",
+"EthnoExport xidmət haqqı · 15%":"EthnoExport service fee · 15%","Bazar əməliyyat haqqı":"Marketplace transaction fee",
+"Xarici alıcının gördüyü qiymət":"Price the foreign buyer sees","Siz təmiz":"You receive","alırsınız":"clean",
+"Nümunə düstur (kurs ≈ 1.66). Real qiymət dəqiq çəki və marşruta görə hesablanır.":"Sample formula (rate ≈ 1.66). Real price is calculated by exact weight and route.",
+"Nəsillərin sənəti — dünya bazarına":"Craft of generations — to the global market",
+"Mis, xalça, gümüş, ağac, keramika və daha çoxu. Kənd emalatxanasından qlobal vitrinə.":"Copper, carpets, silver, wood, ceramics and more. From the village workshop to a global storefront.",
+"Mis":"Copper","Xalça":"Carpet","Gümüş":"Silver","Ağac":"Wood","Keramika":"Ceramics",
+"Döymə qablar, sinilər · Lahıc":"Hammered vessels, trays · Lahij","Əl toxuması, kilim · Quba":"Hand-woven, kilim · Guba",
+"Zərgərlik · Şəki":"Jewelry · Sheki","Oyma, xatəm":"Carving, khatam","Gil, saxsı əşyalar":"Clay & earthenware",
+"Sənin işin telefonda 1 dəqiqə çəkir":"Your part takes 1 minute on the phone",
+"Qalan hər şeyi — mətn, foto redaktə, qiymət, qablaşdırma, göndəriş — komandamız görür.":"Everything else — text, photo editing, pricing, packaging, shipping — is done by our team.",
+"Şəkil çək":"Take a photo","Məhsulunun aydın şəklini çək — öndən, arxadan, yandan. Bir düymə, vəssalam.":"Take a clear photo of your product — front, back, side. One tap, done.",
+"Qiymətini yaz":"Set your price","Cibinə təmiz neçə manat istəyirsən — onu yaz. Məsələn: 50.":"How many clean manats you want in your pocket — write it. E.g. 50.",
+"Biz satırıq":"We sell it","AI ingiliscə başlıq, təsvir və açar sözlər yazır. Komanda yoxlayıb mağazaya qoyur.":"AI writes the English title, description and keywords. The team reviews and lists it in our store.",
+"Kartına pul gəlir":"Money to your card","Satılanda SMS gəlir, Azərpoçta verirsən. Çatanda pul kartına köçürülür.":"When sold you get an SMS, hand it to Azerpost. On delivery the money is sent to your card.",
+"Sənətkarın işi bu qədər çəkir":"Artisan's work takes this long","Böyük satış platforması":"Major sales platforms",
+"Ödəniş manatla, kartına":"Payment in manat, to your card","Sənin ödədiyin ön xərc":"Upfront cost you pay",
+"Lahıclı bir misgərin hekayəsi":"The story of a coppersmith from Lahij",
+"Kənddən dünyaya çıxanlar":"From village to the world",
+"Onlayn satış nədir bilmirdim. İndi mis qablarım Amerikaya gedir. Pul birbaşa kartıma gəlir.":"I didn't know what online selling was. Now my copper vessels go to America. Money comes straight to my card.",
+"Misgər · Lahıc":"Coppersmith · Lahij","Xalçaçı · Quba":"Carpet weaver · Guba","Zərgər · Şəki":"Jeweler · Sheki",
+"Xalçalarımı özüm satmağı bacarmırdım. İndi şəkil çəkirəm, qalanını onlar edir.":"I couldn't sell my carpets myself. Now I take a photo, they do the rest.",
+"Bir ayda üç gümüş bəzək satıldı. SMS gəlir, Azərpoçta verirəm, pul çatır. Çox rahatdır.":"Three silver pieces sold in a month. I get an SMS, hand it to Azerpost, money arrives. Very easy.",
+"Nə təmin edirik":"What we provide","Bütün yükü biz daşıyırıq":"We carry the whole load",
+"Zəmanətli manat ödənişi":"Guaranteed manat payout","İstədiyin təmiz məbləğ M10, Birbank və ya Leobank kartına köçürülür.":"Your requested clean amount is sent to your M10, Birbank or Leobank card.",
+"WhatsApp konsyerj":"WhatsApp concierge","Sifariş, sual, ödəniş — hamısı bir yerdə, WhatsApp üzərindən.":"Orders, questions, payments — all in one place, via WhatsApp.",
+"Komanda əli ilə dərc":"Team-run listing","Məhsulun EthnoExport Store mağazamıza komanda tərəfindən qoyulur.":"Your product is listed in our EthnoExport Store by the team.",
+"İdarə olunan logistika":"Managed logistics","Kənd → Bakı mərkəzi → keyfiyyət yoxlaması → dünya. Sən yalnız Azərpoçta verirsən.":"Village → Baku hub → quality check → the world. You only hand it to Azerpost.",
+"AI elan mətni":"AI listing copy","İngiliscə başlıq, təsvir və 13–20 açar söz — SEO standartına uyğun, əl ilə yoxlanır.":"English title, description and 13–20 keywords — SEO-ready, human-reviewed.",
+"Alıcı etibar paketi":"Buyer trust pack","Mənşə kartı, mədəniyyət hekayəsi və sənətkarın əl notu — hər bağlamada.":"Origin card, culture story and the artisan's handwritten note — in every parcel.",
+"Yol":"Journey","Ucqar kənddən dünyaya":"From a remote village to the world",
+"Sənin əl işin kənd emalatxanasından qlobal alıcının qapısına — biz aparırıq.":"Your handcraft, from the village workshop to the global buyer's door — we deliver it.",
+"Ucqar kənddən istehsal":"Made in a remote village","Sənətkar əl işini yaradır, şəklini çəkib göndərir.":"The artisan creates the piece, photographs it and sends it.",
+"Sürətli və etibarlı logistika":"Fast and reliable logistics","Azərpoçt ilə Bakı mərkəzimizə, keyfiyyət yoxlaması, sonra dünyaya.":"Via Azerpost to our Baku hub, quality check, then to the world.",
+"Qəbul edəcək qlobal müştərilər":"Global customers waiting","New York, London, Tokyo — dünyanın hər yerinə çatdırılma.":"New York, London, Tokyo — delivery all over the world.",
+"Ağlına gələn suallar":"Questions on your mind",
+"İngilis dili bilmirəm, olar?":"I don't speak English, is that OK?",
+"Pulu necə və nə vaxt alıram?":"How and when do I get paid?",
+"Məhsulu haradan göndərməliyəm?":"Where do I ship the product from?",
+"Xidmət haqqı nə qədərdir?":"How much is the service fee?",
+"Məhsulunu bu gün dünyaya çıxar":"Take your product to the world today",
+"Pulsuz hesab yarat":"Create free account","WhatsApp ilə başla":"Start with WhatsApp",
+"Kənd sənətkarlarını dünya bazarına birləşdiririk · Azərbaycan":"Connecting village artisans to the global market · Azerbaijan",
+"Əlaqə":"Contact"
+};
+let lang=localStorage.getItem('lang')||'az';
+const langBtn=document.getElementById('langBtn');
+function applyLang(l){
+  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{
+    const t=n.nodeValue.trim(); if(!t)return;
+    if(l==='en'){ if(DICT[t]!==undefined){ if(n._az===undefined)n._az=n.nodeValue; n.nodeValue=n.nodeValue.replace(t,DICT[t]); } }
+    else { if(n._az!==undefined){ n.nodeValue=n._az; } }
+  });
+  document.documentElement.lang=l; langBtn.textContent=l==='en'?'AZ':'EN'; localStorage.setItem('lang',l);
+}
+langBtn.onclick=()=>{lang=lang==='en'?'az':'en';applyLang(lang);};
+if(lang==='en')applyLang('en');
 </script>
 </body>
 </html>

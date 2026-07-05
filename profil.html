@@ -30,7 +30,7 @@
       <div class="field"><label>Sənətkarlıq növü</label>
         <select id="craft" required onchange="document.getElementById('otherWrap').style.display=(this.value==='Digər')?'block':'none'">
           <option value="">Seçin…</option>
-          <option>Mis</option><option>Xalça</option><option>Gümüş</option><option>Ağac</option><option>Keramika</option><option>Digər</option>
+          <option>Misgərlik</option><option>Xalçaçılıq / Xalça toxuma</option><option>Zərgərlik (Gümüş)</option><option>Dulusçuluq</option><option>Ağac oymaçılığı / Şəbəkə sənəti</option><option>Dəri işləmə sənəti</option><option>İpəkçilik və Toxuculuq</option><option>Digər</option>
         </select>
       </div>
       <div class="field" id="otherWrap" style="display:none"><label>Sənətkarlıq növünü yazın</label><input type="text" id="craftOther"></div>
@@ -52,7 +52,7 @@
 <script src="assets/app.js"></script>
 <script>
 const $=id=>document.getElementById(id);
-const CRAFTS=['Mis','Xalça','Gümüş','Ağac','Keramika'];
+const CRAFTS=['Misgərlik','Xalçaçılıq / Xalça toxuma','Zərgərlik (Gümüş)','Dulusçuluq','Ağac oymaçılığı / Şəbəkə sənəti','Dəri işləmə sənəti','İpəkçilik və Toxuculuq'];
 let g;
 (async()=>{
   g=await EE.requireRole('artisan'); if(!g)return;

@@ -48,14 +48,18 @@
           <div class="uploader" id="drop" onclick="fileInp.click()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8.5 6l1-2h5l1 2"/></svg>
             <div>Şəkil əlavə et</div>
-            <div class="hint" style="margin-top:4px">Öndən, arxadan, yandan — istədiyiniz qədər şəkil əlavə edin.</div>
+            <div class="hint" style="margin-top:4px">Zəhmət olmasa məhsulun fərqli bucaqlardan şəkillərini yükləyin (maksimum 10 şəkil).</div>
           </div>
           <div id="prevGrid" class="prev-grid"></div>
           <input type="file" id="fileInp" accept="image/*" capture="environment" multiple style="display:none">
         </div>
         <div class="field">
           <label>Material</label>
-          <select id="mat"><option>Mis</option><option>Xalça</option><option>Gümüş</option><option>Ağac</option><option>Keramika</option></select>
+          <select id="mat" onchange="document.getElementById('matOtherWrap').style.display=(this.value==='Digər')?'block':'none'"><option>Mis</option><option>Xalça</option><option>Gümüş</option><option>Ağac</option><option>Keramika</option><option>Dəri</option><option>Tekstil / İpək</option><option>Digər</option></select>
+        </div>
+        <div class="field" id="matOtherWrap" style="display:none">
+          <label>Materialını yaz</label>
+          <input type="text" id="matOther" placeholder="məs. şüşə, keçə, sümük…">
         </div>
         <div class="field">
           <label>Cibinə düşməsini istədiyin təmiz məbləğ (₼)</label>
@@ -158,7 +162,8 @@ pForm.onsubmit=async e=>{
   if(!photos.length){pmsg.innerHTML='<div class="err">Ən azı bir şəkil əlavə edin.</div>';return;}
   const btn=e.submitter;btn.disabled=true;btn.textContent='Göndərilir…';
   try{
-    await EE.addProduct({material:mat.value,manat:manat.value,blobs:photos.map(p=>p.blob)});
+    const matVal=mat.value==='Digər'?(document.getElementById('matOther').value.trim()||'Digər'):mat.value;
+    await EE.addProduct({material:matVal,manat:manat.value,blobs:photos.map(p=>p.blob)});
     EE.toast('Göndərildi! Komandamız yoxlayıb kanallarda dərc edəcək.');
     photos=[];document.getElementById('prevGrid').innerHTML='';fileInp.value='';manat.value=120;renderCalc();
     await render();

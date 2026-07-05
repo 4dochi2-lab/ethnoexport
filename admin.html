@@ -126,7 +126,7 @@ window.exportCSV=exportCSV;
 
 const NEXT={wait:'qc',qc:'live',live:'sold',sold:'paid'};
 const ALABEL={qc:'QC-yə götür',live:'Kanallarda dərc et',sold:'Satıldı işarələ',paid:'Kartına ödə'};
-const DONE_MSG={qc:'QC-yə götürüldü',live:'eBay, Bonanza, Shopify-də dərc olundu 🌍',sold:'Satıldı — SMS göndərildi',paid:'Kartına köçürüldü'};
+const DONE_MSG={qc:'QC-yə götürüldü',live:'Shopify mağazasında dərc olundu 🌍',sold:'Satıldı — SMS göndərildi',paid:'Kartına köçürüldü'};
 
 function actionBtn(p){
   const nx=NEXT[p.status]; if(!nx)return '';

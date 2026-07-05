@@ -31,7 +31,8 @@
 const $=id=>document.getElementById(id);
 // user arrives here from the email link with a recovery session
 (async()=>{
-  const s=await EE.getSession();
+  let s=await EE.getSession();
+  if(!s){ await new Promise(r=>setTimeout(r,700)); s=await EE.getSession(); } // hash-dən sessiya aşkarlanması üçün gözlə
   if(!s){$('msg').innerHTML='<div class="err">Link etibarsız və ya vaxtı keçib. <a href="daxil.html">Yenidən cəhd edin.</a></div>';$('f').style.display='none';}
 })();
 $('f').onsubmit=async e=>{

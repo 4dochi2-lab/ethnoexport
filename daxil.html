@@ -86,7 +86,7 @@
     <div class="field"><label>Sənətkarlıq növü</label>
       <select id="rCraft" required onchange="document.getElementById('craftOtherWrap').style.display=(this.value==='Digər')?'block':'none'">
         <option value="">Seçin…</option>
-        <option>Mis</option><option>Xalça</option><option>Gümüş</option><option>Ağac</option><option>Keramika</option><option>Digər</option>
+        <option>Misgərlik</option><option>Xalçaçılıq / Xalça toxuma</option><option>Zərgərlik (Gümüş)</option><option>Dulusçuluq</option><option>Ağac oymaçılığı / Şəbəkə sənəti</option><option>Dəri işləmə sənəti</option><option>İpəkçilik və Toxuculuq</option><option>Digər</option>
       </select>
     </div>
     <div class="field" id="craftOtherWrap" style="display:none"><label>Sənətkarlıq növünü yazın</label><input type="text" id="rCraftOther" placeholder="məs. Şüşə üfürmə, basmanaxış, keçə…"></div>
@@ -177,6 +177,7 @@ $('resetForm').onsubmit=async e=>{
 
 $('regForm').onsubmit=async e=>{
   e.preventDefault();$('msg').innerHTML='';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(rEmail.value.trim())){err('E-poçt ünvanı düzgün deyil. Yenidən yoxlayın.');return;}
   if(rPass.value!==rPass2.value){err('Şifrələr eyni deyil. Yenidən yoxlayın.');return;}
   const b=e.submitter;busy(b,true);
   const craftVal=rCraft.value==='Digər'?(rCraftOther.value.trim()||'Digər'):rCraft.value;

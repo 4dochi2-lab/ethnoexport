@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EthnoExport — Siz sadəcə yaradın, dünyanı biz fəth edək</title>
 <meta name="description" content="Kənd sənətkarlarını dünya bazarına birləşdiririk. Şəklini çək, qiymətini yaz — tərcümə, gömrük, satış bizim işimizdir.">
-<script>if(location.hash.indexOf('access_token')>-1){location.replace('panel'+location.hash);}</script>
+<script>if(location.hash.indexOf('access_token')>-1){
+  if(location.hash.indexOf('type=recovery')>-1){location.replace('yenile-sifre'+location.hash);}
+  else{location.replace('panel'+location.hash);}
+}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
@@ -372,8 +375,8 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
 <!-- MARQUEE -->
 <div class="strip">
   <div class="marq">
-    <span>Satış kanalları: eBay <b class="d">◆</b> Bonanza <b class="d">◆</b> Shopify <b class="d">◆</b> Sənə hesab lazım deyil <b class="d">◆</b> Pul birbaşa kartına <b class="d">◆</b></span>
-    <span>Satış kanalları: eBay <b class="d">◆</b> Bonanza <b class="d">◆</b> Shopify <b class="d">◆</b> Sənə hesab lazım deyil <b class="d">◆</b> Pul birbaşa kartına <b class="d">◆</b></span>
+    <span>Satış kanalları: eBay <b class="d">◆</b> <a href="https://www.bonanza.com/booths/EthnoExport" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Bonanza</a> <b class="d">◆</b> <a href="https://b7yu9f-vu.myshopify.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Shopify</a> <b class="d">◆</b> Sənə hesab lazım deyil <b class="d">◆</b> Pul birbaşa kartına <b class="d">◆</b></span>
+    <span>Satış kanalları: eBay <b class="d">◆</b> <a href="https://www.bonanza.com/booths/EthnoExport" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Bonanza</a> <b class="d">◆</b> <a href="https://b7yu9f-vu.myshopify.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Shopify</a> <b class="d">◆</b> Sənə hesab lazım deyil <b class="d">◆</b> Pul birbaşa kartına <b class="d">◆</b></span>
   </div>
 </div>
 

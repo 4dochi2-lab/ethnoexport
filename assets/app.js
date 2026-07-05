@@ -72,7 +72,12 @@ const EE = (() => {
   async function sendEmailOtp(email){
     const {error}=await SB.auth.signInWithOtp({email:email.trim().toLowerCase(),
       options:{shouldCreateUser:false}});
-    if(error) throw new Error(mapErr(error.message));
+    if(error){
+      const m=(error.message||'').toLowerCase();
+      if(m.includes('signups not allowed')||m.includes('not found')||m.includes('user not found'))
+        throw new Error('Bu e-poçtla hesab tapılmadı. Əvvəlcə qeydiyyatdan keçin.');
+      throw new Error(mapErr(error.message));
+    }
   }
   async function verifyEmailOtp(email,token){
     const {error}=await SB.auth.verifyOtp({email:email.trim().toLowerCase(),token:token.trim(),type:'email'});

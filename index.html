@@ -420,12 +420,13 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
 .partners-head .pline{height:1px;width:48px;background:var(--line)}
 .partners-head .ptag{font-family:"Space Grotesk";font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--green-dk)}
 .partners{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
-.partner-chip{padding:10px 40px;transition:transform .3s}
-.partner-chip:hover{transform:translateY(-4px)}
-.partner-chip img{height:52px;width:auto;object-fit:contain;background:#fff;padding:14px 24px;border-radius:14px;box-shadow:0 10px 26px -16px rgba(0,0,0,.35)}
-.pdiv{width:1px;align-self:stretch;background:var(--line);margin:8px 0}
-.partners-note{margin-top:22px;font-size:14px;color:var(--ink-soft);max-width:52ch;margin-left:auto;margin-right:auto}
-@media(max-width:600px){.partner-chip{padding:12px 20px}.partner-chip img{height:40px;padding:10px 16px}.pdiv{display:none}}
+.partner-chip{padding:14px 54px;transition:transform .35s}
+.partner-chip:hover{transform:translateY(-4px) scale(1.03)}
+.partner-chip img{height:78px;width:auto;object-fit:contain;transition:filter .3s}
+[data-theme="dark"] .partner-chip img{filter:brightness(0) invert(1);opacity:.92}
+.pdiv{width:1px;align-self:stretch;background:var(--line);margin:14px 0}
+.partners-note{margin-top:24px;font-size:14px;color:var(--ink-soft);max-width:52ch;margin-left:auto;margin-right:auto}
+@media(max-width:600px){.partner-chip{padding:14px 24px}.partner-chip img{height:56px}.pdiv{display:none}}
 </style>
 
 <!-- MARQUEE -->

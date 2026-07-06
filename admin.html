@@ -132,8 +132,11 @@ const SHOPIFY_URL='https://b7yu9f-vu.myshopify.com';
 const BONANZA_URL='https://www.bonanza.com/booths/EthnoExport'; // TODO: real Bonanza mağaza linki
 function storeChips(p){
   if(!['live','sold','paid'].includes(p.status))return '';
-  const url=p.shopify_url||SHOPIFY_URL; // birbaşa məhsula (varsa), yoxsa mağazaya
-  return `<div style="margin-top:6px"><a class="store-chip shopify" href="${url}" target="_blank" rel="noopener">Shopify-da məhsula bax ↗</a></div>`;
+  const store='b7yu9f-vu';
+  const url=p.shopify_id
+    ? `https://admin.shopify.com/store/${store}/products/${p.shopify_id}`   // birbaşa məhsul (admin)
+    : `https://admin.shopify.com/store/${store}/products`;                   // Products siyahısı
+  return `<div style="margin-top:6px"><a class="store-chip shopify" href="${url}" target="_blank" rel="noopener">Shopify Products-də bax ↗</a></div>`;
 }
 function shipBtn(p){
   if(!['sold','paid'].includes(p.status))return '';

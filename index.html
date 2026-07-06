@@ -320,6 +320,7 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
     </div>
     <nav class="nav-links" id="navlinks">
       <a href="#kolleksiya">Kolleksiya</a>
+      <a href="#magaza">Mağaza</a>
       <a href="#nasil">Necə işləyir</a>
       <a href="#reyler">Rəylər</a>
       <a href="#etibar">Etibar</a>
@@ -535,6 +536,18 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
 </section>
 
 
+<!-- MAĞAZA (inline) -->
+<section class="sec" id="magaza" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <div class="eyebrow"><span class="dot"></span> Mağaza</div>
+      <h2>Canlı əl işlərimiz</h2>
+      <p>Sənətkarlarımızın dünya bazarına çıxan məhsulları — birbaşa burada.</p>
+    </div>
+    <div class="shop-grid" id="shopGridInline" style="max-width:940px;margin:0 auto"><div class="shop-empty">Yüklənir…</div></div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section class="sec" id="faq" style="padding-top:0">
   <div class="wrap">
@@ -676,6 +689,21 @@ async function loadShop(){
       return '<div class="pcard" onclick="shopOpen('+i+')"><div class="pimg">'+(img?'<img src="'+img+'" alt="">':camSvg)+'</div><div class="pinfo"><b>'+(p.title||(p.material+' əşyası'))+'</b><div class="pr">'+money(p)+'</div><small>'+(p.material||'')+' · '+(p.owner_name||'')+'</small></div></div>';}).join('');
   }catch(e){grid.innerHTML='<div class="shop-empty">Mağaza yüklənmədi.</div>';}
 }
+// inline mağaza (əsas səhifədə birbaşa)
+function shopCard(p,i,fn){const img=(p.photos&&p.photos[0])||p.photo_url;
+  return '<div class="pcard" onclick="'+fn+'('+i+')"><div class="pimg">'+(img?'<img src="'+img+'" alt="">':camSvg)+'</div><div class="pinfo"><b>'+(p.title||(p.material+' əşyası'))+'</b><div class="pr">'+money(p)+'</div><small>'+(p.material||'')+' · '+(p.owner_name||'')+'</small></div></div>';}
+async function loadShopInline(){
+  const grid=document.getElementById('shopGridInline'); if(!grid)return;
+  try{
+    const r=await fetch(SUPA_URL+'/rest/v1/products?select=*&status=in.(live,sold,paid)&order=created_at.desc',{headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY}});
+    SHOPITEMS=await r.json();
+    if(!Array.isArray(SHOPITEMS)||!SHOPITEMS.length){grid.innerHTML='<div class="shop-empty">Hələ mağazada məhsul yoxdur — tezliklə!</div>';return;}
+    grid.innerHTML=SHOPITEMS.map((p,i)=>shopCard(p,i,'openShopDetail')).join('');
+  }catch(e){grid.innerHTML='<div class="shop-empty">Mağaza yüklənmədi.</div>';}
+}
+function openShopDetail(i){document.getElementById('shopModal').classList.add('on');document.body.style.overflow='hidden';shopOpen(i);}
+loadShopInline();
+
 function openShop(){document.getElementById('shopModal').classList.add('on');document.body.style.overflow='hidden';shopBack();loadShop();}
 function closeShop(){document.getElementById('shopModal').classList.remove('on');document.body.style.overflow='';}
 function shopBack(){document.getElementById('shopList').style.display='block';document.getElementById('shopDetail').classList.remove('on');}
@@ -752,7 +780,9 @@ const DICT={
 "Məhsulunu bu gün dünyaya çıxar":"Take your product to the world today",
 "Pulsuz hesab yarat":"Create free account","WhatsApp ilə başla":"Start with WhatsApp",
 "Kənd sənətkarlarını dünya bazarına birləşdiririk · Azərbaycan":"Connecting village artisans to the global market · Azerbaijan",
-"Əlaqə":"Contact",
+"Əlaqə":"Contact","Mağaza":"Store","Canlı əl işlərimiz":"Our live handcrafts",
+"Sənətkarlarımızın dünya bazarına çıxan məhsulları — birbaşa burada.":"Our artisans' products reaching the global market — right here.",
+"Yüklənir…":"Loading…","Hələ mağazada məhsul yoxdur — tezliklə!":"No products in the store yet — soon!",
 "Rəsmi əməkdaşlarımız":"Our official partners",
 "Dövlət dəstəkli qurumlarla birlikdə — sənətkarın əməyi etibarlı əllərdə.":"Together with state-backed institutions — the artisan's work in trusted hands.",
 "Sənətkar əl işini yaradıb göndərir":"The artisan creates the piece and sends it",

@@ -396,20 +396,36 @@ footer{border-top:1px solid var(--line);padding:64px 0 36px}
 
 <!-- PARTNERS -->
 <section class="partners-sec" id="partners">
-  <div class="wrap reveal" style="text-align:center">
-    <div class="eyebrow" style="margin-bottom:22px"><span class="dot"></span> Əməkdaşlarımız</div>
-    <div class="partners">
-      <img src="assets/img/abad.png" alt="ABAD" class="partner-logo">
-      <img src="assets/img/azerxalca.png" alt="Azərxalça" class="partner-logo">
+  <div class="wrap reveal">
+    <div class="partners-card">
+      <div class="partners-head">
+        <span class="pline"></span>
+        <span class="ptag">Rəsmi əməkdaşlarımız</span>
+        <span class="pline"></span>
+      </div>
+      <div class="partners">
+        <div class="partner-chip"><img src="assets/img/abad.png" alt="ABAD"></div>
+        <div class="pdiv"></div>
+        <div class="partner-chip"><img src="assets/img/azerxalca.png" alt="Azərxalça"></div>
+      </div>
+      <p class="partners-note">Dövlət dəstəkli qurumlarla birlikdə — sənətkarın əməyi etibarlı əllərdə.</p>
     </div>
   </div>
 </section>
 <style>
-.partners-sec{padding:10px 0 46px}
-.partners{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap}
-.partner-logo{height:48px;width:auto;object-fit:contain;background:#fff;padding:14px 22px;border-radius:14px;box-shadow:0 8px 24px -14px rgba(0,0,0,.3);transition:transform .3s}
-.partner-logo:hover{transform:translateY(-3px)}
-@media(max-width:600px){.partners{gap:18px}.partner-logo{height:38px;padding:10px 16px}}
+.partners-sec{padding:10px 0 52px}
+.partners-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:34px 30px 30px;text-align:center;box-shadow:var(--shadow);overflow:hidden}
+.partners-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--orange))}
+.partners-head{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:26px}
+.partners-head .pline{height:1px;width:48px;background:var(--line)}
+.partners-head .ptag{font-family:"Space Grotesk";font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--green-dk)}
+.partners{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.partner-chip{padding:10px 40px;transition:transform .3s}
+.partner-chip:hover{transform:translateY(-4px)}
+.partner-chip img{height:52px;width:auto;object-fit:contain;background:#fff;padding:14px 24px;border-radius:14px;box-shadow:0 10px 26px -16px rgba(0,0,0,.35)}
+.pdiv{width:1px;align-self:stretch;background:var(--line);margin:8px 0}
+.partners-note{margin-top:22px;font-size:14px;color:var(--ink-soft);max-width:52ch;margin-left:auto;margin-right:auto}
+@media(max-width:600px){.partner-chip{padding:12px 20px}.partner-chip img{height:40px;padding:10px 16px}.pdiv{display:none}}
 </style>
 
 <!-- MARQUEE -->

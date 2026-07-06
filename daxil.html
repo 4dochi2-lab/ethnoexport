@@ -59,6 +59,7 @@
     <div id="otpStep2" style="display:none">
       <div class="ok">Kod e-poçtunuza göndərildi. Yoxlayın (spam qovluğuna da baxın).</div>
       <div class="field"><label>6 rəqəmli kod</label><input type="text" id="otpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456"></div>
+      <div style="text-align:center;margin:-6px 0 8px"><a href="#" id="otpResend" style="font-size:13px;color:var(--copper);font-weight:600">Yeni kod istə</a></div>
     </div>
     <button class="btn wide" type="submit" id="otpBtn">Kod göndər</button>
     <div style="text-align:center;margin-top:12px"><a href="#" id="otpBack" style="font-size:13.5px;color:var(--ink-soft)">← Girişə qayıt</a></div>
@@ -155,6 +156,12 @@ $('forgotLink').onclick=e=>{e.preventDefault();showForm('resetForm');$('title').
 let otpSent=false;
 $('otpLink').onclick=e=>{e.preventDefault();otpSent=false;$('otpStep2').style.display='none';$('otpBtn').textContent='Kod göndər';showForm('otpForm');$('title').textContent='E-poçt kodu ilə giriş';$('sub').textContent='';$('msg').innerHTML='';};
 $('otpBack').onclick=e=>{e.preventDefault();mode('login');};
+$('otpResend').onclick=async e=>{
+  e.preventDefault();const a=e.target;a.textContent='Göndərilir…';$('msg').innerHTML='';
+  try{ await EE.sendEmailOtp($('otpEmail').value); $('msg').innerHTML='<div class="ok">Yeni kod göndərildi. E-poçtunuzu yoxlayın.</div>'; }
+  catch(x){ err(x.message); }
+  a.textContent='Yeni kod istə';
+};
 $('otpForm').onsubmit=async e=>{
   e.preventDefault();const b=$('otpBtn');busy(b,true);$('msg').innerHTML='';
   try{
@@ -186,8 +193,10 @@ $('regForm').onsubmit=async e=>{
       phone:rPhone.value.trim(),location:rLoc.value.trim(),craft:craftVal,
       website:rWeb.value.trim(),social:rSocial.value.trim()});
     if(res&&res.confirm){
+      $('regForm').style.display='none';$('oauthBox').style.display='none';document.querySelector('.tabs').style.display='none';
+      $('title').textContent='Təsdiq gözlənilir';$('sub').textContent='';
       $('msg').innerHTML='<div class="ok">Hesab yaradıldı! E-poçtunuza təsdiq linki göndərdik — linkə basıb təsdiqləyin, sonra daxil olun.</div>';
-      busy(b,false,'Hesab yarat'); return;
+      return;
     }
     location.href='panel.html';
   }catch(x){err(x.message);busy(b,false,'Hesab yarat');}

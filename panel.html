@@ -65,7 +65,6 @@
           <label>Cibinə düşməsini istədiyin təmiz məbləğ (₼)</label>
           <input type="number" id="manat" min="1" step="1" value="120" required>
         </div>
-        <div class="calcbox" id="calcBox"></div>
         <button class="btn wide" type="submit">Göndər</button>
         <div class="hint" style="text-align:center;margin-top:10px">Elan mətnini biz hazırlayırıq — sənə heç nə yazmaq lazım deyil.</div>
       </form>
@@ -151,7 +150,6 @@ let s,user;
   if(!user||!user.name){location.href='tamamla-profil.html';return;} // OAuth ilə gələn — profil natamam
   const fn=((user&&user.name)||'Sənətkar').split(' ')[0];
   uName.textContent=fn;heroName.textContent=fn;
-  renderCalc();
   await render();
   EE.reveal();
 })();
@@ -182,15 +180,6 @@ function addThumb(url,blob){
   photos.push({blob,el});
 }
 
-function renderCalc(){
-  const m=+manat.value||0, c=EE.calc(m);
-  calcBox.innerHTML=`
-    <div class="r"><span>Sənin təmiz məbləğin</span><b>${m} ₼</b></div>
-    <div class="r"><span>+ Çatdırılma & bazar & 15% xidmət</span><b>~$${c.ship+c.svc+c.mkt}</b></div>
-    <div class="r fin"><span>Alıcının görəcəyi qiymət</span><b>$${c.landed}</b></div>`;
-}
-manat.oninput=renderCalc;
-
 pForm.onsubmit=async e=>{
   e.preventDefault();
   if(+manat.value<1){pmsg.innerHTML='<div class="err">Məbləğ düzgün deyil.</div>';return;}
@@ -200,7 +189,7 @@ pForm.onsubmit=async e=>{
     const matVal=mat.value==='Digər'?(document.getElementById('matOther').value.trim()||'Digər'):mat.value;
     await EE.addProduct({material:matVal,manat:manat.value,blobs:photos.map(p=>p.blob)});
     EE.toast('Göndərildi! Komandamız yoxlayıb kanallarda dərc edəcək.');
-    photos=[];document.getElementById('prevGrid').innerHTML='';fileInp.value='';manat.value=120;renderCalc();
+    photos=[];document.getElementById('prevGrid').innerHTML='';fileInp.value='';manat.value=120;
     await render();
   }catch(x){pmsg.innerHTML='<div class="err">'+x.message+'</div>';}
   btn.disabled=false;btn.textContent='Göndər';
@@ -257,8 +246,7 @@ function openStat(kind){
   } else if(kind==='live'){
     t='Satışda olan məhsullarım';
     const arr=MYPRODUCTS.filter(p=>p.status==='live');
-    html = `<a class="stat-store" href="${SHOPIFY_URL}" target="_blank" rel="noopener">↗ Shopify mağazamızda öz məhsullarına bax</a>
-            <a class="stat-store" href="${BONANZA_URL}" target="_blank" rel="noopener">↗ Bonanza mağazamızda bax</a>`
+    html = `<a class="stat-store" href="${SHOPIFY_URL}" target="_blank" rel="noopener">↗ Shopify mağazamızda öz məhsullarına bax</a>`
           + (arr.length ? arr.map(p=>srowHtml(p,`<span class="sval">$${p.landed}</span>`)).join('') : '<div class="stat-empty">Hazırda satışda məhsulun yoxdur.</div>');
   } else if(kind==='sold'){
     t='Satılan məhsullarım';
